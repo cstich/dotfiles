@@ -59,7 +59,7 @@
     package = pkgs.pulseaudioFull;
   };
   networking = {
-    hostName = "nix-pc"; # Define your hostname.
+    hostName = "marmot"; # Define your hostname.
     # Create a self-resolving hostname entry in /etc/hosts
     extraHosts = "127.0.1.1 nix-pc";
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
