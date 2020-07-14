@@ -1,6 +1,8 @@
+# TODO for dotfiles
 
-1) Move nixpkgs here
 
-2) Vim config
+[X] Move nixpkgs here
 
-3) Setup for gnome settings
+[X] Vim config
+
+[ ] Setup for gnome settings
