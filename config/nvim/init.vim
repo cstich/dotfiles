@@ -4,6 +4,7 @@
 " """""""""""""""""""""""""""""""""""""""""""""""
 " Setup and use vim-plug. A vim plugin manager
 """""""""""""""""""""""""""""""""""""""""""""""
+if !exists('g:vscode')
 if empty(glob('~/.local/share/nvim/site/autload/plug.vim'))
     silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
                 \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -70,56 +71,9 @@ Plug 'ryanoasis/vim-devicons'
 " Initialize plugin system
 call plug#end()
 
-""""""""""""""""""""""""""""""""""""
-" General
-""""""""""""""""""""""""""""""""""""
-
-" tell vim to keep a backup file
-set backup
-
-" tell vim where to put its backup files
-set backupdir=~/tmp
-
-" Enable mouse support
-set mouse=a
-
-" Set the displayed encoding to UTf-8
-set encoding=utf-8
-
-" Set encodings to work in UTF-8 exclusively
-set fileencoding=utf-8
-
-""""""""""""""""""""""""""""""""""""
-" VIM user interface
-""""""""""""""""""""""""""""""""""""
-
-"Always show current position
-set ruler
-" Ignore case when searching
-set ignorecase
-" When searching try to be smart about cases
-set smartcase
-" set show matching parenthesis
-set showmatch
-" insert tabs on the start of a line according to
-" shiftwidth, not tabstop
-set smarttab
-" Highlight search results
-set hlsearch
-" Makes search act like search in modern browsers
-set incsearch
-" Don't redraw while executing macros (good performance config)
-set lazyredraw
-" Show line numbers
-set hidden " LSP needed this
-set tabstop=4
-set shiftwidth=4
-set expandtab
-set autoindent " Always set autoindenting on
-set copyindent " Copy the previous indentation
-set noswapfile " disable swapfile usage
-set autochdir " automatically change window's cwd to file's dir
-
+"""""""""""""""""""""""""""""""""""""""
+" General settings
+"""""""""""""""""""""""""""""""""""""""
 " Keybindings
 "
 " Change the behavior of j and k for wrapped lines
@@ -132,20 +86,6 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 
-" for command mode
-nmap <Tab> >>
-nmap <S-Tab> <<
-
-" for insert mode
-imap <S-Tab> <Esc><<
-
-" Display all trailing white space
-set list
-
-" change <leader>
-let mapleader = "\<Space>"
-" let maplocalleader = "\\"
-let maplocalleader = "\<Space>"
 
 " Use <leader>l to toggle display of whitespace
 nmap <leader>l :set list!<CR>
@@ -155,15 +95,6 @@ nmap <F3> :BuffergatorToggle<CR>
 nmap <F4> :TagbarToggle<CR>
 " noremap <F5> :ALEGoToDefinition<CR>
 noremap <F6> :Autoformat<CR>
-
-" Always draw the signcolumn.
-set signcolumn=yes
-
-" show a visual line under the cursor's current line
-set cursorline
-
-" show the matching part of the pair for [] {} and ()
-set showmatch
 
 " Relative/hybrid linenumbers
 " As described here
@@ -425,3 +356,82 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 
 " let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
+
+" This endif is from the vscode wrapper
+endif
+
+""""""""""""""""""""""""""""""""""""
+" General VS Code safe settings are below here
+""""""""""""""""""""""""""""""""""""
+
+" tell vim to keep a backup file
+set backup
+
+" tell vim where to put its backup files
+set backupdir=~/.tmp
+
+" Enable mouse support
+set mouse=a
+
+" Set the displayed encoding to UTf-8
+set encoding=utf-8
+
+" Set encodings to work in UTF-8 exclusively
+set fileencoding=utf-8
+
+""""""""""""""""""""""""""""""""""""
+" VIM user interface
+""""""""""""""""""""""""""""""""""""
+
+"Always show current position
+set ruler
+" Ignore case when searching
+set ignorecase
+" When searching try to be smart about cases
+set smartcase
+" set show matching parenthesis
+set showmatch
+" insert tabs on the start of a line according to
+" shiftwidth, not tabstop
+set smarttab
+" Highlight search results
+set hlsearch
+" Makes search act like search in modern browsers
+set incsearch
+" Don't redraw while executing macros (good performance config)
+set lazyredraw
+" Show line numbers
+set hidden " LSP needed this
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set autoindent " Always set autoindenting on
+set copyindent " Copy the previous indentation
+set noswapfile " disable swapfile usage
+set autochdir " automatically change window's cwd to file's dir
+
+" for command mode
+nmap <Tab> >>
+nmap <S-Tab> <<
+
+" for insert mode
+imap <S-Tab> <Esc><<
+
+" Display all trailing white space
+set list
+
+" change <leader>
+let mapleader = "\<Space>"
+" let maplocalleader = "\\"
+let maplocalleader = "\<Space>"
+
+" Always draw the signcolumn.
+set signcolumn=yes
+
+" show a visual line under the cursor's current line
+set cursorline
+
+" show the matching part of the pair for [] {} and ()
+set showmatch
+
+

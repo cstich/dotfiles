@@ -1,0 +1,9 @@
+import ./shared.nix {
+  majorVersion = "1";
+  minorVersion = "3";
+  maintenanceVersion = "0";
+  src_sha256 = "0ciy048ppyrjwh6iyvadsdrl31ggrypg7cj90fp4vrdz4i86a4i2";
+
+  libuvVersion = "2348256acf5759a544e5ca7935f638d2bc091d60";
+  libuvSha256 = "1363f4vqayfcv5zqg07qmzjff56yhad74k16c22ian45lram8mv8";
+}
