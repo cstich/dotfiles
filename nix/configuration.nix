@@ -7,12 +7,15 @@
 {
   # nix.package = pkgs.nixUnstable;
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
+      <nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
       # Include the zsh configuration
       # ./zsh.nix
     ];
 
+  # TODO Factor out marmot specific settings
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
@@ -34,10 +37,21 @@
   '';
 
   # Tell initrd to unlock LUKS on /dev/sda2
-  boot.initrd.luks.devices = 
-     { crypted = { device = "/dev/sda2"; preLVM = true; allowDiscards = true; };
+  boot.initrd.luks.reusePassphrases = true;
+  boot.initrd.luks.devices = {
+    crypted = { 
+       device = "/dev/sda2"; 
+       preLVM = true; 
+       allowDiscards = true; 
+    };
+    # m2 = {
+    #   device = "/dev/nvme0n1";
+    #   preLVM = true;
+    #   allowDiscards = true;
+    # };
   };
 
+  hardware.sane.enable = true;
   hardware.enableAllFirmware = true;
   hardware.bluetooth.enable = true;
   hardware.opengl.driSupport32Bit = true;
@@ -90,7 +104,7 @@
   in with pkgs; [
      # Terminal applications
      ag
-     busybox
+     # busybox
      nox
      exa
      dmidecode
@@ -108,6 +122,7 @@
      wget
      which
      zathura
+     zip
      
      # Git things
      git
@@ -151,7 +166,9 @@
      materia-theme
      # flat-remix-icon-theme
      lxappearance
-     
+    
+    pantheon.elementary-icon-theme
+
      lm_sensors
 
      # Styling of QT 5 apps
@@ -162,6 +179,13 @@
      # Nixos relevant packages
      # Gets you the sha256 of github packages
      nix-prefetch-git
+
+    # Printer drivers for Brother printers (do not know which one I need)
+    brlaser
+    brscan4
+    brgenml1lpr 
+    brgenml1cupswrapper
+
   ] 
   ++ lib.optionals config.services.samba.enable [ kdenetwork-filesharing pkgs.samba ];
 
@@ -180,7 +204,15 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh = {
+      enable = true;
+      permitRootLogin = "no";
+      passwordAuthentication = false;
+  };
+
+  services.sshguard = {
+    enable = true;
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -224,16 +256,13 @@
 
   programs.gnupg.agent = {
     enable = true;
-    pinentryFlavor = "curses";
+    pinentryFlavor = "gtk2";
     enableSSHSupport = true;
   };
 
-
   services.xserver.displayManager.sessionCommands = ''
- 
     # Fix QT config app
     export QT_QPA_PLATFORMTHEME=qt5ct
-
   '';
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -244,6 +273,7 @@
      extraGroups = ["audio" "wheel" "networkManager" ];
      uid = 1000;
      shell = pkgs.zsh;
+     openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys"];
    };
 
 # Setup font rendering
@@ -260,8 +290,6 @@
     overpass
     siji 
     fira
-    # fira-code # superseded by nerdfonts
-    # fira-code-symbols # superseded by nerdfonts
     nerdfonts
     source-code-pro
     source-sans-pro
@@ -281,7 +309,7 @@
   location.longitude = 1.8904;
   location.latitude = 51.4862;
 
-  services.redshift.enable = true;
+  # services.redshift.enable = true;
   services.gvfs.enable = true;
   # security.pam.services.lightdm.enable = true;
   security.pam.services.lightdm.enableGnomeKeyring = true;
@@ -316,7 +344,7 @@
   # '';
 
   # Enable CUPS to print documents.
-  # services.printing.enable = true;
+  services.printing.enable = true;
 
   # Auto upgrades of packages from time to time
   system.autoUpgrade.enable = true;
@@ -329,8 +357,8 @@
   };
 
   # Allow parallel builds
-  # nix.maxJobs = 4;
-  # nix.buildCores = 4;
+  nix.maxJobs = 4;
+  nix.buildCores = 4;
 
   # Deactivate the sandbox as julia does not build with the sandbox enabled
   nix.useSandbox = false;

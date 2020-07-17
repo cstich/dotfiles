@@ -6,3 +6,5 @@
 [X] Vim config
 
 [ ] Setup for gnome settings
+
+[ ] Factor out marmot specific settings from configuration.nix
