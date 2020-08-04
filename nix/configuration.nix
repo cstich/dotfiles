@@ -119,6 +119,8 @@
      powerline-go
      neovim
      pass
+     qtpass
+     tmux
      wget
      which
      zathura
@@ -157,9 +159,12 @@
      signal-desktop    
      rofi
      gimp
+     dropbox
+     dropbox-cli
      # google-play-music-desktop-player
 
      libreoffice
+     veracrypt
      
      arc-theme
      arc-icon-theme
@@ -167,7 +172,7 @@
      # flat-remix-icon-theme
      lxappearance
     
-    pantheon.elementary-icon-theme
+     pantheon.elementary-icon-theme
 
      lm_sensors
 
@@ -180,11 +185,11 @@
      # Gets you the sha256 of github packages
      nix-prefetch-git
 
-    # Printer drivers for Brother printers (do not know which one I need)
-    brlaser
-    brscan4
-    brgenml1lpr 
-    brgenml1cupswrapper
+     # Printer drivers for Brother printers (do not know which one I need)
+     brlaser
+     brscan4
+     brgenml1lpr 
+     brgenml1cupswrapper
 
   ] 
   ++ lib.optionals config.services.samba.enable [ kdenetwork-filesharing pkgs.samba ];
@@ -250,7 +255,7 @@
     enable = true;
     autosuggestions.enable = true;
     ohMyZsh.enable = true;
-    ohMyZsh.plugins= ["git" "pass" "ssh-agent" "vi-mode"];
+    ohMyZsh.plugins= ["git" "pass" "ssh-agent"];
     syntaxHighlighting.enable = true;
   };
 
