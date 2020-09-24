@@ -19,37 +19,45 @@
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
+  boot.loader.grub.useOSProber = true;
+  # Virtualization settings
+  boot.kernelModules = [ "kvm-amd" "kvm-intel"];
+  virtualisation.libvirtd.enable = true;
   # boot.plymouth.enable = true;
   # boot.loader.grub.efiSupport = true;
   # boot.loader.grub.efiInstallAsRemovable = true;
   # boot.loader.efi.efiSysMountPoint = "/boot/efi";
   # Define on which hard drive you want to install Grub.
-  boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
-  boot.loader.grub.extraEntries = ''
-    menuentry "Windows 10" {
-    insmod part_msdos
-    insmod ntldr
-    insmod ntfs
-    insmod search_fs_uuid
-    search --no-floppy --fs-uuid --set=root 48E46FFFE46FEE1E
-    ntldr /bootmgr
-    }
-  '';
+  boot.loader.grub.device = "/dev/disk/by-id/ata-WDC_WDS500G2B0B-00YS70_2021DB462501"; # or "nodev" for efi only
+  # boot.loader.grub.extraEntries = ''
+  #   menuentry "Windows 10" {
+  #   insmod part_msdos
+  #   insmod ntldr
+  #   insmod ntfs
+  #   insmod search_fs_uuid
+  #   search --no-floppy --fs-uuid --set=root 48E46FFFE46FEE1E
+  #   ntldr /bootmgr
+  #   }
+  # '';
 
   # Tell initrd to unlock LUKS on /dev/sda2
-  boot.initrd.luks.reusePassphrases = true;
   boot.initrd.luks.devices = {
     crypted = { 
-       device = "/dev/sda2"; 
+       device = "/dev/disk/by-uuid/61bca8b2-fc40-48e1-b73a-c7e604e556be"; 
        preLVM = true; 
        allowDiscards = true; 
     };
-    # m2 = {
-    #   device = "/dev/nvme0n1";
-    #   preLVM = true;
-    #   allowDiscards = true;
-    # };
   };
+
+  boot.initrd.luks.reusePassphrases = true;
+  # FIXME This does not work for whatever reason
+  # boot.initrd.luks.devices = {
+  #   m2 = {
+  #     device = "/dev/disk/by-uuid/c47b1559-11f9-4713-a02e-77852338ba45";
+  #     preLVM = true;
+  #     allowDiscards = true;
+  #   };
+  # };
 
   hardware.sane.enable = true;
   hardware.enableAllFirmware = true;
@@ -98,9 +106,10 @@
   nixpkgs.config.allowUnfree = true;
  
   environment.systemPackages = let 
-  # Specify which pacakges are available to the global python interpreter
-  myPythonPackages = pythonPackages: with pythonPackages; [
-  ]; 
+    # Specify which pacakges are available to the global python interpreter
+    myPythonPackages = pythonPackages: with pythonPackages; []; 
+
+    unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
   in with pkgs; [
      # Terminal applications
      ag
@@ -121,6 +130,8 @@
      pass
      qtpass
      tmux
+     qemu_kvm
+     wirelesstools
      wget
      which
      zathura
@@ -133,10 +144,12 @@
 
      # Gnome things
      gnomeExtensions.appindicator
+     gnome3.dconf
      gnome3.gnome-tweaks
      gnome3.dconf-editor
      gnome3.gnome-session
      gnome3.seahorse
+     gnomeExtensions.appindicator
 
      # neovim dependencies
      yarn
@@ -156,11 +169,16 @@
      compton-git
 
      firefox
+     gparted
+     notify-desktop
      signal-desktop    
      rofi
      gimp
+     ntfs3g
+     unstable.woeusb
      dropbox
      dropbox-cli
+     virt-manager
      # google-play-music-desktop-player
 
      libreoffice
@@ -175,6 +193,7 @@
      pantheon.elementary-icon-theme
 
      lm_sensors
+     gsmartcontrol
 
      # Styling of QT 5 apps
      libsForQt5.qtstyleplugins
@@ -199,6 +218,25 @@
     # FIXME: modules should link subdirs of `/share` rather than relying on this
     "/share"
   ];
+  
+  systemd.user.services.dropbox = {
+  description = "Dropbox";
+  wantedBy = [ "graphical-session.target" ];
+  environment = {
+    QT_PLUGIN_PATH = "/run/current-system/sw/" + pkgs.qt5.qtbase.qtPluginPrefix;
+    QML2_IMPORT_PATH = "/run/current-system/sw/" + pkgs.qt5.qtbase.qtQmlPrefix;
+    };
+    serviceConfig = {
+      ExecStart = "${pkgs.dropbox.out}/bin/dropbox";
+      ExecReload = "${pkgs.coreutils.out}/bin/kill -HUP $MAINPID";
+      KillMode = "control-group"; # upstream recommends process
+      Restart = "on-failure";
+      PrivateTmp = true;
+      ProtectSystem = "full";
+      Nice = 10;
+    };
+  }; 
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -275,11 +313,15 @@
      isNormalUser = true;
      home = "/home/christoph";
      description = "Christoph Stich";
-     extraGroups = ["audio" "wheel" "networkManager" ];
+     extraGroups = ["audio" "wheel" "networkManager"];
      uid = 1000;
      shell = pkgs.zsh;
      openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys"];
    };
+
+
+  virtualisation.virtualbox.host.enable = true;
+   users.extraGroups.vboxusers.members = [ "christoph" ];
 
 # Setup font rendering
  fonts = {
@@ -347,6 +389,7 @@
   #   rmmod nvidia_uvm
   #   modprobe nvidia_uvm
   # '';
+
 
   # Enable CUPS to print documents.
   services.printing.enable = true;

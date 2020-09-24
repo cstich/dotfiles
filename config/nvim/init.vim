@@ -197,6 +197,7 @@ let g:buffergator_suppress_keymaps = 1
 " Vimtex settings
 """"""""""""""""""""""""""""""""""
 
+let g:tex_flavor= "latex"
 let g:vimtex_view_method = "zathura"
 let g:tex_conceal = ""
 
