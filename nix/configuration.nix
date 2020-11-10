@@ -59,7 +59,13 @@
   #   };
   # };
 
-  hardware.sane.enable = true;
+  # Brother scanner
+  hardware.sane = {
+    enable = true;
+    brscan4.enable = true;
+  };
+
+
   hardware.enableAllFirmware = true;
   hardware.bluetooth.enable = true;
   hardware.opengl.driSupport32Bit = true;
@@ -148,6 +154,7 @@
      gnome3.gnome-tweaks
      gnome3.dconf-editor
      gnome3.gnome-session
+     gnome3.networkmanager-openvpn
      gnome3.seahorse
      gnomeExtensions.appindicator
 
@@ -159,6 +166,7 @@
      direnv
      any-nix-shell
      nix-index
+     nixpkgs-review
      binutils-unwrapped
      patchelf
 
@@ -168,19 +176,24 @@
      # Git fork of compton the composition manager for X
      compton-git
 
+     discord
+     unstable.vscode 
      firefox
+     google-chrome
      gparted
      notify-desktop
      signal-desktop    
      rofi
      gimp
+     inkscape
      ntfs3g
      unstable.woeusb
-     dropbox
-     dropbox-cli
+     # dropbox
+     # dropbox-cli
      virt-manager
-     # google-play-music-desktop-player
+     google-play-music-desktop-player
 
+     steam
      libreoffice
      veracrypt
      
@@ -205,11 +218,7 @@
      nix-prefetch-git
 
      # Printer drivers for Brother printers (do not know which one I need)
-     brlaser
-     brscan4
-     brgenml1lpr 
-     brgenml1cupswrapper
-
+     
   ] 
   ++ lib.optionals config.services.samba.enable [ kdenetwork-filesharing pkgs.samba ];
 
@@ -236,6 +245,9 @@
       Nice = 10;
     };
   }; 
+
+
+  services.flatpak.enable = true;
 
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -278,8 +290,8 @@
     };
     displayManager = {
       gdm.enable = true;
-      gdm.autoLogin.enable = false;
-      gdm.autoLogin.user = "christoph";
+      autoLogin.enable = false;
+      autoLogin.user = "christoph";
       gdm.wayland=false;
     };
   };
@@ -313,7 +325,7 @@
      isNormalUser = true;
      home = "/home/christoph";
      description = "Christoph Stich";
-     extraGroups = ["audio" "wheel" "networkManager"];
+     extraGroups = ["audio" "wheel" "networkManager" "scanner" "lp"];
      uid = 1000;
      shell = pkgs.zsh;
      openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys"];
@@ -356,7 +368,7 @@
   location.longitude = 1.8904;
   location.latitude = 51.4862;
 
-  # services.redshift.enable = true;
+  services.redshift.enable = true;
   services.gvfs.enable = true;
   # security.pam.services.lightdm.enable = true;
   security.pam.services.lightdm.enableGnomeKeyring = true;
@@ -371,8 +383,8 @@
     # tracker-miners.enable = true;
   };
 
-  
-  nix = {
+
+    nix = {
     autoOptimiseStore = true;
     # nixPath = [
     #   "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
@@ -393,6 +405,11 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  services.avahi.enable = true;
+  # Important to resolve .local domains of printers, otherwise you get an error
+  # like  "Impossible to connect to XXX.local: Name or service not known"
+  services.avahi.nssmdns = true;
+  services.printing.drivers = [pkgs.brlaser pkgs.brgenml1lpr pkgs.brgenml1cupswrapper ];
 
   # Auto upgrades of packages from time to time
   system.autoUpgrade.enable = true;
@@ -417,6 +434,6 @@
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
-  system.stateVersion = "20.03"; # Did you read the comment?
+  system.stateVersion = "20.09"; # Did you read the comment?
 
 }

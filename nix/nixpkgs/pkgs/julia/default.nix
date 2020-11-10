@@ -7,7 +7,7 @@ let
   extraLibs = [
     # IJulia.jl
     mbedtls
-    zeromq3
+    zeromq4
     # ImageMagick.jl
     imagemagickBig
     # HDF5.jl

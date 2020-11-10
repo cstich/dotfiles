@@ -5,38 +5,30 @@
 # libjulia dependencies
 , libunwind, readline, utf8proc, zlib
 # standard library dependencies
-, curl, fftwSinglePrec, fftw, gmp, libgit2, 
-mpfr, openlibm, openspecfun, pcre2
+, curl, fftwSinglePrec, fftw, gmp, libgit2, mpfr, openlibm, openspecfun, pcre2
 # linear algebra
-, openblas, arpack
-# llvm
-, llvm
+, blas, lapack, arpack
 }:
+
+assert (!blas.isILP64) && (!lapack.isILP64);
 
 with stdenv.lib;
 
-# All dependencies must use the same OpenBLAS.
 let
-  arpack_ = arpack;
-in
-let
-  arpack = arpack_.override { inherit openblas; };
-in
-
-let 
   majorVersion = "1";
   minorVersion = "5";
-  maintenanceVersion = "0";
-  src_sha256 = "1x10q46q2bkr19nqgc05kx8sachh8dz8v7qrvqwdagr4g8yxmqrs";
+  maintenanceVersion = "2";
+  src_sha256 = "0g24v1clkcj1vnw16jxx6rav4hqaiag0nvd6iyvgc2c7l9k59g7g";
   version = "${majorVersion}.${minorVersion}.${maintenanceVersion}";
-in 
+in
 
 stdenv.mkDerivation rec {
   pname = "julia";
   inherit version;
 
-  src = fetchzip {
-     url = "https://github.com/JuliaLang/julia/releases/download/v1.5.0-rc1/julia-1.5.0-rc1-full.tar.gz";
+   src = fetchzip {
+     url = "https://github.com/JuliaLang/julia/releases/download/v1.5.2/julia-1.5.2-full.tar.gz";
+     # url = "https://github.com/JuliaLang/julia/releases/download/v${majorVersion}.${minorVersion}.${maintenanceVersion}/julia-${majorVersion}.${minorVersion}.${maintenanceVersion}-full.tar.gz";
      sha256 = src_sha256;
    };
 
@@ -70,7 +62,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     arpack fftw fftwSinglePrec gmp libgit2 libunwind mpfr
-    pcre2.dev openblas openlibm openspecfun readline utf8proc
+    pcre2.dev blas lapack openlibm openspecfun readline utf8proc
     zlib
   ]
   ++ stdenv.lib.optionals stdenv.isDarwin [CoreServices ApplicationServices]
@@ -86,6 +78,8 @@ stdenv.mkDerivation rec {
       # Julia requires Pentium 4 (SSE2) or better
       cpuTarget = { x86_64 = "x86-64"; i686 = "pentium4"; }.${arch}
                   or (throw "unsupported architecture: ${arch}");
+      # Julia applies a lot of patches to its dependencies, so for now do not use the system LLVM
+      # https://github.com/JuliaLang/julia/tree/master/deps/patches
     in [
       "ARCH=${arch}"
       "MARCH=${march}"
@@ -95,14 +89,21 @@ stdenv.mkDerivation rec {
       "SHELL=${stdenv.shell}"
 
       "USE_SYSTEM_BLAS=1"
-      "USE_BLAS64=${if openblas.blas64 then "1" else "0"}"
-      "LIBBLAS=-lopenblas"
-      "LIBBLASNAME=libopenblas"
+      "USE_BLAS64=${if blas.isILP64 then "1" else "0"}"
 
       "USE_SYSTEM_LAPACK=1"
-      "LIBLAPACK=-lopenblas"
-      "LIBLAPACKNAME=libopenblas"
 
+      "USE_SYSTEM_ARPACK=1"
+      "USE_SYSTEM_FFTW=1"
+      "USE_SYSTEM_GMP=1"
+      "USE_SYSTEM_LIBGIT2=1"
+      "USE_SYSTEM_LIBUNWIND=1"
+
+      "USE_SYSTEM_MPFR=1"
+      "USE_SYSTEM_OPENLIBM=1"
+      "USE_SYSTEM_OPENSPECFUN=1"
+      "USE_SYSTEM_PATCHELF=1"
+      "USE_SYSTEM_PCRE=1"
       "PCRE_CONFIG=${pcre2.dev}/bin/pcre2-config"
       "PCRE_INCL_PATH=${pcre2.dev}/include/pcre2.h"
       "USE_SYSTEM_READLINE=1"
@@ -113,14 +114,14 @@ stdenv.mkDerivation rec {
     ];
 
   LD_LIBRARY_PATH = makeLibraryPath [
-    arpack fftw fftwSinglePrec gmp libgit2 mpfr openblas openlibm
-    openspecfun pcre2
+    arpack fftw fftwSinglePrec gmp libgit2 mpfr blas openlibm
+    openspecfun pcre2 lapack
   ];
 
   enableParallelBuilding = true;
 
-  doCheck = !stdenv.isDarwin;
-  checkTarget = false;
+  # doCheck = !stdenv.isDarwin;
+  # checkTarget = "testall";
   # Julia's tests require read/write access to $HOME
   preCheck = ''
     export HOME="$NIX_BUILD_TOP"
@@ -151,7 +152,7 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "High-level performance-oriented dynamical language for technical computing";
-    homepage = https://julialang.org/;
+    homepage = "https://julialang.org/";
     license = stdenv.lib.licenses.mit;
     maintainers = with stdenv.lib.maintainers; [ raskin rob garrison ];
     platforms = [ "i686-linux" "x86_64-linux" "x86_64-darwin" ];

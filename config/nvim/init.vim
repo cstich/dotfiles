@@ -110,6 +110,10 @@ set conceallevel=0
 "  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 "augroup END
 
+" Use the system clipboard
+set clipboard=unnamedplus
+
+
 """"""""""""""""""""""""""""""""""
 " Spellcheck settings
 """"""""""""""""""""""""""""""""""
