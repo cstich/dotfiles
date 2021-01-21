@@ -4,13 +4,20 @@
 
 { config, pkgs, ... }:
 
+let 
+hostname = "marmot";
+
+in
+
+
 {
   # nix.package = pkgs.nixUnstable;
   imports =
     [ 
       <nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
       # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      # ./hardware-{$hostname}.nix
+      ./hardware-marmot.nix
       # Include the zsh configuration
       # ./zsh.nix
     ];
@@ -87,7 +94,7 @@
     package = pkgs.pulseaudioFull;
   };
   networking = {
-    hostName = "marmot"; # Define your hostname.
+    hostName = hostname; # Define your hostname.
     # Create a self-resolving hostname entry in /etc/hosts
     extraHosts = "127.0.1.1 nix-pc";
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -105,7 +112,7 @@
    };
 
   # Set your time zone.
-  time.timeZone = "Europe/London";
+  time.timeZone = "Europe/Prague";
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
@@ -120,6 +127,8 @@
      # Terminal applications
      ag
      # busybox
+     dnsutils 
+     ldns
      nox
      exa
      dmidecode
@@ -164,6 +173,7 @@
 
      # Nix things
      direnv
+     nix-direnv
      any-nix-shell
      nix-index
      nixpkgs-review
@@ -194,6 +204,7 @@
      google-play-music-desktop-player
 
      steam
+     steam-run
      libreoffice
      veracrypt
      
@@ -226,8 +237,15 @@
   environment.pathsToLink = [
     # FIXME: modules should link subdirs of `/share` rather than relying on this
     "/share"
+    "/share/nix-direnv"
   ];
   
+  nix.extraOptions = ''
+    keep-outputs = true
+    keep-derivations = true
+  '';
+
+
   systemd.user.services.dropbox = {
   description = "Dropbox";
   wantedBy = [ "graphical-session.target" ];
@@ -248,7 +266,9 @@
 
 
   services.flatpak.enable = true;
+  # services.lorri.enable = true;
 
+  
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -416,7 +436,7 @@
   
   # Automated weekly garbage collection
   nix.gc = {
-    automatic = true;
+    automatic = false;
     dates = "weekly";
     options = "--delete-older-than 90d";
   };

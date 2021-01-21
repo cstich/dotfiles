@@ -31,7 +31,10 @@ Plug 'justinmk/vim-sneak'
 Plug 'unblevable/quick-scope' " Highlights the first character for f,F targets
 
 " Style/colors/etc.
+Plug 'sonph/onehalf', { 'rtp': 'vim' }
 Plug 'sickill/vim-monokai'
+Plug 'Adryd/vim-adryd-monokai'
+Plug 'rafi/awesome-vim-colorschemes'
 Plug 'patstockwell/vim-monokai-tasty'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -44,6 +47,8 @@ Plug 'junegunn/fzf.vim'
 
 " Language support
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc-python'
+
 " Linter/Language Server Protocoll Client
 " Plug 'w0rp/ale'
 " Asynchronous completeion
@@ -219,12 +224,14 @@ autocmd Filetype ipynb nmap <silent><Leader>n :VimpyterStartNteract<CR>
 " Enable syntax highlighting
 syntax enable
 
-" Set colorscheme to monokai
-colorscheme vim-monokai-tasty
+" Set colorscheme 
+set termguicolors     " enable true colors support
+colorscheme onehalflight
 
-" Monokai-tasty additional settings
-let g:vim_monokai_tasty_italic = 1
-let g:airline_theme='monokai_tasty'
+" Airline settings
+let g:airline_theme='onehalflight'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
 
 " Use Unix as the standard file type
 set fileformat=unix
@@ -240,11 +247,6 @@ set laststatus=2
 "     set t_Co=256
 " endif
 set t_Co=256
-
-" Airline settings
-let g:airline_powerline_fonts = 1
-let g:airline_theme='powerlineish'
-let g:airline#extensions#tabline#enabled = 1
 
 
 """""""""""""""""""""""""""""""""""""""
