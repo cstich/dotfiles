@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{config, pkgs, ...}:
 
 {
   programs.zsh = {
@@ -8,4 +8,8 @@
     ohMyZsh.plugins= ["git" "pass" "ssh-agent"];
     syntaxHighlighting.enable = true;
   };
+
+  environment.systemPackages = [
+    pkgs.powerline-go
+  ];
 }

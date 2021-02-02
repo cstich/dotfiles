@@ -16,6 +16,8 @@ in
       # Include the results of the hardware scan.
       # ./hardware-configuration.nix
       /etc/nixos/hardware-configuration.nix
+      # Custom modules
+      ./common/common.nix
       ./common/dropbox.nix
       ./common/zsh.nix
       ./common/fonts.nix
@@ -118,35 +120,26 @@ in
     unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
   in with pkgs; [
      # Terminal applications
-     ag
      dnsutils 
      ldns
      nox
      exa
      dmidecode
      feh
-     fzf
-     htop
      killall
      ncat
      neofetch
      ncdu
      nethogs
      (python3.withPackages myPythonPackages)
-     powerline-go
-     neovim
      pass
      qtpass
      tmux
      qemu_kvm
      wirelesstools
-     wget
-     which
      zathura
-     zip
      
      # Git things
-     git
      bfg-repo-cleaner
      git-lfs
 
