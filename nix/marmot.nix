@@ -14,7 +14,8 @@ in
     [ 
       <nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
       # Include the results of the hardware scan.
-      ./hardware-marmot.nix
+      # ./hardware-configuration.nix
+      /etc/nixos/hardware-configuration.nix
       ./common/dropbox.nix
       ./common/zsh.nix
     ];
