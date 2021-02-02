@@ -122,6 +122,7 @@ in
   users.users.christoph = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    shell = pkgs.zsh;
     openssh.authorizedKeys.keyFiles = [ "/home/christoph/Secrets/authorized_keys" ];
   };
 
