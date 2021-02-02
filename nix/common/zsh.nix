@@ -12,5 +12,6 @@
   environment.systemPackages = [
     pkgs.powerline-go
     pkgs.direnv
+    pkgs.fzf
   ];
 }
