@@ -14,4 +14,11 @@ ln -sf /home/$USER/.symlinks/secrets/secretx.nix $SCRIPTPATH/nix/secrets.nix
 # TODO Think about how to deal with the hostname
 sudo ln -sf $SCRIPTPATH/nix/$HOSTNAME.nix /etc/nixos/configuration.nix
 
+# If gnome exists, set the custom settings
+DESKTOP=$(env | grep XDG_CURRENT_DESKTOP | awk -F'=' '{print $2}')
+if [[ $DESKTOP -eq GNOME ]]
+then
+    config/gnome/gsettings.sh
+fi
+
 mkdir -p ~/.tmp
