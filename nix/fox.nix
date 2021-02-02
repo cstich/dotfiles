@@ -13,6 +13,7 @@ in
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
       ./common/zsh.nix
+      ./common/common.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
