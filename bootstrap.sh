@@ -12,8 +12,6 @@ ln -sf /home/$USER/.symlinks/secrets/secrets.nix $SCRIPTPATH/nix/secrets.nix
 # TODO Think about how to deal with the hostname
 sudo ln -sf $SCRIPTPATH/nix/$HOSTNAME.nix /etc/nixos/configuration.nix
 
-# TODO Set the system nix files to be owned by root
-
 # If gnome exists, set the custom settings
 DESKTOP=$(env | grep XDG_CURRENT_DESKTOP | awk -F'=' '{print $2}')
 if [[ $DESKTOP -eq GNOME ]]
