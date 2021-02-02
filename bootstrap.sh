@@ -5,12 +5,13 @@
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
-# TODO Think about how to deal with the hostname
-
 ln -sf $SCRIPTPATH/nix/nixpkgs ~/.config
 ln -sf $SCRIPTPATH/config/zsh/zshrc ~/.zshrc
 ln -sf $SCRIPTPATH/config/nvim ~/.config
 ln -sf $SCRIPTPATH/direnvrc ~/.direnvrc
+ln -sf /home/$USER/.symlinks/secrets/secretx.nix $SCRIPTPATH/nix/secrets.nix
+
+# TODO Think about how to deal with the hostname
 sudo ln -sf $SCRIPTPATH/nix/$HOSTNAME.nix /etc/nixos/configuration.nix
 
 mkdir -p ~/.tmp

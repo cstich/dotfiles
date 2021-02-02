@@ -5,10 +5,8 @@
 { config, pkgs, ... }:
 
 let 
-hostname = "marmot";
-
+  hostname = "marmot";
 in
-
 
 {
   # nix.package = pkgs.nixUnstable;
@@ -16,10 +14,9 @@ in
     [ 
       <nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
       # Include the results of the hardware scan.
-      # ./hardware-{$hostname}.nix
       ./hardware-marmot.nix
-      # Include the zsh configuration
-      # ./zsh.nix
+      ./common/dropbox.nix
+      ./common/zsh.nix
     ];
 
   # TODO Factor out marmot specific settings
@@ -36,16 +33,6 @@ in
   # boot.loader.efi.efiSysMountPoint = "/boot/efi";
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/disk/by-id/ata-WDC_WDS500G2B0B-00YS70_2021DB462501"; # or "nodev" for efi only
-  # boot.loader.grub.extraEntries = ''
-  #   menuentry "Windows 10" {
-  #   insmod part_msdos
-  #   insmod ntldr
-  #   insmod ntfs
-  #   insmod search_fs_uuid
-  #   search --no-floppy --fs-uuid --set=root 48E46FFFE46FEE1E
-  #   ntldr /bootmgr
-  #   }
-  # '';
 
   # Tell initrd to unlock LUKS on /dev/sda2
   boot.initrd.luks.devices = {
@@ -54,6 +41,11 @@ in
        preLVM = true; 
        allowDiscards = true; 
     };
+    # luks-c47b1559-11f9-4713-a02e-77852338ba45 = {
+    #    device = "/dev/disk/by-uuid/c47b1559-11f9-4713-a02e-77852338ba45";
+    #    preLVM = true;
+    #    allowDiscards = true;
+    # };
   };
 
   boot.initrd.luks.reusePassphrases = true;
@@ -96,7 +88,7 @@ in
   networking = {
     hostName = hostname; # Define your hostname.
     # Create a self-resolving hostname entry in /etc/hosts
-    extraHosts = "127.0.1.1 nix-pc";
+    extraHosts = "127.0.1.1 marmot";
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
     networkmanager.enable = true;
   };
@@ -121,12 +113,10 @@ in
   environment.systemPackages = let 
     # Specify which pacakges are available to the global python interpreter
     myPythonPackages = pythonPackages: with pythonPackages; []; 
-
     unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
   in with pkgs; [
      # Terminal applications
      ag
-     # busybox
      dnsutils 
      ldns
      nox
@@ -136,6 +126,7 @@ in
      fzf
      htop
      killall
+     ncat
      neofetch
      ncdu
      nethogs
@@ -167,6 +158,8 @@ in
      gnome3.seahorse
      gnomeExtensions.appindicator
 
+     lightdm
+
      # neovim dependencies
      yarn
      nodejs
@@ -179,6 +172,7 @@ in
      nixpkgs-review
      binutils-unwrapped
      patchelf
+     nix-prefetch-git  # Gets you the sha256 of github packages
 
      # Sound settings
      pavucontrol
@@ -198,8 +192,6 @@ in
      inkscape
      ntfs3g
      unstable.woeusb
-     # dropbox
-     # dropbox-cli
      virt-manager
      google-play-music-desktop-player
 
@@ -211,7 +203,6 @@ in
      arc-theme
      arc-icon-theme
      materia-theme
-     # flat-remix-icon-theme
      lxappearance
     
      pantheon.elementary-icon-theme
@@ -223,13 +214,6 @@ in
      libsForQt5.qtstyleplugins
      libsForQt5.qtstyleplugin-kvantum 
      qt5ct
-     
-     # Nixos relevant packages
-     # Gets you the sha256 of github packages
-     nix-prefetch-git
-
-     # Printer drivers for Brother printers (do not know which one I need)
-     
   ] 
   ++ lib.optionals config.services.samba.enable [ kdenetwork-filesharing pkgs.samba ];
 
@@ -245,37 +229,8 @@ in
     keep-derivations = true
   '';
 
-
-  systemd.user.services.dropbox = {
-  description = "Dropbox";
-  wantedBy = [ "graphical-session.target" ];
-  environment = {
-    QT_PLUGIN_PATH = "/run/current-system/sw/" + pkgs.qt5.qtbase.qtPluginPrefix;
-    QML2_IMPORT_PATH = "/run/current-system/sw/" + pkgs.qt5.qtbase.qtQmlPrefix;
-    };
-    serviceConfig = {
-      ExecStart = "${pkgs.dropbox.out}/bin/dropbox";
-      ExecReload = "${pkgs.coreutils.out}/bin/kill -HUP $MAINPID";
-      KillMode = "control-group"; # upstream recommends process
-      Restart = "on-failure";
-      PrivateTmp = true;
-      ProtectSystem = "full";
-      Nice = 10;
-    };
-  }; 
-
-
   services.flatpak.enable = true;
-  # services.lorri.enable = true;
-
   
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.bash.enableCompletion = true;
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
-
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
@@ -288,12 +243,6 @@ in
   services.sshguard = {
     enable = true;
   };
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # Enable the X11 windowing system.
   services.xserver = {
@@ -312,23 +261,10 @@ in
       gdm.enable = true;
       autoLogin.enable = false;
       autoLogin.user = "christoph";
-      gdm.wayland=false;
+      gdm.wayland = false;
     };
   };
   
-  # Deactivate the annoying ssh passphrase popup
-  # programs.ssh = {
-  #   askPassword = "";
-  # };
-
-  programs.zsh = {
-    enable = true;
-    autosuggestions.enable = true;
-    ohMyZsh.enable = true;
-    ohMyZsh.plugins= ["git" "pass" "ssh-agent"];
-    syntaxHighlighting.enable = true;
-  };
-
   programs.gnupg.agent = {
     enable = true;
     pinentryFlavor = "gtk2";
@@ -404,13 +340,8 @@ in
   };
 
 
-    nix = {
+  nix = {
     autoOptimiseStore = true;
-    # nixPath = [
-    #   "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
-    #   "nixos-config=/home/christoph/Projects/dotfiles/nix/configuration.nix"
-    #   "/nix/var/nix/profiles/per-user/root/channels"
-    # ];
   };  
 
   # powerManagement.resumeCommands = ''
@@ -420,8 +351,7 @@ in
   #   # TODO Add here the rmmode modprobe suspend CUDA fix
   #   rmmod nvidia_uvm
   #   modprobe nvidia_uvm
-  # '';
-
+  # ''; 
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
