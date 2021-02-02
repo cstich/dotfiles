@@ -14,7 +14,7 @@ sudo ln -sf $SCRIPTPATH/nix/$HOSTNAME.nix /etc/nixos/configuration.nix
 
 # If gnome exists, set the custom settings
 DESKTOP=$(env | grep XDG_CURRENT_DESKTOP | awk -F'=' '{print $2}')
-if [[ $DESKTOP -eq GNOME ]]
+if [[ $DESKTOP == GNOME ]]
 then
     config/gnome/gsettings.sh
 fi
