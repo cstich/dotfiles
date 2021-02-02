@@ -68,7 +68,6 @@ in
     brscan4.enable = true;
   };
 
-
   hardware.enableAllFirmware = true;
   hardware.bluetooth.enable = true;
   hardware.opengl.driSupport32Bit = true;
@@ -89,6 +88,10 @@ in
     # Enable bluetooth (among others) in Pulseaudio
     package = pkgs.pulseaudioFull;
   };
+
+  networking.useDHCP = false;
+  networking.interfaces.enp6s0.useDHCP = true;
+
   networking = {
     hostName = hostname; # Define your hostname.
     # Create a self-resolving hostname entry in /etc/hosts
@@ -280,11 +283,10 @@ in
      uid = 1000;
      shell = pkgs.zsh;
      openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys"];
-   };
-
+  }; 
 
   virtualisation.virtualbox.host.enable = true;
-   users.extraGroups.vboxusers.members = [ "christoph" ];
+  users.extraGroups.vboxusers.members = [ "christoph" ];
 
   # Services below here
   location.longitude = 1.8904;
@@ -303,12 +305,7 @@ in
     sushi.enable = true;
     # tracker.enable = true;
     # tracker-miners.enable = true;
-  };
-
-
-  nix = {
-    autoOptimiseStore = true;
-  };  
+  }; 
 
   # powerManagement.resumeCommands = ''
   #   # CUDA suspend crash fix
@@ -326,16 +323,6 @@ in
   # like  "Impossible to connect to XXX.local: Name or service not known"
   services.avahi.nssmdns = true;
   services.printing.drivers = [pkgs.brlaser pkgs.brgenml1lpr pkgs.brgenml1cupswrapper ];
-
-  # Auto upgrades of packages from time to time
-  system.autoUpgrade.enable = true;
-  
-  # Automated weekly garbage collection
-  nix.gc = {
-    automatic = false;
-    dates = "weekly";
-    options = "--delete-older-than 90d";
-  };
 
   # Allow parallel builds
   nix.maxJobs = 4;

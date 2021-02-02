@@ -65,8 +65,7 @@ in
 	prefixLength = 24;
       }];
     };
-  };
-
+  }; 
   
   services.dnsmasq = {
     servers = ["8.8.8.8" "8.8.8.4" "10.77.0.1" "10.77.1.1"];
