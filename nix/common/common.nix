@@ -6,6 +6,7 @@
       fzf
       git
       htop
+      lshw
       neovim
       wget
       which
