@@ -7,7 +7,7 @@ ln -sf $SCRIPTPATH/nix/nixpkgs ~/.config
 ln -sf $SCRIPTPATH/config/zsh/zshrc ~/.zshrc
 ln -sf $SCRIPTPATH/config/nvim ~/.config
 ln -sf $SCRIPTPATH/direnvrc ~/.direnvrc
-ln -sf /home/$USER/.symlinks/secrets/secrets.nix $SCRIPTPATH/nix/secrets.nix
+ln -sf /home/$USER/Secrets/secrets.nix $SCRIPTPATH/nix/common/secrets.nix
 
 # TODO Think about how to deal with the hostname
 sudo ln -sf $SCRIPTPATH/nix/$HOSTNAME.nix /etc/nixos/configuration.nix

@@ -6,6 +6,7 @@ let
   extEth = "eno1";
   intEth = "enp2s0";
   wifi = "wlp1s0";
+  secrets = import ./common/secrets.nix;
 in
 
 {
@@ -19,6 +20,7 @@ in
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
 
   # Enable package forwarding.
     boot.kernel.sysctl = {
@@ -63,11 +65,14 @@ in
     enp2s0 = {
       ipv4.addresses = [{
         address = ipEth;
-	prefixLength = 24;
+        prefixLength = 24;
       }];
     };
   }; 
-  
+ 
+  # Setup dnsmasq as a DHCP server
+  # You can set static IP addresses based on either host namaes or
+  # mac addresses here
   services.dnsmasq = {
     servers = ["8.8.8.8" "8.8.8.4" "10.77.0.1" "10.77.1.1"];
     enable = true;
@@ -79,6 +84,8 @@ in
       interface=${intEth}
       bind-interfaces
       dhcp-range=192.168.1.10,192.168.1.254,24h
+
+      dhcp-host=${secrets.macAddressOtter},192.168.1.240
 
       local=/lan/
       domain=lan
@@ -98,7 +105,7 @@ in
   networking.useDHCP = false;
   networking.interfaces.eno1.useDHCP = true;
 
-   # Select internationalisation properties.
+  # Select internationalisation properties.
   # i18n.defaultLocale = "en_US.UTF-8";
   # console = {
   #   font = "Lat2-Terminus16";
@@ -109,14 +116,10 @@ in
   # services.xserver.enable = true;
   # services.xserver.displayManager.gdm.enable = true;
   # services.xserver.desktopManager.gnome3.enable = true;
-  
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e";
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.christoph = {
@@ -153,8 +156,8 @@ in
 
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = true;
-
+    
+  # Do not change this value
   system.stateVersion = "20.09"; 
-
 }
 

@@ -2,6 +2,7 @@
 {
   environment.systemPackages = with pkgs; [
       ag
+      busybox
       fzf
       git
       htop
