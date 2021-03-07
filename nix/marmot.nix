@@ -21,6 +21,7 @@ in
       ./common/dropbox.nix
       ./common/zsh.nix
       ./common/fonts.nix
+      ./common/syncthing.nix
     ];
 
   # TODO Factor out marmot specific settings
@@ -193,6 +194,7 @@ in
      virt-manager
      google-play-music-desktop-player
 
+     skype
      steam
      steam-run
      libreoffice

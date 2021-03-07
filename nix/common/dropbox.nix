@@ -1,6 +1,15 @@
 {pkgs, ...}:
 
 {
+  environment.systemPackages = with pkgs; [
+     dropbox-cli
+  ];
+
+  networking.firewall = {
+    allowedTCPPorts = [ 17500 ];
+    allowedUDPPorts = [ 17500 ];
+  };
+
   systemd.user.services.dropbox = {
     description = "Dropbox";
     wantedBy = [ "graphical-session.target" ];

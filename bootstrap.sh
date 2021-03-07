@@ -3,9 +3,9 @@
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
-ln -sf $SCRIPTPATH/nix/nixpkgs ~/.config
+ln -sf $SCRIPTPATH/nix/nixpkgs ~/.config/
 ln -sf $SCRIPTPATH/config/zsh/zshrc ~/.zshrc
-ln -sf $SCRIPTPATH/config/nvim ~/.config
+ln -sf $SCRIPTPATH/config/nvim ~/.config/
 ln -sf $SCRIPTPATH/direnvrc ~/.direnvrc
 ln -sf /home/$USER/Secrets/secrets.nix $SCRIPTPATH/nix/common/secrets.nix
 
@@ -16,7 +16,8 @@ sudo ln -sf $SCRIPTPATH/nix/$HOSTNAME.nix /etc/nixos/configuration.nix
 DESKTOP=$(env | grep XDG_CURRENT_DESKTOP | awk -F'=' '{print $2}')
 if [[ $DESKTOP == GNOME ]]
 then
-    config/gnome/gsettings.sh
+    $SCRIPTPATH/config/gnome/gsettings.sh
 fi
 
+# This is the tmp dir for vim
 mkdir -p ~/.tmp

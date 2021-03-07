@@ -11,6 +11,7 @@
       ./common/common.nix
       ./common/zsh.nix
       ./common/fonts.nix
+      ./common/syncthing.nix
       # ./wifi-ap.nix
     ];
 
@@ -20,7 +21,14 @@
   boot.loader.grub.version = 2;
   boot.loader.grub.device = "/dev/disk/by-id/ata-ST500LM021-1KJ152_W6248MN7";
   boot.zfs.requestEncryptionCredentials = true;
-  boot.supportedFilesystems = [ "zfs" ];
+  boot.supportedFilesystems = [ "zfs" ]; 
+
+  # Use 
+  # sudo zpool create -o ashift=12 -o altroot="/mnt" -O mountpoint=none -O encryption=aes-256-gcm -O keyformat=passphrase -O keylocation=prompt zbackup mirror /dev/disk/by-id/ata-TOSHIBA_HDWA120_Y61R1PXAS /dev/disk/by-id/ata-TOSHIBA_HDWA120_Y61R1RRAS -f
+  # sudo zfs create -o mountpoint=legacy -o com.sun:auto-snapshot=true zbackup/backup
+  # sudo mount -t zfs zbackup/backup /mnt/backup
+  # Don't forget to ensure /mnt/backup exists
+  # to create the zfs encrypted mirrored pool 
 
   networking.hostName = "otter"; # Define your hostname.
   networking.hostId = "9e0f15c5"; # We use head -c 8 /etc/machine-id to get a unique id for each machine for zfs
@@ -52,6 +60,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    rclone
   ];
 
    # List services that you want to enable:
@@ -87,19 +96,22 @@
       # this will automatically load the zfs password prompt on login
       # and kill the other prompt so boot can continue
       postCommands = ''
+        zpool import zbackup
         echo "zfs load-key -a; killall zfs" >> /root/.profile
       '';
     };
   };
 
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  services.borgbackup.jobs.home-otter = {
+    paths = ["/home/christoph/archive" "/home/christoph/.symlinks"];
+    repo = "/mnt/backup/christoph/";
+    encryption = {
+      mode = "repokey-blake2";
+      passCommand = "cat /home/christoph/Secrets/borgbackup_passphrase";
+    };
+    compression = "auto,lzma";
+    startAt = "daily";
+  };
 
   system.stateVersion = "20.09"; # Can be left at first installed version
-
 }
-

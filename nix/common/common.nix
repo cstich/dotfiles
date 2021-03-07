@@ -8,6 +8,7 @@
       htop
       lshw
       neovim
+      p7zip
       wget
       which
       zip
