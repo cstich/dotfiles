@@ -55,6 +55,13 @@
     openssh.authorizedKeys.keyFiles = [ "/home/christoph/Secrets/authorized_keys" ];
   };
 
+  users.users.lenka = {
+    isNormalUser = true;
+    extraGroups = [];
+    shell = pkgs.bash;
+    openssh.authorizedKeys.keyFiles = [ "/home/lenka/.ssh/id_rsa.pub"];
+  };
+
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
