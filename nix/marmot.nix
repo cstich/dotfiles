@@ -21,6 +21,7 @@ in
       ./common/dropbox.nix
       ./common/zsh.nix
       ./common/fonts.nix
+      ./common/gnome.nix
       ./common/syncthing.nix
     ];
 
@@ -54,7 +55,7 @@ in
   };
 
   boot.initrd.luks.reusePassphrases = true;
-  # FIXME This does not work for whatever reason
+  # FIXME This does not work for whatever reason. Make sure the correct paths are set in hardware.nix
   # boot.initrd.luks.devices = {
   #   m2 = {
   #     device = "/dev/disk/by-uuid/c47b1559-11f9-4713-a02e-77852338ba45";
@@ -136,8 +137,7 @@ in
      ncdu
      nethogs
      (python3.withPackages myPythonPackages)
-     pass
-     qtpass
+ 
      tmux
      qemu_kvm
      wirelesstools
@@ -146,18 +146,6 @@ in
      # Git things
      bfg-repo-cleaner
      git-lfs
-
-     # Gnome things
-     gnomeExtensions.appindicator
-     gnome3.dconf
-     gnome3.gnome-tweaks
-     gnome3.dconf-editor
-     gnome3.gnome-session
-     gnome3.networkmanager-openvpn
-     gnome3.seahorse
-     gnomeExtensions.appindicator
-
-     lightdm
 
      # neovim dependencies
      yarn
@@ -173,20 +161,15 @@ in
      patchelf
      nix-prefetch-git  # Gets you the sha256 of github packages
 
-     # Sound settings
-     pavucontrol
-     
-     # Git fork of compton the composition manager for X
+    # Git fork of compton the composition manager for X
      compton-git
 
      discord
      unstable.vscode 
-     firefox
      google-chrome
      gparted
      notify-desktop
      signal-desktop    
-     rofi
      gimp
      inkscape
      ntfs3g
@@ -194,26 +177,9 @@ in
      virt-manager
      google-play-music-desktop-player
 
-     skype
-     steam
-     steam-run
-     libreoffice
-     veracrypt
-     
-     arc-theme
-     arc-icon-theme
-     materia-theme
-     lxappearance
-    
-     pantheon.elementary-icon-theme
-
      lm_sensors
      gsmartcontrol
 
-     # Styling of QT 5 apps
-     libsForQt5.qtstyleplugins
-     libsForQt5.qtstyleplugin-kvantum 
-     qt5ct
   ] 
   ++ lib.optionals config.services.samba.enable [ kdenetwork-filesharing pkgs.samba ];
 
@@ -244,38 +210,6 @@ in
     enable = true;
   };
 
-  # Enable the X11 windowing system.
-  services.xserver = {
-    enable = true;
-    layout = "us";
-    # xkbOptions = "eurosign:e";
-    videoDrivers = [ "nvidia" ];
-    # xkbOptions = "caps:swapescape";
-    # Enable touchpad support.
-    libinput.enable = true;
-
-    desktopManager = {
-      gnome3.enable = true;
-    };
-    displayManager = {
-      gdm.enable = true;
-      autoLogin.enable = false;
-      autoLogin.user = "christoph";
-      gdm.wayland = false;
-    };
-  };
-  
-  programs.gnupg.agent = {
-    enable = true;
-    pinentryFlavor = "gtk2";
-    enableSSHSupport = true;
-  };
-
-  services.xserver.displayManager.sessionCommands = ''
-    # Fix QT config app
-    export QT_QPA_PLATFORMTHEME=qt5ct
-  '';
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.christoph = {
      isNormalUser = true;
@@ -290,25 +224,6 @@ in
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "christoph" ];
 
-  # Services below here
-  location.longitude = 1.8904;
-  location.latitude = 51.4862;
-
-  services.redshift.enable = true;
-  services.gvfs.enable = true;
-  # security.pam.services.lightdm.enable = true;
-  security.pam.services.lightdm.enableGnomeKeyring = true;
-  services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ]; 
-  services.gnome3 = {
-    gnome-online-accounts.enable = true;
-    gnome-keyring.enable = true;
-    core-os-services.enable = true;
-    gnome-settings-daemon.enable = true;
-    sushi.enable = true;
-    # tracker.enable = true;
-    # tracker-miners.enable = true;
-  }; 
-
   # powerManagement.resumeCommands = ''
   #   # CUDA suspend crash fix
   #   nvidia-smi -pm ENABLED
@@ -317,6 +232,9 @@ in
   #   rmmod nvidia_uvm
   #   modprobe nvidia_uvm
   # ''; 
+  
+  # Add nvidia drivers for Marmot
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   # Enable CUPS to print documents.
   services.printing.enable = true;

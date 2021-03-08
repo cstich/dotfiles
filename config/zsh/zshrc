@@ -1,5 +1,5 @@
 function powerline_precmd() {
-    PS1="$(powerline-go -error $? -shell zsh)"
+    PS1="$(powerline-go -error $? -shell zsh -theme solarized-dark16)"
 }
 
 function install_powerline_precmd() {

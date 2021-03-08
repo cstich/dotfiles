@@ -14,10 +14,13 @@ sudo ln -sf $SCRIPTPATH/nix/$HOSTNAME.nix /etc/nixos/configuration.nix
 
 # If gnome exists, set the custom settings
 DESKTOP=$(env | grep XDG_CURRENT_DESKTOP | awk -F'=' '{print $2}')
-if [[ $DESKTOP == GNOME ]]
+if [[ $DESKTOP == "GNOME" ]]
 then
     $SCRIPTPATH/config/gnome/gsettings.sh
 fi
+
+# Set one half light theme for gnome terminal
+source $SCRIPTPATH/config/gnome/onehalflight.sh
 
 # This is the tmp dir for vim
 mkdir -p ~/.tmp
