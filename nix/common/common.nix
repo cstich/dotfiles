@@ -1,4 +1,14 @@
 {pkgs, ...}:
+
+let
+  # Import unstable channel.
+  # sudo nix-channel --add http://nixos.org/channels/nixpkgs-unstable nixpkgs-unstable
+  # sudo nix-channel --update nixpkgs-unstable
+  unstable = import <nixpkgs-unstable> {};
+in
+
+
+
 {
   environment.systemPackages = with pkgs; [
       ag

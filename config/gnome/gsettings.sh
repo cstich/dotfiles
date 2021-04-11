@@ -1,6 +1,9 @@
 # Use this shell script to set all the options for dconf
 gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled false
 
+# Have nautilus/file dialogs display folders first
+gsettings set org.gtk.Settings.FileChooser sort-directories-first true
+
 # PaperWM settings
 dconf write /org/gnome/shell/extensions/paperwm/keybindings/close-window "['<Super>q']"
 dconf write /org/gnome/shell/extensions/paperwm/keybindings/move-left "['<Shift><Super>h', '<Super><Shift>comma', '<Super><Ctrl>Left']"

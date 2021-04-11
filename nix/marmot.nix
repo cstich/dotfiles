@@ -246,7 +246,7 @@ in
 
   # Allow parallel builds
   nix.maxJobs = 4;
-  nix.buildCores = 4;
+  nix.buildCores = 12;
 
   # Deactivate the sandbox as julia does not build with the sandbox enabled
   nix.useSandbox = false;

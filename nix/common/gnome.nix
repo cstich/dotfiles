@@ -8,6 +8,7 @@
      gnome3.gnome-tweaks
      gnome3.dconf-editor
      gnome3.gnome-session
+     gnome3.meld
      gnome3.networkmanager-openvpn
      gnome3.seahorse
      gnomeExtensions.appindicator
@@ -27,6 +28,7 @@
      steam-run
      libreoffice
      pass
+     peek
      qtpass
      veracrypt
      zoom-us
