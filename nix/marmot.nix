@@ -173,7 +173,7 @@ in
      gimp
      inkscape
      ntfs3g
-     unstable.woeusb
+     woeusb
      virt-manager
      google-play-music-desktop-player
 
@@ -183,6 +183,8 @@ in
   ] 
   ++ lib.optionals config.services.samba.enable [ kdenetwork-filesharing pkgs.samba ];
 
+  # Steam is a funny program to install
+  programs.steam.enable = true;
 
   environment.pathsToLink = [
     # FIXME: modules should link subdirs of `/share` rather than relying on this

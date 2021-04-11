@@ -19,15 +19,16 @@
      pantheon.elementary-icon-theme
      
      # Deskotp things
+     google-chrome
      firefox
      rofi
      discord
      skype
-     steam
      steam-run
      libreoffice
      pass
      qtpass
+     transmission-gtk
      veracrypt
      zoom-us
  
