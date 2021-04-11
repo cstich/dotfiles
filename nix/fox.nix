@@ -152,7 +152,7 @@ in
 
   services.sshguard = {
     enable = true;
-    detection_time = 3600;
+    detection_time = 86400;
   };
 
   system.autoUpgrade.enable = true;

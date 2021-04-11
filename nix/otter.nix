@@ -46,14 +46,27 @@
   };
   networking.interfaces.wlp2s0.useDHCP = false;
 
-  services.zfs.autoSnapshot.enable = true;
+  services.zfs.autoSnapshot = {
+    enable = true;
+    frequent = 8;
+    monthly = 3;
+  };
+
+  # Create a new group for the backup folder
+  users.groups.backupadmins= {};
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.christoph = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "backupadmins" ]; # Enable ‘sudo’ for the user.
     shell = pkgs.zsh;
     openssh.authorizedKeys.keyFiles = [ "/home/christoph/Secrets/authorized_keys" ];
+  };
+
+  users.users.backupuser= {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "backupadmins"];
+    shell = pkgs.zsh;
   };
 
   users.users.lenka = {
@@ -63,20 +76,34 @@
     openssh.authorizedKeys.keyFiles = [ "/home/lenka/.ssh/id_rsa.pub"];
   };
 
+  services.sshguard = {
+    enable = true;
+    detection_time = 86400;
+    attack_threshold = 50;
+  };
+
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     rclone
-  ];
+    google-authenticator
+  ]; 
 
-   # List services that you want to enable:
-  # Enable the OpenSSH daemon.
+  security.pam.services.login.googleAuthenticator.enable = true;
+  # security.pam.services.sudo.googleAuthenticator.enable = true;
+  # Add custom texts to the PAM sshd config files
+  security.pam.services.sshd.text = pkgs.lib.mkDefault( pkgs.lib.mkBefore 
+    "auth      required  pam_google_authenticator.so" );
+
   services.openssh = {
     enable = true;
-  };
- 
+    passwordAuthentication = true;
+    permitRootLogin = "no";
+    challengeResponseAuthentication = true;
+    extraConfig = "# AuthenticationMethods publickey keyboard-interactive:pam";
+  }; 
 
    # To connect to this at boot use 'ssh -i ~/Secrets/ssh_otter_boot_host_ed25519_key root@192.168.1.240 -p 2222'
    boot = {
@@ -119,6 +146,13 @@
     };
     compression = "auto,lzma";
     startAt = "daily";
+  };
+
+  services.cron = {
+    enable = true;
+    systemCronJobs = [
+       "0 4 * * * *  christoph  /home/christoph/.symlinks/scripts/rclone_backblaze.sh"
+    ];
   };
 
   system.stateVersion = "20.09"; # Can be left at first installed version
