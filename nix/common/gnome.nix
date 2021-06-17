@@ -6,14 +6,13 @@ in
   environment.systemPackages = with pkgs; [
 
      # Gnome things
-     gnomeExtensions.appindicator
-     gnome3.dconf
-     gnome3.gnome-tweaks
-     gnome3.dconf-editor
-     gnome3.gnome-session
-     gnome3.meld
-     gnome3.networkmanager-openvpn
-     gnome3.seahorse
+     gnome.dconf
+     gnome.gnome-tweaks
+     gnome.dconf-editor
+     gnome.gnome-session
+     gnome.meld
+     gnome.networkmanager-openvpn
+     gnome.seahorse
      gnomeExtensions.appindicator
 
      arc-theme
@@ -57,7 +56,7 @@ in
     libinput.enable = true;
 
     desktopManager = {
-      gnome3.enable = true;
+      gnome.enable = true;
     };
     displayManager = {
       gdm.enable = true;
@@ -79,7 +78,7 @@ in
   services.gvfs.enable = true;
   security.pam.services.lightdm.enableGnomeKeyring = true;
   services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ]; 
-  services.gnome3 = {
+  services.gnome = {
     gnome-online-accounts.enable = true;
     gnome-keyring.enable = true;
     core-os-services.enable = true;
