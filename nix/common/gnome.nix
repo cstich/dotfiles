@@ -1,4 +1,7 @@
 {pkgs, ...}:
+let 
+    unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+in
 {
   environment.systemPackages = with pkgs; [
 
@@ -24,7 +27,7 @@
      rofi
      discord
      skype
-     steam
+     unstable.steam
      steam-run
      libreoffice
      pass
@@ -32,6 +35,9 @@
      qtpass
      veracrypt
      zoom-us
+
+     # Eclipse clipboard only works with thunar
+     xfce.thunar
  
      # Sound settings
      pavucontrol 
@@ -82,6 +88,8 @@
     # tracker.enable = true;
     # tracker-miners.enable = true;
   }; 
+
+  services.xserver.wacom.enable = true;
 
   services.xserver.displayManager.sessionCommands = ''
     # Fix QT config app

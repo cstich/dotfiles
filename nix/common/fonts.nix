@@ -10,6 +10,7 @@
       xorg.fontcursormisc
       ubuntu_font_family
       powerline-fonts
+      font-awesome
       corefonts 
       liberation_ttf
       overpass
