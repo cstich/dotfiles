@@ -5,9 +5,7 @@ let
   # sudo nix-channel --add http://nixos.org/channels/nixpkgs-unstable nixpkgs-unstable
   # sudo nix-channel --update nixpkgs-unstable
   unstable = import <nixpkgs-unstable> {};
-in
-
-
+in 
 
 {
   environment.systemPackages = with pkgs; [

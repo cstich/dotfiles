@@ -31,17 +31,25 @@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 "['<Super>4
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 "['<Super>5']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-6 "['<Super>6']"
 
+# General settings
+gsettings set org.gnome.shell.keybindings toggle-overview "['<Super>s']" 
+gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "['<Shift><Super>l']"
+
+gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
+
+# Custom keybind 0
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding "<Super>d"
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command "rofi -show combi"
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "rofi"
+
 dconf write /org/gnome/shell/extensions/paperwm/use-default-background true
 dconf write /org/gnome/mutter/dynamic-workspaces false
 dconf write /org/gnome/shell/overrides/dynamic-workspaces false
 dconf write /org/gnome/desktop/wm/preferences/num-workspaces "6"
-dconf write /org/gnome/shell/extensions/paperwm/workspaces "['c3b27fa0-6955-4f15-bcbd-1e435b70a14b', '752bc2d2-444a-41d8-b036-c268e788bfb8', 'a368f77d-dce0-46b5-b901-cd94318d9a2e', '75c7e663-77af-4ec4-b18a-e4f3361108e3', '5e8211fb-1bde-4d88-aaf2-283a8e14f2ab', '088150ba-dd12-48f0-9b5b-a4edd27271ad']"
-dconf write /org/gnome/shell/extensions/paperwm/workspaces/c3b27fa0-6955-4f15-bcbd-1e435b70a14b/name "''"
-dconf write /org/gnome/shell/extensions/paperwm/workspaces/752bc2d2-444a-41d8-b036-c268e788bfb8/name "''"
-dconf write /org/gnome/shell/extensions/paperwm/workspaces/a368f77d-dce0-46b5-b901-cd94318d9a2e/name "''"
-dconf write /org/gnome/shell/extensions/paperwm/workspaces/75c7e663-77af-4ec4-b18a-e4f3361108e3/name "''"
-dconf write /org/gnome/shell/extensions/paperwm/workspaces/5e8211fb-1bde-4d88-aaf2-283a8e14f2ab/name "''"
-dconf write /org/gnome/shell/extensions/paperwm/workspaces/088150ba-dd12-48f0-9b5b-a4edd27271ad/name "''"
+
+# Reset the PaperWM workspace names, so we force it to use the new ones
+dconf reset -f /org/gnome/shell/extensions/paperwm/workspaces/
+gsettings set org.gnome.desktop.wm.preferences workspace-names "['', '', '', '', '', '']"    
 
 # Theme settings
 dconf write /org/gnome/desktop/interface/gtk-theme "'Arc-Darker'"

@@ -11,6 +11,7 @@
      gnome.networkmanager-openvpn
      gnome.seahorse
      gnomeExtensions.appindicator
+     gnomeExtensions.cleaner-overview
 
      arc-theme
      arc-icon-theme
