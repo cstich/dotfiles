@@ -84,10 +84,7 @@ in
 
   
   # Steam is a funny program to install
-  programs.steam.enable = true;
+  programs.steam.enable = true; 
 
-
-  system.stateVersion = "20.09"; # Do not change
-
-}
-
+  system.stateVersion = "20.09"; # Do not change 
+} 

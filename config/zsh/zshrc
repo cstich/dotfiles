@@ -76,3 +76,6 @@ bindkey "^I" fzf-completion
 bindkey "^R" fzf-history-widget
 bindkey "^T" fzf-file-widget
 bindkey "^[c" fzf-cd-widget
+
+# Lorri hook
+eval "$(direnv hook zsh)"
