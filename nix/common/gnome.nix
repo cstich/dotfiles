@@ -1,4 +1,9 @@
 {pkgs, ...}:
+
+let
+  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+in
+
 {
   environment.systemPackages = with pkgs; [
 
@@ -24,7 +29,6 @@
      rofi
      discord
      skype
-     steam
      steam-run
      libreoffice
      pass
@@ -40,10 +44,17 @@
      # Sound settings
      pavucontrol 
 
+     # Nix things
+     direnv
+     nix-direnv
+
      # Styling of QT 5 apps
      libsForQt5.qtstyleplugins
      libsForQt5.qtstyleplugin-kvantum 
      qt5ct
+ 
+     # Eclipse IDE setup
+     unstable.eclipses.eclipse-sdk 
     ];
     
   # Enable the X11 windowing system.
@@ -64,6 +75,10 @@
       gdm.wayland = false;
     };
   };
+ 
+  environment.pathsToLink = [
+    "/share/nix-direnv"
+  ]; 
 
   # Enable sound.
   sound.enable = true;
@@ -93,4 +108,6 @@
     # Fix QT config app
     export QT_QPA_PLATFORMTHEME=qt5ct
   '';
+
+  services.lorri.enable = true;
 }
