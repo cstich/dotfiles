@@ -1,7 +1,4 @@
 {pkgs, ...}:
-let 
-    unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-in
 {
   environment.systemPackages = with pkgs; [
 
@@ -22,16 +19,18 @@ in
      pantheon.elementary-icon-theme
      
      # Deskotp things
+     google-chrome
      firefox
      rofi
      discord
      skype
-     unstable.steam
+     steam
      steam-run
      libreoffice
      pass
      peek
      qtpass
+     transmission-gtk
      veracrypt
      zoom-us
 

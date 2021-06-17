@@ -19,6 +19,7 @@ in
       gptfdisk
       htop
       lshw
+      lynis
       neovim
       p7zip
       wget

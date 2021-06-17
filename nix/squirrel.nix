@@ -17,11 +17,20 @@ in
       ./common/gnome.nix
       ./common/syncthing.nix
       ./common/zsh.nix
+
+
+      <nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
     ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  # Brother scanner support
+  hardware.sane = {
+    enable = true;
+    brscan4.enable = true;
+  };
 
   boot.initrd.luks.reusePassphrases = true;
   boot.initrd.luks.devices = {
@@ -66,12 +75,17 @@ in
   users.users.christoph = {
     isNormalUser = true;
     home = "/home/christoph";
-    extraGroups = [ "audio" "networkManager" "wheel" ]; 
+    extraGroups = [ "audio" "networkManager" "wheel" "scanner" "lp"]; 
     shell = pkgs.zsh;
   };
 
   environment.systemPackages = with pkgs; [
   ];
+
+  
+  # Steam is a funny program to install
+  programs.steam.enable = true;
+
 
   system.stateVersion = "20.09"; # Do not change
 
