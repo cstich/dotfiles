@@ -2,7 +2,7 @@
 
 with pkgs;
 let
-  julia = julia_15;
+  julia = julia-stable-bin;
   d = version: "v${lib.concatStringsSep "." (lib.take 2 (lib.splitString "." version))}";
   extraLibs = [
     # IJulia.jl

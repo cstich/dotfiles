@@ -4,6 +4,9 @@ gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled false
 # Have nautilus/file dialogs display folders first
 gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 
+# Allows for F10 to be passed to the terminal application
+gsettings set org.gnome.Terminal.Legacy.Settings menu-accelerator-enabled false 
+
 # PaperWM settings
 dconf write /org/gnome/shell/extensions/paperwm/keybindings/close-window "['<Super>q']"
 dconf write /org/gnome/shell/extensions/paperwm/keybindings/move-left "['<Shift><Super>h', '<Super><Shift>comma', '<Super><Ctrl>Left']"
@@ -33,13 +36,13 @@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-6 "['<Super>6
 
 # General settings
 gsettings set org.gnome.shell.keybindings toggle-overview "['<Super>s']" 
-gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "['<Shift><Super>l']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "['<Shift><Super>q']"
 
 gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
 
 # Custom keybind 0
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding "<Super>d"
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command "rofi -show combi"
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command "rofi -show combi -theme Arc"
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "rofi"
 
 dconf write /org/gnome/shell/extensions/paperwm/use-default-background true
