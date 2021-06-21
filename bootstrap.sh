@@ -24,3 +24,6 @@ source $SCRIPTPATH/config/gnome/onehalflight.sh
 
 # This is the tmp dir for vim
 mkdir -p ~/.tmp
+
+# Source nix-direnv hook
+source ~/.direnvrc

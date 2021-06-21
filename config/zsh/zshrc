@@ -30,6 +30,7 @@ eval "$(direnv hook zsh)"
 
 # Zsh hist config
 HISTSIZE=100000
+HISTFILE=~/.symlinks/zsh_history/$HOST
 # Ignore dupblicates when saving the history
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_EXPIRE_DUPS_FIRST

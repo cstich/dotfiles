@@ -77,10 +77,6 @@ in
     };
   };
  
-  environment.pathsToLink = [
-    "/share/nix-direnv"
-  ]; 
-
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true; 
@@ -113,5 +109,12 @@ in
     export QT_QPA_PLATFORMTHEME=qt5ct
   '';
 
-  services.lorri.enable = true;
+  # Nix-direnv config
+  nix.extraOptions = ''
+    keep-outputs = true
+    keep-derivations = true
+  '';
+  environment.pathsToLink = [
+    "/share/nix-direnv"
+  ];
 }
