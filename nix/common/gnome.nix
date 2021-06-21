@@ -84,6 +84,9 @@ in
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true; 
+ 
+  # Steam is a funny program to install
+  programs.steam.enable = true; 
 
   # Services
   services.redshift.enable = true;

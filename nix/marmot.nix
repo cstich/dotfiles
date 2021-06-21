@@ -183,9 +183,6 @@ in
   ] 
   ++ lib.optionals config.services.samba.enable [ kdenetwork-filesharing pkgs.samba ];
 
-  # Steam is a funny program to install
-  programs.steam.enable = true;
-
   environment.pathsToLink = [
     # FIXME: modules should link subdirs of `/share` rather than relying on this
     "/share"
@@ -253,10 +250,7 @@ in
   # Deactivate the sandbox as julia does not build with the sandbox enabled
   nix.useSandbox = false;
 
-  services.nscd.enable = true;
-
-  # Steam is a funny program to install
-  programs.steam.enable = true; 
+  services.nscd.enable = true; 
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
