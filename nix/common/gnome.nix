@@ -17,6 +17,7 @@ in
      gnome.seahorse
      gnomeExtensions.appindicator
      gnomeExtensions.cleaner-overview
+     gnomeExtensions.paperwm
 
      arc-theme
      arc-icon-theme
