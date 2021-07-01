@@ -2,7 +2,6 @@
 
 let
   ipEth = "192.168.1.1";
-  ipWifi = "192.168.2.1";
   extEth = "eno1";
   intEth = "enp2s0";
   wifi = "wlp1s0";
@@ -34,7 +33,6 @@ in
   networking.nameservers = ["10.77.0.1" "10.77.1.1" "127.0.0.1" "8.8.8.8" ]; # The first two are the PilsenFree DNS
   networking.domain = "lan";
   networking.hostName = "fox"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   networking.firewall = {
     enable = true;
@@ -47,10 +45,9 @@ in
       # 443   # https
       # 2222  # git
     ];
-    allowedUDPPorts = [];
+    allowedUDPPorts = [
+    ];
   };
-
-  services.haveged.enable = config.services.hostapd.enable;
 
   networking.hosts = {
     "192.168.1.1" = [ "ssh.fox.lan ssh.fox" ];
@@ -85,7 +82,6 @@ in
       interface=${intEth}
       bind-interfaces
       dhcp-range=192.168.1.10,192.168.1.254,24h
-
       dhcp-host=${secrets.macAddressOtter},192.168.1.240
 
       local=/lan/
@@ -112,11 +108,6 @@ in
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
   # };
-
-  # Enable the GNOME 3 Desktop Environment.
-  # services.xserver.enable = true;
-  # services.xserver.displayManager.gdm.enable = true;
-  # services.xserver.desktopManager.gnome3.enable = true;
 
   # Configure keymap in X11
   # services.xserver.layout = "us";

@@ -38,6 +38,7 @@ in
      qtpass
      transmission-gtk
      veracrypt
+     wireguard
      zoom-us
 
      # Eclipse clipboard only works with thunar

@@ -20,6 +20,7 @@ in
       lynis
       neovim
       p7zip
+      tmux
       wget
       which
       zip
