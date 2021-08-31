@@ -55,9 +55,6 @@ in
      libsForQt5.qtstyleplugins
      libsForQt5.qtstyleplugin-kvantum 
      qt5ct
- 
-     # Eclipse IDE setup
-     unstable.eclipses.eclipse-sdk 
     ];
     
   # Enable the X11 windowing system.
@@ -90,6 +87,9 @@ in
   services.redshift.enable = true;
   location.longitude = 1.8904;
   location.latitude = 51.4862;
+
+# Allow flatpaks
+  services.flatpak.enable = true;
 
   services.gvfs.enable = true;
   security.pam.services.lightdm.enableGnomeKeyring = true;
