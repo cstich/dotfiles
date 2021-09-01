@@ -26,8 +26,8 @@ fi
 alias nix-zsh="nix-shell --run zsh"
 
 # Define replace ls with exa
-alias ls="exa"
-alias ll="exa -lah"
+alias ls="exa --icons"
+alias ll="exa -la --icons"
 
 # Setup direnv
 eval "$(direnv hook zsh)"
