@@ -128,7 +128,6 @@ in
      dnsutils 
      ldns
      nox
-     exa
      dmidecode
      feh
      killall
