@@ -12,6 +12,7 @@ in
       ag
       curl
       busybox
+      exa
       fzf
       git
       gptfdisk

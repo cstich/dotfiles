@@ -128,7 +128,6 @@ in
      dnsutils 
      ldns
      nox
-     exa
      dmidecode
      feh
      killall
@@ -217,7 +216,7 @@ in
      extraGroups = ["audio" "wheel" "networkManager" "scanner" "lp"];
      uid = 1000;
      shell = pkgs.zsh;
-     openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys"];
+     openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys" "/home/christoph/Secrets/hrc-calc-pub"];
   }; 
 
   virtualisation.virtualbox.host.enable = true;
