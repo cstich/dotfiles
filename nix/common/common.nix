@@ -21,6 +21,7 @@ in
       lynis
       neovim
       p7zip
+      procmail
       tmux
       wget
       which
