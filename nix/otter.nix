@@ -151,7 +151,7 @@
   services.cron = {
     enable = true;
     systemCronJobs = [
-       "0 4 * * *  root . /etc/profile; bash /home/christoph/.symlinks/scripts/rclone-cron.sh >> /tmp/cron.log 2>&1"
+       "0 4 * * *  root . /etc/profile; bash /home/christoph/Projects/dotfiles/bin/rclone-cron.sh >> /tmp/cron.log 2>&1"
     ];
   };
 
