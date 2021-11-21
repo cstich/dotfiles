@@ -16,8 +16,6 @@ in
      gnome.networkmanager-openvpn
      gnome.seahorse
      gnomeExtensions.appindicator
-     gnomeExtensions.cleaner-overview
-     gnomeExtensions.paperwm
 
      arc-theme
      arc-icon-theme
@@ -88,7 +86,7 @@ in
   location.longitude = 1.8904;
   location.latitude = 51.4862;
 
-# Allow flatpaks
+  # Allow flatpaks
   services.flatpak.enable = true;
 
   services.gvfs.enable = true;
