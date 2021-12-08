@@ -40,7 +40,7 @@ in
     trustedInterfaces = [ intEth ];
     checkReversePath = false; # https://github.com/NixOS/nixpkgs/issues/10101
     allowedTCPPorts = [
-      22    # ssh
+      8822    # ssh
       # 80    # http
       # 443   # https
       # 2222  # git
@@ -131,19 +131,16 @@ in
     enable = true;
     passwordAuthentication = false;
     permitRootLogin = "no";
-    challengeResponseAuthentication = true;
-    extraConfig = "# AuthenticationMethods publickey keyboard-interactive:pam";
+    ports = 8822;
   };
 
-  security.pam.services.login.googleAuthenticator.enable = true;
   security.pam.services.sudo.googleAuthenticator.enable = true;
-  # Add custom texts to the PAM sshd config files
-  security.pam.services.sshd.text = pkgs.lib.mkDefault( pkgs.lib.mkBefore 
-    "auth      required  pam_google_authenticator.so" );
 
   services.sshguard = {
     enable = true;
-    detection_time = 86400;
+    detection_time = 604800;
+    attack_threshold = 10;
+    blocktime = 86400;
   };
 
   system.autoUpgrade.enable = true;
