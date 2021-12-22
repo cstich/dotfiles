@@ -18,6 +18,8 @@ dconf write /org/gnome/shell/extensions/paperwm/keybindings/switch-previous "['<
 dconf write /org/gnome/shell/extensions/paperwm/keybindings/switch-right "['<Super>l']"
 dconf write /org/gnome/shell/extensions/paperwm/keybindings/switch-up "['<Super>k']"
 
+gsettings set org.gnome.desktop.wm.keybindings minimize "[]"
+
 gsettings set org.gnome.shell.keybindings switch-to-application-1 "[]"
 gsettings set org.gnome.shell.keybindings switch-to-application-2 "[]"
 gsettings set org.gnome.shell.keybindings switch-to-application-3 "[]"
