@@ -16,6 +16,7 @@ in
      gnome.networkmanager-openvpn
      gnome.seahorse
      gnomeExtensions.appindicator
+     gnomeExtensions.material-shell
 
      arc-theme
      arc-icon-theme
@@ -76,7 +77,8 @@ in
  
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio.enable = true; 
+  hardware.pulseaudio.enable = true;
+
  
   # Steam is a funny program to install
   programs.steam.enable = true; 
