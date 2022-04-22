@@ -17,7 +17,7 @@ in
      gnome.seahorse
      gnomeExtensions.appindicator
      gnomeExtensions.material-shell
-
+    
      arc-theme
      arc-icon-theme
      materia-theme

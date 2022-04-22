@@ -40,10 +40,13 @@ in
   
   # Automated weekly garbage collection
   nix.gc = {
-    automatic = false;
+    automatic = true;
     dates = "weekly";
-    options = "--delete-older-than 90d";
+    options = "--delete-older-than 14d";
   }; 
-
+    
+  # Periodic trim of SSD partitions
+  services.fstrim.enable = true;
+  
   nix.autoOptimiseStore = true; 
 }

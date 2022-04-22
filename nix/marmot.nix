@@ -30,6 +30,10 @@ in
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
   boot.loader.grub.useOSProber = true;
+
+  # TODO Change this after the update to NixOS 21.11
+  # boot.kernelPackages = pkgs.linuxPackages_5_15;
+
   # Virtualization settings
   boot.kernelModules = [ "kvm-amd" "kvm-intel"];
   virtualisation.libvirtd.enable = true;
@@ -73,26 +77,9 @@ in
   hardware.enableAllFirmware = true;
   hardware.bluetooth.enable = true;
   hardware.opengl.driSupport32Bit = true;
-  hardware.pulseaudio = {
-    enable = true;
-    support32Bit = true;
-    extraConfig = ''
-      # Automatically switch to newly connected devices.
-      # load-module module-switch-on-connect
-      # Discover Apple iTunes devices on network.
-      load-module module-raop-discover
-    '';
-    zeroconf.discovery.enable = true;
-
-    # Enable extra bluetooth modules, like APT-X codec.
-    extraModules = [ pkgs.pulseaudio-modules-bt ];
-
-    # Enable bluetooth (among others) in Pulseaudio
-    package = pkgs.pulseaudioFull;
-  };
 
   networking.useDHCP = false;
-  networking.interfaces.enp6s0.useDHCP = true;
+  networking.interfaces.enp70s0.useDHCP = true;
 
   networking = {
     hostName = hostname; # Define your hostname.
@@ -207,6 +194,8 @@ in
   services.sshguard = {
     enable = true;
   };
+
+  # hardware.pulseaudio.extraConfig = "pactl set-card-profile alsa_card.usb-Generic_USB_Audio-00 HiFi";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.christoph = {
