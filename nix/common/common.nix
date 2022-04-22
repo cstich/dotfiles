@@ -40,7 +40,7 @@ in
   
   # Automated weekly garbage collection
   nix.gc = {
-    automatic = false;
+    automatic = true;
     dates = "weekly";
     options = "--delete-older-than 90d";
   }; 

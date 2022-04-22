@@ -26,6 +26,7 @@ in
      
      # Deskotp things
      google-chrome
+     discord
      firefox
      rofi
      discord
@@ -38,7 +39,6 @@ in
      transmission-gtk
      veracrypt
      wireguard
-     zoom-us
 
      # Eclipse clipboard only works with thunar
      xfce.thunar
