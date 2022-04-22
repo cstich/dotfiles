@@ -21,6 +21,8 @@ in
       lshw
       lynis
       neovim
+      nix-index
+      nmap
       p7zip
       procmail
       tmux

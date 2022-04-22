@@ -54,6 +54,9 @@ in
      libsForQt5.qtstyleplugins
      libsForQt5.qtstyleplugin-kvantum 
      qt5ct
+    
+     # RDP client
+     remmina
     ];
     
   # Enable the X11 windowing system.
