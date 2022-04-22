@@ -26,6 +26,7 @@ in
      
      # Deskotp things
      google-chrome
+     discord
      firefox
      rofi
      discord
@@ -38,7 +39,6 @@ in
      transmission-gtk
      veracrypt
      wireguard
-     zoom-us
 
      # Eclipse clipboard only works with thunar
      xfce.thunar
@@ -54,6 +54,9 @@ in
      libsForQt5.qtstyleplugins
      libsForQt5.qtstyleplugin-kvantum 
      qt5ct
+    
+     # RDP client
+     remmina
     ];
     
   # Enable the X11 windowing system.
