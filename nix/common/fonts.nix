@@ -16,7 +16,7 @@
       overpass
       siji 
       fira
-      (nerdfonts.override { fonts = [ "Fira Code" ]; })
+      (nerdfonts.override { fonts = [ "FiraCode" ]; })
       source-code-pro
       source-sans-pro
       source-serif-pro
