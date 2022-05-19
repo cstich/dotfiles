@@ -3,6 +3,11 @@
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
+# TODO Create missing directories if they don't exist
+mkdir ~/.tmp
+mkdir -p ~/.symlinks/zsh_history/
+# TODO Make sure the path to the history file exists
+
 ln -sf $SCRIPTPATH/nix/nixpkgs ~/.config/
 ln -sf $SCRIPTPATH/config/zsh/zshrc ~/.zshrc
 ln -sf $SCRIPTPATH/config/nvim ~/.config/
@@ -24,6 +29,8 @@ source $SCRIPTPATH/config/gnome/onehalflight.sh
 
 # This is the tmp dir for vim
 mkdir -p ~/.tmp
+nvim -c "PlugInstall" -c "q" -c "q"
+nvim -c "PlugUpdate" -c "q" -c "q"
 
 # Source nix-direnv hook
 source ~/.direnvrc
