@@ -31,8 +31,37 @@ in
   boot.loader.grub.version = 2;
   boot.loader.grub.useOSProber = true;
 
-  # TODO Change this after the update to NixOS 21.11
-  # boot.kernelPackages = pkgs.linuxPackages_5_15;
+  # boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_10.override {
+  #   argsOverride = rec {
+  #     src = pkgs.fetchurl {
+  #           url = "mirror://kernel/linux/kernel/v5.x/linux-${version}.tar.xz";
+  #           sha256 = "19aa7fq8n75gh0vv01mpxg4cxkfpr5lj0sv6lxiyzcgbc71isv4c";
+  #     };
+  #     version = "5.10.112";
+  #     modDirVersion = "5.10.112";
+  #     };
+  # });
+
+  boot.kernelPatches = [{ name = "suspend-regression"; patch = builtins.fetchurl "https://patchwork.kernel.org/project/netdevbpf/patch/8735hniqcm.fsf@posteo.de/raw/";}];
+    
+  # TODO Suspend bug introduced in 5.10.113. Add pm_trace flag
+  # boot = {
+  #   kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_10.override {
+  #     argsOverride = rec {
+  #       src = pkgs.fetchurl {
+  #             url = "mirror://kernel/linux/kernel/v5.x/linux-${version}.tar.xz";
+  #             sha256 = "0w9gwizyqjgsj93dqqvlh6bqkmpzjajhj09319nqncc95yrigr7m";
+  #       };
+  #       version = "5.10.115";
+  #       modDirVersion = "5.10.115";
+  #       structuredExtraConfig = with pkgs.lib.kernel; {
+  #           PM_DEBUG = yes;
+  #           PM_TRACE_RTC = pkgs.lib.mkForce yes;
+  #         };
+  #       ignoreConfigErrors = true;
+  #       };
+  #   });
+  # };
 
   # Virtualization settings
   boot.kernelModules = [ "kvm-amd" "kvm-intel"];
@@ -168,21 +197,9 @@ in
 
   ] 
   ++ lib.optionals config.services.samba.enable [ kdenetwork-filesharing pkgs.samba ];
-
-  environment.pathsToLink = [
-    # FIXME: modules should link subdirs of `/share` rather than relying on this
-    "/share"
-    "/share/nix-direnv"
-  ];
-  
-  nix.extraOptions = ''
-    keep-outputs = true
-    keep-derivations = true
-  '';
-
-  services.flatpak.enable = true;
   
   # List services that you want to enable:
+  services.flatpak.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh = {
@@ -210,16 +227,7 @@ in
 
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "christoph" ];
-
-  # powerManagement.resumeCommands = ''
-  #   # CUDA suspend crash fix
-  #   nvidia-smi -pm ENABLED
-  #   nvidia-smi -c EXCLUSIVE_PROCESS
-  #   # TODO Add here the rmmode modprobe suspend CUDA fix
-  #   rmmod nvidia_uvm
-  #   modprobe nvidia_uvm
-  # ''; 
-  
+ 
   # Add nvidia drivers for Marmot
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -233,7 +241,7 @@ in
 
   # Allow parallel builds
   nix.maxJobs = 4;
-  nix.buildCores = 12;
+  nix.buildCores = 40;
 
   # Deactivate the sandbox as julia does not build with the sandbox enabled
   nix.useSandbox = false;

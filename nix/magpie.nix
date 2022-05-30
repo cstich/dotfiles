@@ -163,15 +163,15 @@
     enable = true;
     passwordAuthentication = false;
     permitRootLogin = "no";
-    ports = 8822;
+    ports = [8822];
   };
 
-  services.sshguard = {
-    enable = true;
-    detection_time = 604800;
-    attack_threshold = 10;
-    blocktime = 86400;
-  };
+  # services.sshguard = {
+  #   enable = true;
+  #   detection_time = 604800;
+  #   attack_threshold = 10;
+  #   blocktime = 86400;
+  # };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
