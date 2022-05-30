@@ -14,6 +14,7 @@ in
     myGnome3 = {
       lightdm.enable = lib.mkEnableOption "lightdm";
       gdm.enable = lib.mkEnableOption "gdm";
+      wayland.enable = lib.mkEnableOption "wayland";
     };
   };
 
@@ -88,7 +89,7 @@ in
       displayManager = {
         lightdm.enable = cfg.lightdm.enable;
         gdm.enable = cfg.gdm.enable;
-        gdm.wayland = false;
+        gdm.wayland = cfg.wayland.enable;
       }; 
     };
  
