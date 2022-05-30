@@ -6,7 +6,6 @@ let
 in
 
 {
-<<<<<<< HEAD
 
   imports = [
   ];
@@ -16,80 +15,7 @@ in
       lightdm.enable = lib.mkEnableOption "lightdm";
       gdm.enable = lib.mkEnableOption "gdm";
       wayland.enable = lib.mkEnableOption "wayland";
-=======
-  environment.systemPackages = with pkgs; [
-
-     # Gnome things
-     gnome.dconf
-     gnome.gnome-tweaks
-     gnome.dconf-editor
-     gnome.gnome-session
-     gnome.meld
-     gnome.networkmanager-openvpn
-     gnome.seahorse
-     gnomeExtensions.appindicator
-     gnomeExtensions.material-shell
-    
-     arc-theme
-     arc-icon-theme
-     materia-theme
-     lxappearance
-     pantheon.elementary-icon-theme
-     
-     # Deskotp things
-     google-chrome
-     discord
-     firefox
-     rofi
-     discord
-     skype
-     steam-run
-     libreoffice
-     pass
-     peek
-     qtpass
-     transmission-gtk
-     veracrypt
-     vlc
-     wireguard
-
-     # Eclipse clipboard only works with thunar
-     xfce.thunar
- 
-     # Sound settings
-     pavucontrol 
-
-     # Nix things
-     direnv
-     nix-direnv
-
-     # Styling of QT 5 apps
-     libsForQt5.qtstyleplugins
-     libsForQt5.qtstyleplugin-kvantum 
-     qt5ct
-    
-     # RDP client
-     remmina
-    ];
-    
-  # Enable the X11 windowing system.
-  services.xserver = {
-    enable = true;
-    layout = "us";
-    # xkbOptions = "eurosign:e";
-    # Enable touchpad support.
-    libinput.enable = true;
-
-    desktopManager = {
-      gnome.enable = true;
-    };
-    displayManager = {
-      gdm.enable = true;
-      autoLogin.enable = false;
-      autoLogin.user = "christoph";
-      gdm.wayland = false;
->>>>>>> 7dd762d64a572b4ce35afc8ec1aa642d67e9072d
-    };
+   };
   };
 
   config = {
