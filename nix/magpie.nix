@@ -51,8 +51,6 @@
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  # services.xserver.displayManager.lightdm.enable = true;
-  # services.xserver.displayManager.gdm.enable = pkgs.lib.mkForce false;
   services.gnome.gnome-remote-desktop.enable = true;
  
   # Hyper-V
@@ -71,6 +69,7 @@
   services.xrdp = {
           enable = true;
           defaultWindowManager = "${pkgs.gnome.gnome-session}/bin/gnome-session";
+          # defaultWindowManager = "${config.services.xserver.displayManager.session.wrapper}";
           package = pkgs.xrdp.overrideAttrs (old: rec {
             configureFlags = old.configureFlags ++ [ " --enable-vsock" ];
             postInstall = old.postInstall + ''
@@ -146,6 +145,7 @@
     isNormalUser = true;
     shell = pkgs.zsh;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    openssh.authorizedKeys.keyFiles = [ "/home/christoph/Secrets/authorized_keys" ];
   };
 
   # List packages installed in system profile. To search, run:
@@ -157,6 +157,21 @@
     nix-index
     firefox
   ];
+
+
+  services.openssh = {
+    enable = true;
+    passwordAuthentication = false;
+    permitRootLogin = "no";
+    ports = 8822;
+  };
+
+  services.sshguard = {
+    enable = true;
+    detection_time = 604800;
+    attack_threshold = 10;
+    blocktime = 86400;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
