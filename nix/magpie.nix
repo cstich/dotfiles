@@ -71,25 +71,25 @@
   services.xrdp = {
           enable = true;
           defaultWindowManager = "${pkgs.gnome.gnome-session}/bin/gnome-session";
-          # package = pkgs.xrdp.overrideAttrs (old: rec {
-          #   configureFlags = old.configureFlags ++ [ " --enable-vsock" ];
-          #   postInstall = old.postInstall + ''
-          #     ${pkgs.gnused}/bin/sed -i -e 's!use_vsock=false!use_vsock=true!g'                               $out/etc/xrdp/xrdp.ini
-          #     ${pkgs.gnused}/bin/sed -i -e 's!security_layer=negotiate!security_layer=rdp!g'                  $out/etc/xrdp/xrdp.ini
-          #     ${pkgs.gnused}/bin/sed -i -e 's!crypt_level=high!crypt_level=none!g'                            $out/etc/xrdp/xrdp.ini
-          #     ${pkgs.gnused}/bin/sed -i -e 's!bitmap_compression=true!bitmap_compression=false!g'             $out/etc/xrdp/xrdp.ini
-          #     ${pkgs.gnused}/bin/sed -i -e 's!FuseMountName=thinclient_drives!FuseMountName=shared-drives!g'  $out/etc/xrdp/sesman.ini
-          #   '';
-          # });
+          package = pkgs.xrdp.overrideAttrs (old: rec {
+            configureFlags = old.configureFlags ++ [ " --enable-vsock" ];
+            postInstall = old.postInstall + ''
+              ${pkgs.gnused}/bin/sed -i -e 's!use_vsock=false!use_vsock=true!g'                               $out/etc/xrdp/xrdp.ini
+              ${pkgs.gnused}/bin/sed -i -e 's!security_layer=negotiate!security_layer=rdp!g'                  $out/etc/xrdp/xrdp.ini
+              ${pkgs.gnused}/bin/sed -i -e 's!crypt_level=high!crypt_level=none!g'                            $out/etc/xrdp/xrdp.ini
+              ${pkgs.gnused}/bin/sed -i -e 's!bitmap_compression=true!bitmap_compression=false!g'             $out/etc/xrdp/xrdp.ini
+              ${pkgs.gnused}/bin/sed -i -e 's!FuseMountName=thinclient_drives!FuseMountName=shared-drives!g'  $out/etc/xrdp/sesman.ini
+            '';
+          });
         };
 
-  # environment.etc."X11/Xwrapper.config" = {
-  #         mode = "0644";
-  #         text = ''
-  #           allowed_users=anybody
-  #           needs_root_rights=yes
-  #         '';
-  # };
+  environment.etc."X11/Xwrapper.config" = {
+          mode = "0644";
+          text = ''
+            allowed_users=anybody
+            needs_root_rights=yes
+          '';
+  };
 
   security.pam.services.xrdp-sesman-rdp = {
     text = ''
