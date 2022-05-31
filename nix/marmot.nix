@@ -71,28 +71,19 @@ in
   boot.loader.grub.device = "/dev/disk/by-id/ata-WDC_WDS500G2B0B-00YS70_2021DB462501"; # or "nodev" for efi only
 
   # Tell initrd to unlock LUKS on /dev/sda2
+  boot.initrd.luks.reusePassphrases = true;
   boot.initrd.luks.devices = {
     crypted = { 
        device = "/dev/disk/by-uuid/61bca8b2-fc40-48e1-b73a-c7e604e556be"; 
        preLVM = true; 
        allowDiscards = true; 
     };
-    # luks-c47b1559-11f9-4713-a02e-77852338ba45 = {
-    #    device = "/dev/disk/by-uuid/c47b1559-11f9-4713-a02e-77852338ba45";
-    #    preLVM = true;
-    #    allowDiscards = true;
-    # };
+    m2 = {
+       device = "/dev/disk/by-uuid/c47b1559-11f9-4713-a02e-77852338ba45";
+       preLVM = true;
+       allowDiscards = true;
+     };
   };
-
-  boot.initrd.luks.reusePassphrases = true;
-  # FIXME This does not work for whatever reason. Make sure the correct paths are set in hardware.nix
-  # boot.initrd.luks.devices = {
-  #   m2 = {
-  #     device = "/dev/disk/by-uuid/c47b1559-11f9-4713-a02e-77852338ba45";
-  #     preLVM = true;
-  #     allowDiscards = true;
-  #   };
-  # };
 
   # Brother scanner
   hardware.sane = {
@@ -114,16 +105,12 @@ in
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
     networkmanager.enable = true;
   };
+
   # Select internationalisation properties.
   console = {
-     font = "Lat2-Terminus16";
-     # keyMap = "us";
      useXkbConfig = true;
   };
-  i18n = {
-     # consoleFont = "FuraCode Nerd Font Mono";
-     defaultLocale = "en_US.UTF-8";
-   };
+  i18n. defaultLocale = "en_US.UTF-8";
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
