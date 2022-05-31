@@ -18,8 +18,7 @@ in
       ./common/syncthing.nix
       ./common/zsh.nix
 
-
-      <nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
+<nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -58,17 +57,13 @@ in
   };
 
   # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
+  i18n.defaultLocale = "en_US.UTF-8";
 
-  # Configure keymap in X11
+  # My  gnome3 config
+  myGnome3.gdm.enable = true;
+
+ # Configure keymap in X11
   services.xserver.layout = "us";
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
 
   users.users.christoph = {
     isNormalUser = true;
@@ -76,13 +71,6 @@ in
     extraGroups = [ "audio" "networkManager" "wheel" "scanner" "lp"]; 
     shell = pkgs.zsh;
   };
-
-  environment.systemPackages = with pkgs; [
-  ];
-
-  
-  # Steam is a funny program to install
-  programs.steam.enable = true; 
 
   system.stateVersion = "20.09"; # Do not change 
 } 
