@@ -49,6 +49,9 @@ in
     
   # Periodic trim of SSD partitions
   services.fstrim.enable = true;
-  
+
+  # Set your time zone.
+  time.timeZone = "Europe/London";
+
   nix.autoOptimiseStore = true; 
 }

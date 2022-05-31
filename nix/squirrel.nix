@@ -47,8 +47,6 @@ in
   };
 
   nixpkgs.config.allowUnfree = true;
-  # Set your time zone.
-  time.timeZone = "Europe/Amsterdam";
 
   networking ={
     useDHCP = false;

@@ -66,10 +66,7 @@ in
   # Virtualization settings
   boot.kernelModules = [ "kvm-amd" "kvm-intel"];
   virtualisation.libvirtd.enable = true;
-  # boot.plymouth.enable = true;
-  # boot.loader.grub.efiSupport = true;
-  # boot.loader.grub.efiInstallAsRemovable = true;
-  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
+
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/disk/by-id/ata-WDC_WDS500G2B0B-00YS70_2021DB462501"; # or "nodev" for efi only
 
@@ -127,9 +124,6 @@ in
      # consoleFont = "FuraCode Nerd Font Mono";
      defaultLocale = "en_US.UTF-8";
    };
-
-  # Set your time zone.
-  time.timeZone = "Europe/Prague";
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
