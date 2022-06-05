@@ -12,7 +12,7 @@ in
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
-      <nixpkgs/nixos/modules/profiles/hardened.nix>
+      # <nixpkgs/nixos/modules/profiles/hardened.nix>
       ./common/zsh.nix
       ./common/common.nix
     ];
