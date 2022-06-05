@@ -45,30 +45,16 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 
-" Language support
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'neoclide/coc-python'
-
-" Linter/Language Server Protocoll Client
-" Plug 'w0rp/ale'
-" Asynchronous completeion
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'zchee/deoplete-jedi' " Requires jedi, pynvim, python 3
-
-Plug 'JuliaEditorSupport/julia-vim'
-Plug 'jalvesaq/Nvim-R'
 Plug 'lervag/vimtex'
 Plug 'Chiel92/vim-autoformat'
 Plug 'Shougo/context_filetype.vim'
 Plug 'vim-python/python-syntax' " Better python syntax highlighting
-Plug 'JuliaEditorSupport/julia-vim'
 Plug 'Shougo/echodoc.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
-
 
 " Always load devicons last
 Plug 'ryanoasis/vim-devicons'
@@ -91,14 +77,13 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 
-
 " Use <leader>l to toggle display of whitespace
 nmap <leader>l :set list!<CR>
 
-map <F2> :NERDTreeToggle<CR>
+nmap <F2> :NERDTreeToggle<CR>
 nmap <F3> :BuffergatorToggle<CR>
 nmap <F4> :TagbarToggle<CR>
-" noremap <F5> :ALEGoToDefinition<CR>
+noremap <F5> :ALEGoToDefinition<CR>
 noremap <F6> :Autoformat<CR>
 
 " Relative/hybrid linenumbers
@@ -109,28 +94,18 @@ set number relativenumber
 " Disable concealing of text 
 set conceallevel=0
 
-"augroup numbertoggle
-"  autocmd!
-"  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-"  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-"augroup END
-
 " Use the system clipboard
 set clipboard=unnamedplus
-
 
 """"""""""""""""""""""""""""""""""
 " Spellcheck settings
 """"""""""""""""""""""""""""""""""
-
 set spelllang=en
 set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
-
 
 """"""""""""""""""""""""""""""""""
 " Autoread changes on disk
 """"""""""""""""""""""""""""""""""
-
 " https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim
 au CursorHold,CursorHoldI * checktime
 au FocusGained,BufEnter * :checktime
@@ -447,5 +422,3 @@ set cursorline
 
 " show the matching part of the pair for [] {} and ()
 set showmatch
-
-

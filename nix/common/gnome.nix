@@ -23,11 +23,9 @@ in
     environment.systemPackages = with pkgs; [
 
        # Gnome things
-       gnome.dconf
        gnome.gnome-tweaks
        gnome.dconf-editor
        gnome.gnome-session
-       gnome.meld
        gnome.networkmanager-openvpn
        gnome.seahorse
        gnomeExtensions.appindicator
@@ -40,20 +38,22 @@ in
        pantheon.elementary-icon-theme
        
        # Deskotp things
-       google-chrome
+       dconf
        discord
        firefox
+       google-chrome
+       gparted
        rofi
        discord
-       skype
-       steam-run
+       skypeforlinux
        libreoffice
+       meld
        pass
        peek
        qtpass
        transmission-gtk
        veracrypt
-       wireguard
+       vscode
 
        # Eclipse clipboard only works with thunar
        xfce.thunar
@@ -98,7 +98,8 @@ in
     hardware.pulseaudio.enable = true;
  
     # Steam is a funny program to install
-    programs.steam.enable = true; 
+    # And also broken in 22.05
+    # programs.steam.enable = true; 
 
     # Services
     services.redshift.enable = true;

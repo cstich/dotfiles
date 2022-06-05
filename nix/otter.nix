@@ -8,7 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
-      <nixpkgs/nixos/modules/profiles/hardened.nix>
+      # <nixpkgs/nixos/modules/profiles/hardened.nix>
       ./common/common.nix
       ./common/zsh.nix
       ./common/fonts.nix
@@ -88,17 +88,13 @@
     google-authenticator
   ]; 
 
-  security.pam.services.login.googleAuthenticator.enable = true;
-  # security.pam.services.sudo.googleAuthenticator.enable = true;
-  # Add custom texts to the PAM sshd config files
-  security.pam.services.sshd.text = pkgs.lib.mkDefault( pkgs.lib.mkBefore 
-    "auth      required  pam_google_authenticator.so" );
+  # TODO Set google auth up properly
+  # security.pam.services.login.googleAuthenticator.enable = true;
 
   services.openssh = {
     enable = true;
-    passwordAuthentication = true;
+    passwordAuthentication = false;
     permitRootLogin = "no";
-    challengeResponseAuthentication = true;
     extraConfig = "# AuthenticationMethods publickey keyboard-interactive:pam";
   }; 
 

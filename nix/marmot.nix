@@ -16,8 +16,10 @@ in
       # Include the results of the hardware scan.
       # ./hardware-configuration.nix
       /etc/nixos/hardware-configuration.nix
+
       # Custom modules
       ./common/common.nix
+      ./common/neovim.nix
       ./common/dropbox.nix
       ./common/zsh.nix
       ./common/fonts.nix
@@ -35,15 +37,13 @@ in
   #   argsOverride = rec {
   #     src = pkgs.fetchurl {
   #           url = "mirror://kernel/linux/kernel/v5.x/linux-${version}.tar.xz";
-  #           sha256 = "19aa7fq8n75gh0vv01mpxg4cxkfpr5lj0sv6lxiyzcgbc71isv4c";
+  #           sha256 = "1iyw3nmsga2binmrhfnzsf1pvn2bs21a8jw6vm89k26z5h8zfgkh";
   #     };
-  #     version = "5.10.112";
-  #     modDirVersion = "5.10.112";
+  #     version = "5.10.117";
+  #     modDirVersion = "5.10.117";
   #     };
   # });
 
-  boot.kernelPatches = [{ name = "suspend-regression"; patch = builtins.fetchurl "https://patchwork.kernel.org/project/netdevbpf/patch/8735hniqcm.fsf@posteo.de/raw/";}];
-    
   # TODO Suspend bug introduced in 5.10.113. Add pm_trace flag
   # boot = {
   #   kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_10.override {
@@ -115,6 +115,7 @@ in
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   nixpkgs.config.allowUnfree = true;
+  myGnome3.gdm.enable = true;
  
   environment.systemPackages = let 
     # Specify which pacakges are available to the global python interpreter
@@ -122,56 +123,9 @@ in
     unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
   in with pkgs; [
      # Terminal applications
-     dnsutils 
-     ldns
-     nox
-     dmidecode
-     feh
-     killall
-     ncat
-     neofetch
-     ncdu
-     nethogs
      (python3.withPackages myPythonPackages)
- 
-     tmux
-     qemu_kvm
-     wirelesstools
-     zathura
      
-     # Git things
-     bfg-repo-cleaner
-     git-lfs
-
-     # neovim dependencies
-     yarn
-     nodejs
-
-     # Nix things
-     direnv
-     nix-direnv
-     any-nix-shell
-     nix-index
-     nixpkgs-review
-     binutils-unwrapped
-     patchelf
-     nix-prefetch-git  # Gets you the sha256 of github packages
-
-    # Git fork of compton the composition manager for X
-     compton-git
-
-     discord
-     unstable.vscode 
-     google-chrome
-     gparted
-     notify-desktop
      signal-desktop    
-     gimp
-     inkscape
-     ntfs3g
-     woeusb
-     virt-manager
-     google-play-music-desktop-player
 
      lm_sensors
      gsmartcontrol
@@ -203,7 +157,7 @@ in
      extraGroups = ["audio" "wheel" "networkManager" "scanner" "lp"];
      uid = 1000;
      shell = pkgs.zsh;
-     openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys" "/home/christoph/Secrets/hrc-calc-pub"];
+     openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys" ];
   }; 
 
   virtualisation.virtualbox.host.enable = true;

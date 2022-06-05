@@ -84,3 +84,6 @@ bindkey "^[c" fzf-cd-widget
 
 # Lorri hook
 eval "$(direnv hook zsh)"
+
+# Autocompletion 
+autoload -U compinit && compinit

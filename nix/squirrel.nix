@@ -18,7 +18,8 @@ in
       ./common/syncthing.nix
       ./common/zsh.nix
 
-<nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
+
+      <nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -46,6 +47,8 @@ in
   };
 
   nixpkgs.config.allowUnfree = true;
+  # Set your time zone.
+  time.timeZone = "Europe/Amsterdam";
 
   networking ={
     useDHCP = false;
@@ -64,6 +67,9 @@ in
 
  # Configure keymap in X11
   services.xserver.layout = "us";
+
+  # Enable CUPS to print documents.
+  # services.printing.enable = true;
 
   users.users.christoph = {
     isNormalUser = true;

@@ -12,7 +12,7 @@ in
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
-      <nixpkgs/nixos/modules/profiles/hardened.nix>
+      # <nixpkgs/nixos/modules/profiles/hardened.nix>
       ./common/zsh.nix
       ./common/common.nix
     ];
@@ -128,10 +128,11 @@ in
     enable = true;
     passwordAuthentication = false;
     permitRootLogin = "no";
-    ports = 8822;
+    ports = [ 8822 ];
   };
 
-  security.pam.services.sudo.googleAuthenticator.enable = true;
+  # TODO Set google auth up properly
+  # security.pam.services.sudo.googleAuthenticator.enable = true;
 
   services.sshguard = {
     enable = true;
