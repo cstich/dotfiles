@@ -17,8 +17,6 @@ in
       ./common/gnome.nix
       ./common/syncthing.nix
       ./common/zsh.nix
-
-
       <nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
     ];
 
@@ -47,8 +45,6 @@ in
   };
 
   nixpkgs.config.allowUnfree = true;
-  # Set your time zone.
-  time.timeZone = "Europe/Amsterdam";
 
   networking ={
     useDHCP = false;
