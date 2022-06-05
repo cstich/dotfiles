@@ -2,14 +2,14 @@
 
 let
   # Import unstable channel.
-  # sudo nix-channel --add http://nixos.org/channels/nixpkgs-unstable nixpkgs-unstable
-  # sudo nix-channel --update nixpkgs-unstable
-  unstable = import <nixpkgs-unstable> {};
+  # sudo nix-channel --add http://nixos.org/channels/nixos-unstable nixos-unstable
+  # sudo nix-channel --update nixos-unstable
+  unstable = import <nixos-unstable> {};
 in 
 
 {
   environment.systemPackages = with pkgs; [
-      ag
+      bottom
       curl
       busybox
       exa
@@ -19,9 +19,14 @@ in
       htop
       lshw
       lynis
-      neovim
+      neofetch
+      nix-index
+      nmap
+      patchelf
       p7zip
       procmail
+      sshfs
+      silver-searcher
       tmux
       wget
       which
@@ -39,10 +44,13 @@ in
   
   # Automated weekly garbage collection
   nix.gc = {
-    automatic = false;
+    automatic = true;
     dates = "weekly";
-    options = "--delete-older-than 90d";
+    options = "--delete-older-than 14d";
   }; 
-
+    
+  # Periodic trim of SSD partitions
+  services.fstrim.enable = true;
+  
   nix.autoOptimiseStore = true; 
 }

@@ -46,6 +46,8 @@ let
 
 
     # Flux.jl
+    cudatoolkit
+    linuxPackages.nvidia_x11
     git gitRepo gnupg autoconf curl
     procps gnumake utillinux m4 gperf unzip
     libGLU
@@ -73,6 +75,7 @@ stdenv.mkDerivation rec {
   ] ++ extraLibs;
   phases = [ "installPhase" ];
   installPhase = ''
+    export CUDA_PATH="${cudatoolkit}"
     export LD_LIBRARY_PATH=${lib.makeLibraryPath extraLibs}
     export LD_LIBRARY_PATH=${gdk-pixbuf.dev}/bin/:LD_LIBRARY_PATH
     
@@ -81,6 +84,7 @@ stdenv.mkDerivation rec {
     makeWrapper ${julia}/bin/julia $out/bin/julia \
         --prefix LD_LIBRARY_PATH : "$LD_LIBRARY_PATH" \
         --prefix LD_LIBRARY_PATH ":" "${linuxPackages.nvidia_x11}/lib" \
+        --set CUDA_PATH "${cudatoolkit}" \
         --set JULIA_PKGDIR $JULIA_PKGDIR
         # --set JULIA_LOAD_PATH $JULIA_PKGDIR/${d version}
   '';

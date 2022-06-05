@@ -16,7 +16,7 @@
       overpass
       siji 
       fira
-      nerdfonts
+      (nerdfonts.override { fonts = [ "FiraCode" ]; })
       source-code-pro
       source-sans-pro
       source-serif-pro
@@ -25,7 +25,7 @@
     fontconfig = {
       hinting.autohint = true;
       useEmbeddedBitmaps = true;
-      defaultFonts.serif = ["Source Serif Pro"];
+      defaultFonts.serif = [ "Source Serif Pro" ];
       defaultFonts.sansSerif = [ "Fira Sans" ];
       defaultFonts.monospace = [ "FuraCode Nerd Font Mono" ];
     };

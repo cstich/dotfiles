@@ -16,8 +16,10 @@ in
       # Include the results of the hardware scan.
       # ./hardware-configuration.nix
       /etc/nixos/hardware-configuration.nix
+
       # Custom modules
       ./common/common.nix
+      ./common/neovim.nix
       ./common/dropbox.nix
       ./common/zsh.nix
       ./common/fonts.nix
@@ -30,6 +32,37 @@ in
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
   boot.loader.grub.useOSProber = true;
+
+  # boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_10.override {
+  #   argsOverride = rec {
+  #     src = pkgs.fetchurl {
+  #           url = "mirror://kernel/linux/kernel/v5.x/linux-${version}.tar.xz";
+  #           sha256 = "1iyw3nmsga2binmrhfnzsf1pvn2bs21a8jw6vm89k26z5h8zfgkh";
+  #     };
+  #     version = "5.10.117";
+  #     modDirVersion = "5.10.117";
+  #     };
+  # });
+
+  # TODO Suspend bug introduced in 5.10.113. Add pm_trace flag
+  # boot = {
+  #   kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_10.override {
+  #     argsOverride = rec {
+  #       src = pkgs.fetchurl {
+  #             url = "mirror://kernel/linux/kernel/v5.x/linux-${version}.tar.xz";
+  #             sha256 = "0w9gwizyqjgsj93dqqvlh6bqkmpzjajhj09319nqncc95yrigr7m";
+  #       };
+  #       version = "5.10.115";
+  #       modDirVersion = "5.10.115";
+  #       structuredExtraConfig = with pkgs.lib.kernel; {
+  #           PM_DEBUG = yes;
+  #           PM_TRACE_RTC = pkgs.lib.mkForce yes;
+  #         };
+  #       ignoreConfigErrors = true;
+  #       };
+  #   });
+  # };
+
   # Virtualization settings
   boot.kernelModules = [ "kvm-amd" "kvm-intel"];
   virtualisation.libvirtd.enable = true;
@@ -73,26 +106,9 @@ in
   hardware.enableAllFirmware = true;
   hardware.bluetooth.enable = true;
   hardware.opengl.driSupport32Bit = true;
-  hardware.pulseaudio = {
-    enable = true;
-    support32Bit = true;
-    extraConfig = ''
-      # Automatically switch to newly connected devices.
-      # load-module module-switch-on-connect
-      # Discover Apple iTunes devices on network.
-      load-module module-raop-discover
-    '';
-    zeroconf.discovery.enable = true;
-
-    # Enable extra bluetooth modules, like APT-X codec.
-    extraModules = [ pkgs.pulseaudio-modules-bt ];
-
-    # Enable bluetooth (among others) in Pulseaudio
-    package = pkgs.pulseaudioFull;
-  };
 
   networking.useDHCP = false;
-  networking.interfaces.enp6s0.useDHCP = true;
+  networking.interfaces.enp70s0.useDHCP = true;
 
   networking = {
     hostName = hostname; # Define your hostname.
@@ -118,6 +134,7 @@ in
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   nixpkgs.config.allowUnfree = true;
+  myGnome3.gdm.enable = true;
  
   environment.systemPackages = let 
     # Specify which pacakges are available to the global python interpreter
@@ -125,77 +142,18 @@ in
     unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
   in with pkgs; [
      # Terminal applications
-     dnsutils 
-     ldns
-     nox
-     dmidecode
-     feh
-     killall
-     ncat
-     neofetch
-     ncdu
-     nethogs
      (python3.withPackages myPythonPackages)
- 
-     tmux
-     qemu_kvm
-     wirelesstools
-     zathura
      
-     # Git things
-     bfg-repo-cleaner
-     git-lfs
-
-     # neovim dependencies
-     yarn
-     nodejs
-
-     # Nix things
-     direnv
-     nix-direnv
-     any-nix-shell
-     nix-index
-     nixpkgs-review
-     binutils-unwrapped
-     patchelf
-     nix-prefetch-git  # Gets you the sha256 of github packages
-
-    # Git fork of compton the composition manager for X
-     compton-git
-
-     discord
-     unstable.vscode 
-     google-chrome
-     gparted
-     notify-desktop
      signal-desktop    
-     gimp
-     inkscape
-     ntfs3g
-     woeusb
-     virt-manager
-     google-play-music-desktop-player
 
      lm_sensors
      gsmartcontrol
 
   ] 
   ++ lib.optionals config.services.samba.enable [ kdenetwork-filesharing pkgs.samba ];
-
-  environment.pathsToLink = [
-    # FIXME: modules should link subdirs of `/share` rather than relying on this
-    "/share"
-    "/share/nix-direnv"
-  ];
-  
-  nix.extraOptions = ''
-    keep-outputs = true
-    keep-derivations = true
-  '';
-
-  services.flatpak.enable = true;
   
   # List services that you want to enable:
+  services.flatpak.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh = {
@@ -207,6 +165,8 @@ in
   services.sshguard = {
     enable = true;
   };
+
+  # hardware.pulseaudio.extraConfig = "pactl set-card-profile alsa_card.usb-Generic_USB_Audio-00 HiFi";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.christoph = {
@@ -221,16 +181,7 @@ in
 
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "christoph" ];
-
-  # powerManagement.resumeCommands = ''
-  #   # CUDA suspend crash fix
-  #   nvidia-smi -pm ENABLED
-  #   nvidia-smi -c EXCLUSIVE_PROCESS
-  #   # TODO Add here the rmmode modprobe suspend CUDA fix
-  #   rmmod nvidia_uvm
-  #   modprobe nvidia_uvm
-  # ''; 
-  
+ 
   # Add nvidia drivers for Marmot
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -244,7 +195,7 @@ in
 
   # Allow parallel builds
   nix.maxJobs = 4;
-  nix.buildCores = 12;
+  nix.buildCores = 40;
 
   # Deactivate the sandbox as julia does not build with the sandbox enabled
   nix.useSandbox = false;
