@@ -9,7 +9,6 @@ in
 
 {
   environment.systemPackages = with pkgs; [
-      ag
       bottom
       curl
       busybox
@@ -25,6 +24,7 @@ in
       p7zip
       procmail
       sshfs
+      silver-searcher
       tmux
       wget
       which

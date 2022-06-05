@@ -147,7 +147,6 @@ in
      dmidecode
      feh
      killall
-     ncat
      neofetch
      ncdu
      nethogs
@@ -175,9 +174,6 @@ in
      binutils-unwrapped
      patchelf
      nix-prefetch-git  # Gets you the sha256 of github packages
-
-    # Git fork of compton the composition manager for X
-     compton-git
 
      discord
      unstable.vscode 

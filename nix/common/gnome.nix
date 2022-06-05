@@ -23,11 +23,9 @@ in
     environment.systemPackages = with pkgs; [
 
        # Gnome things
-       gnome.dconf
        gnome.gnome-tweaks
        gnome.dconf-editor
        gnome.gnome-session
-       gnome.meld
        gnome.networkmanager-openvpn
        gnome.seahorse
        gnomeExtensions.appindicator
@@ -41,19 +39,20 @@ in
        
        # Deskotp things
        google-chrome
+       dconf
        discord
        firefox
        rofi
        discord
-       skype
+       skypeforlinux
        steam-run
        libreoffice
+       meld
        pass
        peek
        qtpass
        transmission-gtk
        veracrypt
-       wireguard
 
        # Eclipse clipboard only works with thunar
        xfce.thunar

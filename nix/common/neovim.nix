@@ -19,7 +19,6 @@ in
 
   programs.neovim = {
     enable = true;
-    package = unstable.neovim-unwrapped;
     vimAlias = true;
     viAlias = true;
     defaultEditor = true;
@@ -131,6 +130,41 @@ in
       nnoremap <F4> <cmd>Telescope help_tags<cr>
 
       """"""""""""""""""""""""""""""""""
+      " nvim-cmp
+      """"""""""""""""""""""""""""""""""
+      lua <<EOF
+        
+        -- Add additional capabilities supported by nvim-cmp
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+        
+        local lspconfig = require('lspconfig')
+
+        -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
+        local servers = { 'pyright' }
+        for _, lsp in ipairs(servers) do
+          lspconfig[lsp].setup {
+            -- on_attach = my_custom_on_attach,
+            capabilities = capabilities,
+          }
+        end
+
+      local cmp = require 'cmp'
+      cmp.setup {
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
+        sources = {
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+        },
+      }
+
+      EOF
+
+      """"""""""""""""""""""""""""""""""
       " Lua plugin setup
       """"""""""""""""""""""""""""""""""
       lua require('nvim-tree').setup{renderer = {icons = {webdev_colors = true}}}
@@ -142,7 +176,11 @@ in
       start = [ 
        	airline
       	bufferline-nvim
+        cmp-nvim-lsp
         fzf-vim
+        luasnip
+        nvim-cmp
+        nvim-lspconfig
       	nvim-tree-lua
       	nvim-web-devicons
         onehalf
