@@ -31,19 +31,17 @@ in
   boot.loader.grub.version = 2;
   boot.loader.grub.useOSProber = true;
 
-  # boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_10.override {
-  #   argsOverride = rec {
-  #     src = pkgs.fetchurl {
-  #           url = "mirror://kernel/linux/kernel/v5.x/linux-${version}.tar.xz";
-  #           sha256 = "19aa7fq8n75gh0vv01mpxg4cxkfpr5lj0sv6lxiyzcgbc71isv4c";
-  #     };
-  #     version = "5.10.112";
-  #     modDirVersion = "5.10.112";
-  #     };
-  # });
+  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_10.override {
+    argsOverride = rec {
+      src = pkgs.fetchurl {
+            url = "mirror://kernel/linux/kernel/v5.x/linux-${version}.tar.xz";
+            sha256 = "1iyw3nmsga2binmrhfnzsf1pvn2bs21a8jw6vm89k26z5h8zfgkh";
+      };
+      version = "5.10.117";
+      modDirVersion = "5.10.117";
+      };
+  });
 
-  boot.kernelPatches = [{ name = "suspend-regression"; patch = builtins.fetchurl "https://patchwork.kernel.org/project/netdevbpf/patch/8735hniqcm.fsf@posteo.de/raw/";}];
-    
   # TODO Suspend bug introduced in 5.10.113. Add pm_trace flag
   # boot = {
   #   kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_10.override {
@@ -134,6 +132,7 @@ in
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   nixpkgs.config.allowUnfree = true;
+  myGnome3.gdm.enable = true;
  
   environment.systemPackages = let 
     # Specify which pacakges are available to the global python interpreter

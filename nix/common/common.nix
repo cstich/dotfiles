@@ -2,15 +2,15 @@
 
 let
   # Import unstable channel.
-  # sudo nix-channel --add http://nixos.org/channels/nixpkgs-unstable nixpkgs-unstable
-  # sudo nix-channel --update nixpkgs-unstable
-  unstable = import <nixpkgs-unstable> {};
+  # sudo nix-channel --add http://nixos.org/channels/nixos-unstable nixos-unstable
+  # sudo nix-channel --update nixos-unstable
+  unstable = import <nixos-unstable> {};
 in 
 
 {
   environment.systemPackages = with pkgs; [
       ag
-      bpytop
+      bottom
       curl
       busybox
       exa
@@ -20,11 +20,11 @@ in
       htop
       lshw
       lynis
-      neovim
       nix-index
       nmap
       p7zip
       procmail
+      sshfs
       tmux
       wget
       which
@@ -35,6 +35,14 @@ in
     enable = true;
     pinentryFlavor = "gtk2";
     enableSSHSupport = true;
+  };
+
+  programs.neovim = {
+    enable = true;
+    package = unstable.neovim;
+    vimAlias = true;
+    viAlias = true;
+    defaultEditor = true;
   };
 
   # Auto upgrades of packages from time to time

@@ -45,30 +45,16 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 
-" Language support
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'neoclide/coc-python'
-
-" Linter/Language Server Protocoll Client
-" Plug 'w0rp/ale'
-" Asynchronous completeion
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'zchee/deoplete-jedi' " Requires jedi, pynvim, python 3
-
-Plug 'JuliaEditorSupport/julia-vim'
-Plug 'jalvesaq/Nvim-R'
 Plug 'lervag/vimtex'
 Plug 'Chiel92/vim-autoformat'
 Plug 'Shougo/context_filetype.vim'
 Plug 'vim-python/python-syntax' " Better python syntax highlighting
-Plug 'JuliaEditorSupport/julia-vim'
 Plug 'Shougo/echodoc.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
-
 
 " Always load devicons last
 Plug 'ryanoasis/vim-devicons'
