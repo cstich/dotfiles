@@ -131,7 +131,7 @@ in
     enable = true;
     passwordAuthentication = false;
     permitRootLogin = "no";
-    ports = 8822;
+    ports = [ 8822 ];
   };
 
   security.pam.services.sudo.googleAuthenticator.enable = true;
