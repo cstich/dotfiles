@@ -19,8 +19,10 @@ in
       htop
       lshw
       lynis
+      neofetch
       nix-index
       nmap
+      patchelf
       p7zip
       procmail
       sshfs

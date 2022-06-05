@@ -82,9 +82,5 @@ in
   environment.systemPackages = with pkgs; [
   ];
 
-  
-  # Steam is a funny program to install
-  programs.steam.enable = true; 
-
   system.stateVersion = "20.09"; # Do not change 
 } 

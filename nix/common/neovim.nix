@@ -10,6 +10,7 @@ in
 {
   environment.systemPackages = with pkgs; [
     fzf
+    yarn
     python3
     ctags
 
