@@ -37,14 +37,6 @@ in
     enableSSHSupport = true;
   };
 
-  programs.neovim = {
-    enable = true;
-    package = unstable.neovim;
-    vimAlias = true;
-    viAlias = true;
-    defaultEditor = true;
-  };
-
   # Auto upgrades of packages from time to time
   system.autoUpgrade.enable = true;
   

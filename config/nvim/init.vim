@@ -77,14 +77,13 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 
-
 " Use <leader>l to toggle display of whitespace
 nmap <leader>l :set list!<CR>
 
-map <F2> :NERDTreeToggle<CR>
+nmap <F2> :NERDTreeToggle<CR>
 nmap <F3> :BuffergatorToggle<CR>
 nmap <F4> :TagbarToggle<CR>
-" noremap <F5> :ALEGoToDefinition<CR>
+noremap <F5> :ALEGoToDefinition<CR>
 noremap <F6> :Autoformat<CR>
 
 " Relative/hybrid linenumbers
@@ -95,28 +94,18 @@ set number relativenumber
 " Disable concealing of text 
 set conceallevel=0
 
-"augroup numbertoggle
-"  autocmd!
-"  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-"  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-"augroup END
-
 " Use the system clipboard
 set clipboard=unnamedplus
-
 
 """"""""""""""""""""""""""""""""""
 " Spellcheck settings
 """"""""""""""""""""""""""""""""""
-
 set spelllang=en
 set spellfile=$HOME/.config/nvim/spell/en.utf-8.add
-
 
 """"""""""""""""""""""""""""""""""
 " Autoread changes on disk
 """"""""""""""""""""""""""""""""""
-
 " https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim
 au CursorHold,CursorHoldI * checktime
 au FocusGained,BufEnter * :checktime
@@ -433,5 +422,3 @@ set cursorline
 
 " show the matching part of the pair for [] {} and ()
 set showmatch
-
-

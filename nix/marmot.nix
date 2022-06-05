@@ -18,6 +18,7 @@ in
       /etc/nixos/hardware-configuration.nix
       # Custom modules
       ./common/common.nix
+      ./common/neovim.nix
       ./common/dropbox.nix
       ./common/zsh.nix
       ./common/fonts.nix
