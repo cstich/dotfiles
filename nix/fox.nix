@@ -134,7 +134,8 @@ in
     ports = [ 8822 ];
   };
 
-  security.pam.services.sudo.googleAuthenticator.enable = true;
+  # TODO Set google auth up properly
+  # security.pam.services.sudo.googleAuthenticator.enable = true;
 
   services.sshguard = {
     enable = true;
