@@ -118,18 +118,11 @@ in
   myGnome3.gdm.enable = true;
  
   environment.systemPackages = let 
-    # Specify which pacakges are available to the global python interpreter
-    myPythonPackages = pythonPackages: with pythonPackages; []; 
     unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
   in with pkgs; [
-     # Terminal applications
-     (python3.withPackages myPythonPackages)
-     
      signal-desktop    
-
      lm_sensors
      gsmartcontrol
-
   ] 
   ++ lib.optionals config.services.samba.enable [ kdenetwork-filesharing pkgs.samba ];
   

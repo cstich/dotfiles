@@ -11,7 +11,6 @@ in
   environment.systemPackages = with pkgs; [
       bottom
       curl
-      busybox
       exa
       fzf
       git
