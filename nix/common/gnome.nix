@@ -29,7 +29,7 @@ in
        gnome.networkmanager-openvpn
        gnome.seahorse
        gnomeExtensions.appindicator
-       gnomeExtensions.material-shell
+       # gnomeExtensions.material-shell
       
        arc-theme
        arc-icon-theme
@@ -54,6 +54,7 @@ in
        transmission-gtk
        veracrypt
        vscode
+       wezterm
 
        # Eclipse clipboard only works with thunar
        xfce.thunar
