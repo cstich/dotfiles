@@ -39,12 +39,12 @@ in
        pantheon.elementary-icon-theme
        
        # Deskotp things
-       bfg
        dconf
        discord
        firefox
        google-chrome
        gparted
+       git-filter-repo
        rofi
        discord
        skypeforlinux
