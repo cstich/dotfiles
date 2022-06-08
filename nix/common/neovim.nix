@@ -110,9 +110,9 @@ in
       colorscheme onehalflight
       
       " Airline settings
-      let g:airline_theme='onehalflight'
-      let g:airline_powerline_fonts = 1
-      let g:airline#extensions#tabline#enabled = 1
+      " let g:airline_theme='onehalflight'
+      " let g:airline_powerline_fonts = 1
+      " let g:airline#extensions#tabline#enabled = 1
       
       " Use Unix as the standard file type
       set fileformat=unix
@@ -204,18 +204,19 @@ in
       """"""""""""""""""""""""""""""""""
       lua require('nvim-tree').setup{renderer = {icons = {webdev_colors = true}}}
       lua require('bufferline').setup{}
-      lua require('luasnip').setup{}
+      lua
 
 
     '';
     packages.myVimPackage = with pkgs.vimPlugins; {
       # loaded on launch
       start = [ 
-       	airline
       	bufferline-nvim
         cmp-nvim-lsp
         fzf-vim
         luasnip
+        lualine-nvim
+        lualine-lsp-progress
         nvim-cmp
         nvim-lspconfig
       	nvim-tree-lua

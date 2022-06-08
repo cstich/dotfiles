@@ -26,6 +26,7 @@ in
        gnome.gnome-tweaks
        gnome.dconf-editor
        gnome.gnome-session
+       gnome.gedit
        gnome.networkmanager-openvpn
        gnome.seahorse
        gnomeExtensions.appindicator

@@ -10,6 +10,7 @@
       /etc/nixos/hardware-configuration.nix
 
       ./common/common.nix
+      ./common/neovim.nix
       ./common/fonts.nix
       ./common/gnome.nix
       ./common/zsh.nix
