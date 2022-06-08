@@ -39,6 +39,7 @@ in
        pantheon.elementary-icon-theme
        
        # Deskotp things
+       bfg
        dconf
        discord
        firefox
