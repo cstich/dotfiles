@@ -64,7 +64,10 @@ in
       set incsearch
       " Don't redraw while executing macros (good performance config)
       set lazyredraw
-      " Show line numbers
+      " Show hybrid line numbers
+      set number relativenumber
+      set nu rnu
+      
       set hidden " LSP needed this
       set tabstop=4
       set shiftwidth=4
@@ -155,8 +158,15 @@ in
           }
         end
 
-        local cmp = require 'cmp'
+        local cmp = require('cmp')
+        local lspkind = require('lspkind')
         cmp.setup {
+          
+           window = {
+                completion = cmp.config.window.bordered(),
+                documentation = cmp.config.window.bordered(),
+              },
+          
           snippet = {
             expand = function(args)
               luasnip.lsp_expand(args.body)
@@ -191,6 +201,10 @@ in
             end, { 'i', 's' }),
           }),
 
+          formatting = {
+            format = lspkind.cmp_format(),
+          },
+
           sources = {
             { name = 'nvim_lsp' },
             { name = 'luasnip' },
@@ -200,11 +214,29 @@ in
       EOF
 
       """"""""""""""""""""""""""""""""""
-      " Lua plugin setup
+      " lualine
+      """"""""""""""""""""""""""""""""""
+      lua <<EOF
+        require('lualine').setup {
+          options = {
+            theme = "onelight",
+          },
+
+          sections = {
+            lualine_c = {
+              'lsp_progress'
+            }
+          }
+        }
+      EOF
+
+      """"""""""""""""""""""""""""""""""
+      " Other lua plugins setup
       """"""""""""""""""""""""""""""""""
       lua require('nvim-tree').setup{renderer = {icons = {webdev_colors = true}}}
       lua require('bufferline').setup{}
-      lua
+
+
 
 
     '';
@@ -214,6 +246,7 @@ in
       	bufferline-nvim
         cmp-nvim-lsp
         fzf-vim
+        lspkind-nvim
         luasnip
         lualine-nvim
         lualine-lsp-progress
