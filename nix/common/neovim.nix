@@ -5,14 +5,19 @@ let
   # sudo nix-channel --add http://nixos.org/channels/nixos-unstable nixos-unstable
   # sudo nix-channel --update nixos-unstable
   unstable = import <nixos-unstable> {};
+  myPythonPackages = pythonPackages: with pythonPackages; [
+    cookiecutter
+    yapf
+  ]; 
 in 
 
 {
   environment.systemPackages = with pkgs; [
+    (python3.withPackages myPythonPackages)
     fzf
     yarn
-    python3
     ctags
+    efm-langserver
 
     # Python language server
     nodePackages.pyright
@@ -60,7 +65,10 @@ in
       set incsearch
       " Don't redraw while executing macros (good performance config)
       set lazyredraw
-      " Show line numbers
+      " Show hybrid line numbers
+      set number relativenumber
+      set nu rnu
+      
       set hidden " LSP needed this
       set tabstop=4
       set shiftwidth=4
@@ -106,9 +114,9 @@ in
       colorscheme onehalflight
       
       " Airline settings
-      let g:airline_theme='onehalflight'
-      let g:airline_powerline_fonts = 1
-      let g:airline#extensions#tabline#enabled = 1
+      " let g:airline_theme='onehalflight'
+      " let g:airline_powerline_fonts = 1
+      " let g:airline#extensions#tabline#enabled = 1
       
       " Use Unix as the standard file type
       set fileformat=unix
@@ -140,6 +148,7 @@ in
         capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
         
         local lspconfig = require('lspconfig')
+        local luasnip = require('luasnip')
 
         -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
         local servers = { 'pyright' }
@@ -150,23 +159,92 @@ in
           }
         end
 
-      local cmp = require 'cmp'
-      cmp.setup {
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
-        },
-        sources = {
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-        },
-      }
+
+        local null_ls = require("null-ls")
+        local sources = {
+          null_ls.builtins.diagnostics.flake8,
+          null_ls.builtins.formatting.yapf
+        }
+
+        --TODO Finish setup so that it autostarts
+        null_ls.setup({
+          sources = sources
+        })
+
+        local cmp = require('cmp')
+        local lspkind = require('lspkind')
+        cmp.setup {
+          
+           window = {
+                completion = cmp.config.window.bordered(),
+                documentation = cmp.config.window.bordered(),
+              },
+          
+          snippet = {
+            expand = function(args)
+              luasnip.lsp_expand(args.body)
+            end,
+          },
+
+          mapping = cmp.mapping.preset.insert({
+            ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+            ['<C-f>'] = cmp.mapping.scroll_docs(4),
+            ['<C-Space>'] = cmp.mapping.complete(),
+            ['<CR>'] = cmp.mapping.confirm {
+              behavior = cmp.ConfirmBehavior.Replace,
+              select = true,
+            },
+            ['<Tab>'] = cmp.mapping(function(fallback)
+              if cmp.visible() then
+                cmp.select_next_item()
+              elseif luasnip.expand_or_jumpable() then
+                luasnip.expand_or_jump()
+              else
+                fallback()
+              end
+            end, { 'i', 's' }),
+            ['<S-Tab>'] = cmp.mapping(function(fallback)
+              if cmp.visible() then
+                cmp.select_prev_item()
+              elseif luasnip.jumpable(-1) then
+                luasnip.jump(-1)
+              else
+                fallback()
+              end
+            end, { 'i', 's' }),
+          }),
+
+          formatting = {
+            format = lspkind.cmp_format(),
+          },
+
+          sources = {
+            { name = 'nvim_lsp' },
+            { name = 'luasnip' },
+          }
+        }
 
       EOF
 
       """"""""""""""""""""""""""""""""""
-      " Lua plugin setup
+      " lualine
+      """"""""""""""""""""""""""""""""""
+      lua <<EOF
+        require('lualine').setup {
+          options = {
+            theme = "onelight",
+          },
+
+          sections = {
+            lualine_c = {
+              'lsp_progress'
+            }
+          }
+        }
+      EOF
+
+      """"""""""""""""""""""""""""""""""
+      " Other lua plugins setup
       """"""""""""""""""""""""""""""""""
       lua require('nvim-tree').setup{renderer = {icons = {webdev_colors = true}}}
       lua require('bufferline').setup{}
@@ -175,17 +253,22 @@ in
     packages.myVimPackage = with pkgs.vimPlugins; {
       # loaded on launch
       start = [ 
-       	airline
       	bufferline-nvim
         cmp-nvim-lsp
         fzf-vim
+        lspkind-nvim
         luasnip
+        lualine-nvim
+        lualine-lsp-progress
         nvim-cmp
+        null-ls-nvim
         nvim-lspconfig
       	nvim-tree-lua
       	nvim-web-devicons
         onehalf
+        packer-nvim
         telescope-nvim
+        telescope-project-nvim
         vim-nix
         vim-rooter
         vim-devicons

@@ -4,9 +4,6 @@ gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled false
 # Have nautilus/file dialogs display folders first
 gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 
-# Allows for F10 to be passed to the terminal application
-gsettings set org.gnome.Terminal.Legacy.Settings menu-accelerator-enabled false 
-
 # Material Shell settings
 dconf write /org/gnome/shell/extensions/materialshell/bindings/previous-window "['<Super>h']"
 dconf write /org/gnome/shell/extensions/materialshell/bindings/next-workspace "['<Super>j']"
