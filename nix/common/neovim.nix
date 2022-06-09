@@ -7,6 +7,7 @@ let
   unstable = import <nixos-unstable> {};
   myPythonPackages = pythonPackages: with pythonPackages; [
     cookiecutter
+    yapf
   ]; 
 in 
 
@@ -15,8 +16,8 @@ in
     (python3.withPackages myPythonPackages)
     fzf
     yarn
-    # python3
     ctags
+    efm-langserver
 
     # Python language server
     nodePackages.pyright
@@ -158,6 +159,18 @@ in
           }
         end
 
+
+        local null_ls = require("null-ls")
+        local sources = {
+          null_ls.builtins.diagnostics.flake8,
+          null_ls.builtins.formatting.yapf
+        }
+
+        --TODO Finish setup so that it autostarts
+        null_ls.setup({
+          sources = sources
+        })
+
         local cmp = require('cmp')
         local lspkind = require('lspkind')
         cmp.setup {
@@ -236,9 +249,6 @@ in
       lua require('nvim-tree').setup{renderer = {icons = {webdev_colors = true}}}
       lua require('bufferline').setup{}
 
-
-
-
     '';
     packages.myVimPackage = with pkgs.vimPlugins; {
       # loaded on launch
@@ -251,6 +261,7 @@ in
         lualine-nvim
         lualine-lsp-progress
         nvim-cmp
+        null-ls-nvim
         nvim-lspconfig
       	nvim-tree-lua
       	nvim-web-devicons
