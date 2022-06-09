@@ -13,6 +13,7 @@ in
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
       ./common/common.nix
+      ./common/neovim.nix
       ./common/fonts.nix
       ./common/gnome.nix
       ./common/syncthing.nix
@@ -61,7 +62,7 @@ in
   # My  gnome3 config
   myGnome3.gdm.enable = true;
 
- # Configure keymap in X11
+  # Configure keymap in X11
   services.xserver.layout = "us";
 
   # Enable CUPS to print documents.

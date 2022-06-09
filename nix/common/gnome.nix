@@ -26,10 +26,10 @@ in
        gnome.gnome-tweaks
        gnome.dconf-editor
        gnome.gnome-session
+       gnome.gnome-terminal
        gnome.networkmanager-openvpn
        gnome.seahorse
-       gnomeExtensions.appindicator
-       gnomeExtensions.material-shell
+       gnomeExtensions.pop-shell
       
        arc-theme
        arc-icon-theme
@@ -100,11 +100,6 @@ in
     # Steam is a funny program to install
     # And also broken in 22.05
     # programs.steam.enable = true; 
-
-    # Services
-    services.redshift.enable = true;
-    location.longitude = 0.8904;
-    location.latitude = 51.4862;
 
     # Allow flatpaks
     services.flatpak.enable = true;
