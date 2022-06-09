@@ -7,6 +7,8 @@ let
   unstable = import <nixos-unstable> {};
   myPythonPackages = pythonPackages: with pythonPackages; [
     cookiecutter
+    flake8
+    isort
     yapf
   ]; 
 in 
@@ -17,7 +19,15 @@ in
     fzf
     yarn
     ctags
-    efm-langserver
+
+    # Telescope
+    fd
+    ripgrep
+
+    # Tree sitter depenencies
+    tree-sitter
+    git
+    curl
 
     # Python language server
     nodePackages.pyright
@@ -136,7 +146,7 @@ in
       " Find files using Telescope command-line sugar.
       nnoremap <F2> <cmd>Telescope find_files<cr>
       nnoremap <F3> <cmd>Telescope buffers<cr>
-      nnoremap <F4> <cmd>Telescope help_tags<cr>
+      nnoremap <F4> <cmd>Telescope live_grep<cr>
 
       """"""""""""""""""""""""""""""""""
       " nvim-cmp
@@ -163,12 +173,38 @@ in
         local null_ls = require("null-ls")
         local sources = {
           null_ls.builtins.diagnostics.flake8,
-          null_ls.builtins.formatting.yapf
+          null_ls.builtins.formatting.isort,
+          null_ls.builtins.formatting.yapf,
         }
 
-        --TODO Finish setup so that it autostarts
+        -- Make sure only null-ls is used for formatting
+        local lsp_formatting = function(bufnr)
+            vim.lsp.buf.format({
+                filter = function(client)
+                    -- apply whatever logic you want (in this example, we'll only use null-ls)
+                    return client.name == "null-ls"
+                end,
+                bufnr = bufnr,
+            })
+        end
+        
+        -- Format on save
+        local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
         null_ls.setup({
-          sources = sources
+          sources = sources,
+          on_attach = function(client, bufnr)
+            if client.supports_method("textDocument/formatting") then
+                vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+                vim.api.nvim_create_autocmd("BufWritePre", {
+                    group = augroup,
+                    buffer = bufnr,
+                    callback = function()
+                        -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+                        vim.lsp.buf.formatting_sync()
+                    end,
+                })
+            end
+          end,
         })
 
         local cmp = require('cmp')
@@ -227,9 +263,37 @@ in
       EOF
 
       """"""""""""""""""""""""""""""""""
+      " treesitter 
+      """"""""""""""""""""""""""""""""""
+
+      lua <<EOF
+      require'nvim-treesitter.configs'.setup {
+        ensure_installed = { "python" },
+        sync_install = false,
+        ignore_install = { "" },
+        highlight = {
+          enable = true,
+          additional_vim_regex_highlighting = false,
+        },
+        -- Use treesitter for navigating the AST
+        incremental_selection = {
+          enable = true,
+          keymaps = {
+            init_selection = "<CR>",
+            node_incremental = "<CR>",
+            scope_incremental = "<TAB>",
+            node_decremental = "<S-TAB>",
+          },
+        },
+      }
+
+      EOF
+
+      """"""""""""""""""""""""""""""""""
       " lualine
       """"""""""""""""""""""""""""""""""
       lua <<EOF
+        require("nvim-gps").setup()
         require('lualine').setup {
           options = {
             theme = "onelight",
@@ -261,10 +325,12 @@ in
         lualine-nvim
         lualine-lsp-progress
         nvim-cmp
+        nvim-gps
         null-ls-nvim
         nvim-lspconfig
-      	nvim-tree-lua
-      	nvim-web-devicons
+        nvim-tree-lua
+        nvim-treesitter
+        nvim-web-devicons
         onehalf
         packer-nvim
         telescope-nvim

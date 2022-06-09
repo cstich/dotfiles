@@ -3,10 +3,14 @@
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
-# TODO Create missing directories if they don't exist
-mkdir ~/.tmp
+# Make sure the path to the history file exists
 mkdir -p ~/.symlinks/zsh_history/
-# TODO Make sure the path to the history file exists
+
+# Install wezterm config file
+tempfile=$(mktemp)
+curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo
+tic -x -o ~/.terminfo $tempfile
+rm $tempfile
 
 ln -sf $SCRIPTPATH/nix/nixpkgs ~/.config/
 ln -sf $SCRIPTPATH/config/zsh/zshrc ~/.zshrc
