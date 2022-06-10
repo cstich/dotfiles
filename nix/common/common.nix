@@ -15,7 +15,7 @@ in
       fzf
       git
       gptfdisk
-      helix
+      unstable.helix
       htop
       lshw
       lynis
