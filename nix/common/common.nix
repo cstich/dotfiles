@@ -15,6 +15,7 @@ in
       fzf
       git
       gptfdisk
+      helix
       htop
       lshw
       lynis
@@ -53,6 +54,9 @@ in
 
   # Set your time zone.
   time.timeZone = "Europe/London";
+
+  # Somehow logrotate fails
+  services.logrotate.checkConfig = false;
 
   nix.autoOptimiseStore = true; 
 }
