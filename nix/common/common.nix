@@ -43,12 +43,19 @@ in
   system.autoUpgrade.enable = true;
   
   # Automated weekly garbage collection
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 14d";
-  }; 
-    
+  nix = {
+    gc = {
+     automatic = true;
+     dates = "weekly";
+     options = "--delete-older-than 14d";
+    }; 
+
+    package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  };
+
   # Periodic trim of SSD partitions
   services.fstrim.enable = true;
 
