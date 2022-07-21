@@ -25,6 +25,7 @@ in
     ripgrep
 
     # Tree sitter depenencies
+    clang
     tree-sitter
     git
     curl
@@ -141,7 +142,7 @@ in
       " Vim-rooter plugin 
       """"""""""""""""""""""""""""""""""
       " Switch to project.nvim when it is packaged for nixos
-      let g:rooter_patterns = ['.git' ]
+      let g:rooter_patterns = ['.git', 'Cargo.toml' ]
 
       " Find files using Telescope command-line sugar.
       nnoremap <F2> <cmd>Telescope find_files<cr>
@@ -161,14 +162,13 @@ in
         local luasnip = require('luasnip')
 
         -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-        local servers = { 'pyright' }
+        local servers = { 'pyright', 'rust_analyzer' }
         for _, lsp in ipairs(servers) do
           lspconfig[lsp].setup {
             -- on_attach = my_custom_on_attach,
             capabilities = capabilities,
           }
         end
-
 
         local null_ls = require("null-ls")
         local sources = {
@@ -268,7 +268,7 @@ in
 
       lua <<EOF
       require'nvim-treesitter.configs'.setup {
-        ensure_installed = { "python" },
+        ensure_installed = { },
         sync_install = false,
         ignore_install = { "" },
         highlight = {
@@ -329,7 +329,15 @@ in
         null-ls-nvim
         nvim-lspconfig
         nvim-tree-lua
-        nvim-treesitter
+        (nvim-treesitter.withPlugins (
+          plugins: with plugins; [
+            tree-sitter-bash
+            tree-sitter-java
+            tree-sitter-nix
+            tree-sitter-python
+            tree-sitter-rust
+          ]
+        ))
         nvim-web-devicons
         onehalf
         packer-nvim
