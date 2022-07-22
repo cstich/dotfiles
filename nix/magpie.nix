@@ -87,7 +87,8 @@
             allowed_users=anybody
             needs_root_rights=yes
           '';
-  };
+        };
+
 
   security.pam.services.xrdp-sesman-rdp = {
     text = ''
@@ -155,6 +156,12 @@
     wget
     nix-index
     firefox
+  ];
+
+  environment.unixODBCDrivers = with pkgs.unixODBCDrivers; [ 
+    msodbcsql17
+    sqlite 
+    psql 
   ];
 
   services.openssh = {
