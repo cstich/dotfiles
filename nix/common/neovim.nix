@@ -144,10 +144,14 @@ in
       " Switch to project.nvim when it is packaged for nixos
       let g:rooter_patterns = ['.git', 'Cargo.toml' ]
 
+      """"""""""""""""""""""""""""""""""
+      " Telescope plugin 
+      """"""""""""""""""""""""""""""""""
       " Find files using Telescope command-line sugar.
       nnoremap <F2> <cmd>Telescope find_files<cr>
       nnoremap <F3> <cmd>Telescope buffers<cr>
       nnoremap <F4> <cmd>Telescope live_grep<cr>
+      lua require('telescope').setup{defaults = {file_ignore_patterns = {"target/", ".*parquet.*", ".git/"}}}
 
       """"""""""""""""""""""""""""""""""
       " nvim-cmp
