@@ -9,6 +9,7 @@ in
 
 {
   environment.systemPackages = with pkgs; [
+      bat
       bottom
       curl
       exa
