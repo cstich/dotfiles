@@ -20,6 +20,8 @@ in
     yarn
     ctags
 
+    neovide
+
     # Telescope
     fd
     ripgrep
@@ -148,7 +150,6 @@ in
       " Telescope plugin 
       """"""""""""""""""""""""""""""""""
       " Find files using Telescope command-line sugar.
-      nnoremap <F2> <cmd>Telescope find_files<cr>
       nnoremap <F3> <cmd>Telescope buffers<cr>
       nnoremap <F4> <cmd>Telescope live_grep<cr>
       lua require('telescope').setup{defaults = {file_ignore_patterns = {"target/", ".*parquet.*", ".git/"}}}
@@ -294,10 +295,44 @@ in
       EOF
 
       """"""""""""""""""""""""""""""""""
+      " treesitter-textobjects
+      """"""""""""""""""""""""""""""""""
+
+      lua <<EOF
+      require'nvim-treesitter.configs'.setup {
+        textobjects = {
+          move = {
+            enable = true,
+            set_jumps = true, -- whether to set jumps in the jumplist
+            goto_next_start = {
+              ["]f"] = "@function.outer",
+              ["]c"] = "@class.outer",
+              ["]a"] = "@parameter.inner",
+            },
+            goto_next_end = {
+              ["]F"] = "@function.outer",
+              ["]C"] = "@class.outer",
+              ["]A"] = "@parameter.outer",
+            },
+            goto_previous_start = {
+              ["[f"] = "@function.outer",
+              ["[c"] = "@class.outer",
+              ["[a"] = "@parameter.inner",
+            },
+            goto_previous_end = {
+              ["[F"] = "@function.outer",
+              ["[C"] = "@class.outer",
+              ["[A"] = "@parameter.outer",
+            },
+          },
+        },
+      }
+      EOF
+
+      """"""""""""""""""""""""""""""""""
       " lualine
       """"""""""""""""""""""""""""""""""
       lua <<EOF
-        require("nvim-gps").setup()
         require('lualine').setup {
           options = {
             theme = "onelight",
@@ -317,11 +352,104 @@ in
       lua require('nvim-tree').setup{renderer = {icons = {webdev_colors = true}}}
       lua require('bufferline').setup{}
 
+      """"""""""""""""""""""""""""""""""
+      " lualine
+      """"""""""""""""""""""""""""""""""
+      lua << EOF
+      require("which-key").setup {
+        plugins = {
+          presets = {
+            operators = false,
+            motions = false,
+            text_objects = false,
+            windows = false,
+            nav = false,
+            z = false,
+            g = false,
+          }
+        }
+      }
+
+      local wk = require("which-key")
+
+      wk.register({
+          b = { "<cmd>bn<cr>", "Next buffer" },
+          c = { "Next class start" },
+          C = { "Next class end" },
+          f = { "Next function start" },
+          F = { "Next function end" },
+          a = { "Next argument start" },
+          A = { "Next argument end" },
+          s = { "Next misspelled word" },
+          ["%"] = { "Match parenthesis forward" },
+          ["]"] = { "Jump forward"}, 
+      }, { prefix = "]"})
+
+      wk.register({
+          b = { "<cmd>bp<cr>", "Previous buffer" },
+          c = { "Previous class start" },
+          C = { "Previous class end" },
+          f = { "Previous function start" },
+          F = { "Previous function end" },
+          a = { "Previous argument start" },
+          A = { "Previous argument end" },
+          s = { "Previous misspelled word" },
+          ["%"] = { "Match parenthesis backward" },
+          ["["] = { "Jump backward"}, 
+        }, { prefix = "["})
+
+      wk.register({
+        f = {
+            name = "file",
+            f = {"<cmd>Telescope find_files<cr>", "Find file"},
+            o = {"<cmd>Telescope oldfiles<cr>", "Open recent file"},
+            n = {":! touch ", "New file"},
+            d = {":! mkdir ", "New directory"},
+          },
+        h = {
+           name = "history",
+           c = {"<cmd>Telescope command_history<cr>", "Command history"},
+           s = {"<cmd>Telescope search_history<cr>", "Search history"},
+         },
+        b = {
+          name = "buffers",
+          b = {"<cmd>Telescope buffers<cr>", "List buffers"},
+          n = { "<cmd>bn<cr>", "Next buffer" },
+          p = { "<cmd>bp<cr>", "Previous buffer" },
+        },
+        s = {
+          name = "grep",
+          b = {"<cmd>Telescope current_buffer_fuzzy_find<cr>", "Search in buffer"},
+          f = {"<cmd>Telescope live_grep<cr>", "Search through files"},
+          s = {"<cmd>Telescope treesitter<cr>", "Search symbols"},
+          w = {"<cmd>Telescope grep_string<cr>", "Search for word"},
+        },
+      }, { prefix = "<leader>" })
+      EOF
+
+      """"""""""""""""""""""""""""""""""
+      " Aerial 
+      """"""""""""""""""""""""""""""""""
+      lua << EOF
+      require('aerial').setup({})
+
+      require("lualine").setup({
+        sections = {
+          lualine_x = { "aerial" },
+        },
+      })
+
+      EOF
+
+
+
+
     '';
     packages.myVimPackage = with pkgs.vimPlugins; {
       # loaded on launch
       start = [ 
-      	bufferline-nvim
+        aerial-nvim
+        bufferline-nvim
         cmp-nvim-lsp
         fzf-vim
         lspkind-nvim
@@ -329,10 +457,10 @@ in
         lualine-nvim
         lualine-lsp-progress
         nvim-cmp
-        nvim-gps
         null-ls-nvim
         nvim-lspconfig
         nvim-tree-lua
+        nvim-treesitter-textobjects
         (nvim-treesitter.withPlugins (
           plugins: with plugins; [
             tree-sitter-bash
@@ -350,11 +478,11 @@ in
         vim-nix
         vim-rooter
         vim-devicons
+        which-key-nvim
       ];
       # manually loadable by calling `:packadd $plugin-name`
       opt = [ ];
     };
   };
-
   };
 }
