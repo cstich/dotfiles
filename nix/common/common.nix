@@ -40,6 +40,13 @@ in
     enableSSHSupport = true;
   };
 
+  # Add the minimal required C library for most binaries
+  system.activationScripts.ldso = pkgs.lib.stringAfter [ "usrbinenv" ] ''
+    mkdir -m 0755 -p /lib64
+    ln -sfn ${pkgs.glibc.out}/lib64/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2.tmp
+    mv -f /lib64/ld-linux-x86-64.so.2.tmp /lib64/ld-linux-x86-64.so.2 # atomically replace
+  '';
+
   # Auto upgrades of packages from time to time
   system.autoUpgrade.enable = true;
   
@@ -49,12 +56,7 @@ in
      automatic = true;
      dates = "weekly";
      options = "--delete-older-than 14d";
-    }; 
-
-    package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
+   }; 
   };
 
   # Periodic trim of SSD partitions
