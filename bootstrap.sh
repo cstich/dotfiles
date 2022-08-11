@@ -29,9 +29,6 @@ then
     $SCRIPTPATH/config/gnome/gsettings.sh
 fi
 
-# Set one half light theme for gnome terminal
-source $SCRIPTPATH/config/gnome/onehalflight.sh
-
 # This is the tmp dir for vim
 mkdir -p ~/.tmp
 nvim -c "PlugInstall" -c "q" -c "q"
