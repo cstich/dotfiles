@@ -173,7 +173,7 @@ in
             -- on_attach = my_custom_on_attach,
             capabilities = capabilities,
           }
-        end
+          end
 
         local null_ls = require("null-ls")
         local sources = {
@@ -352,8 +352,30 @@ in
       lua require('nvim-tree').setup{renderer = {icons = {webdev_colors = true}}}
       lua require('bufferline').setup{}
 
+
       """"""""""""""""""""""""""""""""""
-      " lualine
+      " Aerial 
+      """"""""""""""""""""""""""""""""""
+      lua << EOF
+      require('aerial').setup({})
+
+      require("lualine").setup({
+        sections = {
+          lualine_x = { "aerial" },
+        },
+      })
+
+      EOF
+
+      """"""""""""""""""""""""""""""""""
+      " Trouble 
+      """"""""""""""""""""""""""""""""""
+      lua << EOF
+      require('trouble').setup{auto_preview = false}
+      EOF
+
+      """"""""""""""""""""""""""""""""""
+      " which-key 
       """"""""""""""""""""""""""""""""""
       lua << EOF
       require("which-key").setup {
@@ -406,43 +428,37 @@ in
             n = {":! touch ", "New file"},
             d = {":! mkdir ", "New directory"},
           },
-        h = {
-           name = "history",
-           c = {"<cmd>Telescope command_history<cr>", "Command history"},
-           s = {"<cmd>Telescope search_history<cr>", "Search history"},
-         },
         b = {
           name = "buffers",
-          b = {"<cmd>Telescope buffers<cr>", "List buffers"},
+          b = { "<cmd>Telescope buffers<cr>", "List buffers"},
           n = { "<cmd>bn<cr>", "Next buffer" },
           p = { "<cmd>bp<cr>", "Previous buffer" },
         },
         s = {
-          name = "grep",
+          name = "search",
           b = {"<cmd>Telescope current_buffer_fuzzy_find<cr>", "Search in buffer"},
+          c = {"<cmd>Telescope command_history<cr>", "Command history"},
           f = {"<cmd>Telescope live_grep<cr>", "Search through files"},
+          h = {"<cmd>Telescope search_history<cr>", "Search history"},
+          h = {"<cmd>Telescope search_history<cr>", "Search history"},
           s = {"<cmd>Telescope treesitter<cr>", "Search symbols"},
           w = {"<cmd>Telescope grep_string<cr>", "Search for word"},
         },
+
+        l = {
+          name = "LSP",
+          l = {"<cmd>TroubleToggle<cr>", "Show diagnostics"},
+        },
+
+        a = {
+          name = "aerial",
+          a = {"<cmd>AerialToggle<cr>", "Toggle aerial"},
+          j = {"<cmd>AerialNext<cr>", "Next"},
+          k = {"<cmd>AerialPrev<cr>", "Previous"},
+        },
+
       }, { prefix = "<leader>" })
       EOF
-
-      """"""""""""""""""""""""""""""""""
-      " Aerial 
-      """"""""""""""""""""""""""""""""""
-      lua << EOF
-      require('aerial').setup({})
-
-      require("lualine").setup({
-        sections = {
-          lualine_x = { "aerial" },
-        },
-      })
-
-      EOF
-
-
-
 
     '';
     packages.myVimPackage = with pkgs.vimPlugins; {
@@ -475,6 +491,7 @@ in
         packer-nvim
         telescope-nvim
         telescope-project-nvim
+        trouble-nvim
         vim-nix
         vim-rooter
         vim-devicons
