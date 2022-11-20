@@ -8,6 +8,7 @@ return {
   exit_behavior = "Close",
   hide_tab_bar_if_only_one_tab = true,
   term = "wezterm",
-  check_for_updates = true,
+  check_for_updates = false,
   show_update_window = false,
+  window_decorations = "NONE",
 }

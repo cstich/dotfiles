@@ -9,6 +9,7 @@ let
     cookiecutter
     flake8
     isort
+    pylint
     yapf
   ]; 
 in 
@@ -91,6 +92,9 @@ in
       set noswapfile " disable swapfile usage
       set autochdir " automatically change window's cwd to file's dir
       
+      " mouse scrolling
+      set mouse=a
+      
       " for command mode
       nmap <Tab> >>
       nmap <S-Tab> <<
@@ -141,6 +145,12 @@ in
       set t_Co=256
 
       """"""""""""""""""""""""""""""""""
+      " vim-slime
+      """"""""""""""""""""""""""""""""""
+      let g:slime_target = "tmux"
+      let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+
+      """"""""""""""""""""""""""""""""""
       " Vim-rooter plugin 
       """"""""""""""""""""""""""""""""""
       " Switch to project.nvim when it is packaged for nixos
@@ -155,31 +165,71 @@ in
       lua require('telescope').setup{defaults = {file_ignore_patterns = {"target/", ".*parquet.*", ".git/"}}}
 
       """"""""""""""""""""""""""""""""""
-      " nvim-cmp
+      " nvim-lspconfig 
       """"""""""""""""""""""""""""""""""
-      lua <<EOF
+      lua << EOF
+        local lspconfig = require('lspconfig')
+        -- Mappings for LSP via nvim-lspconfig.
+        -- See `:help vim.diagnostic.*` for documentation on any of the below functions
+        local opts = { noremap=true, silent=true }
+        vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+        vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+        vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+        vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
         
+        -- Use an on_attach function to only map the following keys
+        -- after the language server attaches to the current buffer
+        local on_attach = function(client, bufnr)
+          -- Enable completion triggered by <c-x><c-o>
+          vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+        
+          -- Mappings.
+          -- See `:help vim.lsp.*` for documentation on any of the below functions
+          local bufopts = { noremap=true, silent=true, buffer=bufnr }
+          vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+          vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+          vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+          vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+          vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+          vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+          vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+          vim.keymap.set('n', '<space>wl', function()
+            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+          end, bufopts)
+          vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+          vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+          vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+          vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+          -- vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+        end
+
         -- Add additional capabilities supported by nvim-cmp
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
         
-        local lspconfig = require('lspconfig')
-        local luasnip = require('luasnip')
-
         -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
         local servers = { 'pyright', 'rust_analyzer' }
         for _, lsp in ipairs(servers) do
           lspconfig[lsp].setup {
-            -- on_attach = my_custom_on_attach,
+            on_attach = on_attach,
             capabilities = capabilities,
           }
         end
+      EOF
 
+      """"""""""""""""""""""""""""""""""
+      " nvim-cmp & nvim-lspconfig
+      """"""""""""""""""""""""""""""""""
+      lua <<EOF
+        
+        -- TODO Refactor null-ls part
         local null_ls = require("null-ls")
         local sources = {
-          null_ls.builtins.diagnostics.flake8,
+          null_ls.builtins.diagnostics.pylint,
           null_ls.builtins.formatting.isort,
-          null_ls.builtins.formatting.yapf,
+          null_ls.builtins.formatting.yapf.with {
+            args = {"--style='{based_on_style: google, column_limit: 120}'"}  
+          },
         }
 
         -- Make sure only null-ls is used for formatting
@@ -211,7 +261,9 @@ in
             end
           end,
         })
-
+      
+        -- TODO Re-work the snippet part   
+        local luasnip = require('luasnip')
         local cmp = require('cmp')
         local lspkind = require('lspkind')
         cmp.setup {
@@ -398,7 +450,13 @@ in
           ["["] = { "Jump backward"}, 
         }, { prefix = "["})
 
-      wk.register({
+        wk.register({
+        a = {
+          name = "aerial",
+          a = {"<cmd>AerialToggle<cr>", "Toggle"},
+          ["["] = {"<cmd>AerialPrev<cr>", "Previous"},
+          ["]"] = {"<cmd>AerialNext<cr>", "Next"},
+        },
         f = {
             name = "file",
             f = {"<cmd>Telescope find_files<cr>", "Find file"},
@@ -417,6 +475,15 @@ in
           n = { "<cmd>bn<cr>", "Next buffer" },
           p = { "<cmd>bp<cr>", "Previous buffer" },
         },
+        x = {
+          name = "trouble",
+          x = {"<cmd>TroubleToggle<cr>", "Toggle"},
+          w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace"},
+          d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Document"},
+          q = { "<cmd>TroubleToggle quickfix<cr>", "Quickfix"},
+          l = { "<cmd>TroubleToggle loclist<cr>", "Loclist"},
+        },
+ 
         s = {
           name = "grep",
           b = {"<cmd>Telescope current_buffer_fuzzy_find<cr>", "Search in buffer"},
@@ -440,6 +507,17 @@ in
       })
 
       EOF
+
+
+
+      """"""""""""""""""""""""""""""""""
+      " Trouble
+      """"""""""""""""""""""""""""""""""
+      lua << EOF
+      require('trouble').setup({})
+
+      EOF
+
 
 
 
@@ -475,9 +553,11 @@ in
         packer-nvim
         telescope-nvim
         telescope-project-nvim
+        trouble-nvim
         vim-nix
         vim-rooter
         vim-devicons
+        vim-slime
         which-key-nvim
       ];
       # manually loadable by calling `:packadd $plugin-name`
