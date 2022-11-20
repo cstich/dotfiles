@@ -18,7 +18,7 @@ dconf write /org/gnome/shell/extensions/paperwm/keybindings/switch-up "['<Super>
 gsettings set org.gnome.desktop.wm.keybindings minimize "[]"
 
 gsettings set org.gnome.shell.keybindings switch-to-application-1 "[]"
-settings set org.gnome.shell.keybindings switch-to-application-2 "[]"
+gsettings set org.gnome.shell.keybindings switch-to-application-2 "[]"
 gsettings set org.gnome.shell.keybindings switch-to-application-3 "[]"
 gsettings set org.gnome.shell.keybindings switch-to-application-4 "[]"
 gsettings set org.gnome.shell.keybindings switch-to-application-5 "[]"
