@@ -10,7 +10,27 @@ let
     flake8
     isort
     yapf
-  ]; 
+  ];
+
+  iron-nvim = pkgs.vimUtils.buildVimPlugin {
+    name = "iron-nvim";
+    src = pkgs.fetchFromGitHub {
+      owner = "hkupty";
+      repo = "iron.nvim";
+      rev = "eeb7fb1c4ac4231ff3982e0e2a68e25791be780f";
+      sha256 = "b2eadskAXLfwula7eaIgaryH6Zlo0w8T3tJR/GfgQj8=";
+    };
+  };
+
+  sniprun = pkgs.vimUtils.buildVimPlugin {
+    name = "sniprun";
+    src = pkgs.fetchFromGitHub {
+      owner = "michaelb";
+      repo = "sniprun";
+      rev = "9c023e1a2d8bdc9fcaf3e85b6cf43e7208035d45";
+      sha256 = "b2eadskAXLfwula7eaIgaryH6Zlo0w8T3tJR/GfgQj8=";
+    };
+  };
 in 
 
 {
@@ -54,6 +74,13 @@ in
       nnoremap <c-k> <c-w>k
       nnoremap <c-h> <c-w>h
       nnoremap <c-l> <c-w>l
+      " Use the same keys to move out of the terminal
+      tnoremap <c-j> <c-\><c-n><c-w>h
+      tnoremap <c-k> <c-\><c-n><c-w>k
+      tnoremap <c-h> <c-\><c-n><c-w>h
+      tnoremap <c-l> <c-\><c-n><c-w>l
+      " Use <Esc> to exit the terminal
+      tnoremap <Esc> <C-\><C-n>
 
       " Use <leader>l to toggle display of whitespace
       nmap <leader>l :set list!<CR>
@@ -154,11 +181,62 @@ in
       nnoremap <F4> <cmd>Telescope live_grep<cr>
       lua require('telescope').setup{defaults = {file_ignore_patterns = {"target/", ".*parquet.*", ".git/"}}}
 
+
       """"""""""""""""""""""""""""""""""
-      " nvim-cmp
+      " nvim-cmp + nvim-lspconfig
       """"""""""""""""""""""""""""""""""
       lua <<EOF
         
+        -- Sources for null_ls
+        local null_ls = require("null-ls")
+        local sources = {
+          null_ls.builtins.diagnostics.flake8,
+          null_ls.builtins.formatting.isort,
+          null_ls.builtins.formatting.yapf,
+          null_ls.builtins.formatting.rustfmt,
+        }
+        
+        -- Mappings.
+        -- See `:help vim.diagnostic.*` for documentation on any of the below functions
+        local opts = { noremap=true, silent=true }
+        vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+        vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+        vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+        vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+        
+        -- Use an on_attach function to only map the following keys
+        -- after the language server attaches to the current buffer
+        local on_attach = function(client, bufnr)
+          -- Enable completion triggered by <c-x><c-o>
+          vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+        
+          -- Mappings.
+          -- See `:help vim.lsp.*` for documentation on any of the below functions
+          local bufopts = { noremap=true, silent=true, buffer=bufnr }
+          vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+          vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+          vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+          vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+          vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+          vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+          vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+          vim.keymap.set('n', '<space>wl', function()
+            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+          end, bufopts)
+          vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+          vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+          vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+          vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+          vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
+
+          -- TODO Update to newer API once NixOS ships neovim 0.8
+          -- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Avoiding-LSP-formatting-conflicts
+          if client.name == "rust_analyzer" then                                                                                                   
+            client.server_capabilities.document_formatting = false -- 0.7 and earlier
+            -- client.server_capabilities.documentFormattingProvider = false -- 0.8 and later
+          end
+        end
+
         -- Add additional capabilities supported by nvim-cmp
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
@@ -170,47 +248,11 @@ in
         local servers = { 'pyright', 'rust_analyzer' }
         for _, lsp in ipairs(servers) do
           lspconfig[lsp].setup {
-            -- on_attach = my_custom_on_attach,
+            -- use the on_attach function defined above
+            on_attach = on_attach, 
             capabilities = capabilities,
           }
-          end
-
-        local null_ls = require("null-ls")
-        local sources = {
-          null_ls.builtins.diagnostics.flake8,
-          null_ls.builtins.formatting.isort,
-          null_ls.builtins.formatting.yapf,
-        }
-
-        -- Make sure only null-ls is used for formatting
-        local lsp_formatting = function(bufnr)
-            vim.lsp.buf.format({
-                filter = function(client)
-                    -- apply whatever logic you want (in this example, we'll only use null-ls)
-                    return client.name == "null-ls"
-                end,
-                bufnr = bufnr,
-            })
         end
-        
-        -- Format on save
-        local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-        null_ls.setup({
-          sources = sources,
-          on_attach = function(client, bufnr)
-            if client.supports_method("textDocument/formatting") then
-                vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-                vim.api.nvim_create_autocmd("BufWritePre", {
-                    group = augroup,
-                    buffer = bufnr,
-                    callback = function()
-                        -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-                        vim.lsp.buf.formatting_sync()
-                    end,
-                })
-            end
-          end,
-        })
 
         local cmp = require('cmp')
         local lspkind = require('lspkind')
@@ -368,6 +410,21 @@ in
       EOF
 
       """"""""""""""""""""""""""""""""""
+      " notify 
+      """"""""""""""""""""""""""""""""""
+ 
+      lua << EOF
+        vim.notify = require("notify")
+        -- TODO Fix the telescope integration
+        -- require('telescope').extensions.notify.notify(<opts>)
+      EOF
+
+      """"""""""""""""""""""""""""""""""
+      " sniprun
+      """"""""""""""""""""""""""""""""""
+      lua require("sniprun")
+
+      """"""""""""""""""""""""""""""""""
       " Trouble 
       """"""""""""""""""""""""""""""""""
       lua << EOF
@@ -448,6 +505,7 @@ in
         l = {
           name = "LSP",
           l = {"<cmd>TroubleToggle<cr>", "Show diagnostics"},
+
         },
 
         a = {
@@ -468,13 +526,17 @@ in
         bufferline-nvim
         cmp-nvim-lsp
         fzf-vim
+        iron-nvim
         lspkind-nvim
         luasnip
         lualine-nvim
         lualine-lsp-progress
+        neoterm
         nvim-cmp
+        nvim-notify
         null-ls-nvim
         nvim-lspconfig
+        sniprun
         nvim-tree-lua
         nvim-treesitter-textobjects
         (nvim-treesitter.withPlugins (

@@ -9,7 +9,6 @@ let
 in
 
 {
-  # nix.package = pkgs.nixUnstable;
   imports =
     [ 
       <nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
@@ -20,7 +19,7 @@ in
       # Custom modules
       ./common/common.nix
       ./common/neovim.nix
-      ./common/dropbox.nix
+      # ./common/dropbox.nix
       ./common/zsh.nix
       ./common/fonts.nix
       ./common/gnome.nix
@@ -153,7 +152,7 @@ in
      openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys" ];
   }; 
 
-  virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.host.enable = false;
   users.extraGroups.vboxusers.members = [ "christoph" ];
  
   # Add nvidia drivers for Marmot
@@ -161,20 +160,15 @@ in
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-  services.avahi.enable = true;
   # Important to resolve .local domains of printers, otherwise you get an error
   # like  "Impossible to connect to XXX.local: Name or service not known"
-  services.avahi.nssmdns = true;
   services.printing.drivers = [pkgs.brlaser pkgs.brgenml1lpr pkgs.brgenml1cupswrapper ];
 
   # Allow parallel builds
   nix.maxJobs = 4;
   nix.buildCores = 40;
 
-  # Deactivate the sandbox as julia does not build with the sandbox enabled
-  nix.useSandbox = false;
-
-  services.nscd.enable = true; 
+  nix.useSandbox = true;
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
