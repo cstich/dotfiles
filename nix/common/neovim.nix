@@ -9,28 +9,9 @@ let
     cookiecutter
     flake8
     isort
+    pylint
     yapf
-  ];
-
-  iron-nvim = pkgs.vimUtils.buildVimPlugin {
-    name = "iron-nvim";
-    src = pkgs.fetchFromGitHub {
-      owner = "hkupty";
-      repo = "iron.nvim";
-      rev = "eeb7fb1c4ac4231ff3982e0e2a68e25791be780f";
-      sha256 = "b2eadskAXLfwula7eaIgaryH6Zlo0w8T3tJR/GfgQj8=";
-    };
-  };
-
-  sniprun = pkgs.vimUtils.buildVimPlugin {
-    name = "sniprun";
-    src = pkgs.fetchFromGitHub {
-      owner = "michaelb";
-      repo = "sniprun";
-      rev = "9c023e1a2d8bdc9fcaf3e85b6cf43e7208035d45";
-      sha256 = "b2eadskAXLfwula7eaIgaryH6Zlo0w8T3tJR/GfgQj8=";
-    };
-  };
+  ]; 
 in 
 
 {
@@ -74,13 +55,6 @@ in
       nnoremap <c-k> <c-w>k
       nnoremap <c-h> <c-w>h
       nnoremap <c-l> <c-w>l
-      " Use the same keys to move out of the terminal
-      tnoremap <c-j> <c-\><c-n><c-w>h
-      tnoremap <c-k> <c-\><c-n><c-w>k
-      tnoremap <c-h> <c-\><c-n><c-w>h
-      tnoremap <c-l> <c-\><c-n><c-w>l
-      " Use <Esc> to exit the terminal
-      tnoremap <Esc> <C-\><C-n>
 
       " Use <leader>l to toggle display of whitespace
       nmap <leader>l :set list!<CR>
@@ -117,6 +91,9 @@ in
       set copyindent " Copy the previous indentation
       set noswapfile " disable swapfile usage
       set autochdir " automatically change window's cwd to file's dir
+      
+      " mouse scrolling
+      set mouse=a
       
       " for command mode
       nmap <Tab> >>
@@ -168,6 +145,12 @@ in
       set t_Co=256
 
       """"""""""""""""""""""""""""""""""
+      " vim-slime
+      """"""""""""""""""""""""""""""""""
+      let g:slime_target = "tmux"
+      let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+
+      """"""""""""""""""""""""""""""""""
       " Vim-rooter plugin 
       """"""""""""""""""""""""""""""""""
       " Switch to project.nvim when it is packaged for nixos
@@ -181,22 +164,12 @@ in
       nnoremap <F4> <cmd>Telescope live_grep<cr>
       lua require('telescope').setup{defaults = {file_ignore_patterns = {"target/", ".*parquet.*", ".git/"}}}
 
-
       """"""""""""""""""""""""""""""""""
-      " nvim-cmp + nvim-lspconfig
+      " nvim-lspconfig 
       """"""""""""""""""""""""""""""""""
-      lua <<EOF
-        
-        -- Sources for null_ls
-        local null_ls = require("null-ls")
-        local sources = {
-          null_ls.builtins.diagnostics.flake8,
-          null_ls.builtins.formatting.isort,
-          null_ls.builtins.formatting.yapf,
-          null_ls.builtins.formatting.rustfmt,
-        }
-        
-        -- Mappings.
+      lua << EOF
+        local lspconfig = require('lspconfig')
+        -- Mappings for LSP via nvim-lspconfig.
         -- See `:help vim.diagnostic.*` for documentation on any of the below functions
         local opts = { noremap=true, silent=true }
         vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
@@ -253,7 +226,55 @@ in
             capabilities = capabilities,
           }
         end
+      EOF
 
+      """"""""""""""""""""""""""""""""""
+      " nvim-cmp & nvim-lspconfig
+      """"""""""""""""""""""""""""""""""
+      lua <<EOF
+        
+        -- TODO Refactor null-ls part
+        local null_ls = require("null-ls")
+        local sources = {
+          null_ls.builtins.diagnostics.pylint,
+          null_ls.builtins.formatting.isort,
+          null_ls.builtins.formatting.yapf.with {
+            args = {"--style='{based_on_style: google, column_limit: 120}'"}  
+          },
+        }
+
+        -- Make sure only null-ls is used for formatting
+        local lsp_formatting = function(bufnr)
+            vim.lsp.buf.format({
+                filter = function(client)
+                    -- apply whatever logic you want (in this example, we'll only use null-ls)
+                    return client.name == "null-ls"
+                end,
+                bufnr = bufnr,
+            })
+        end
+        
+        -- Format on save
+        local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+        null_ls.setup({
+          sources = sources,
+          on_attach = function(client, bufnr)
+            if client.supports_method("textDocument/formatting") then
+                vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+                vim.api.nvim_create_autocmd("BufWritePre", {
+                    group = augroup,
+                    buffer = bufnr,
+                    callback = function()
+                        -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+                        vim.lsp.buf.formatting_sync()
+                    end,
+                })
+            end
+          end,
+        })
+      
+        -- TODO Re-work the snippet part   
+        local luasnip = require('luasnip')
         local cmp = require('cmp')
         local lspkind = require('lspkind')
         cmp.setup {
@@ -394,45 +415,8 @@ in
       lua require('nvim-tree').setup{renderer = {icons = {webdev_colors = true}}}
       lua require('bufferline').setup{}
 
-
       """"""""""""""""""""""""""""""""""
-      " Aerial 
-      """"""""""""""""""""""""""""""""""
-      lua << EOF
-      require('aerial').setup({})
-
-      require("lualine").setup({
-        sections = {
-          lualine_x = { "aerial" },
-        },
-      })
-
-      EOF
-
-      """"""""""""""""""""""""""""""""""
-      " notify 
-      """"""""""""""""""""""""""""""""""
- 
-      lua << EOF
-        vim.notify = require("notify")
-        -- TODO Fix the telescope integration
-        -- require('telescope').extensions.notify.notify(<opts>)
-      EOF
-
-      """"""""""""""""""""""""""""""""""
-      " sniprun
-      """"""""""""""""""""""""""""""""""
-      lua require("sniprun")
-
-      """"""""""""""""""""""""""""""""""
-      " Trouble 
-      """"""""""""""""""""""""""""""""""
-      lua << EOF
-      require('trouble').setup{auto_preview = false}
-      EOF
-
-      """"""""""""""""""""""""""""""""""
-      " which-key 
+      " lualine
       """"""""""""""""""""""""""""""""""
       lua << EOF
       require("which-key").setup {
@@ -477,7 +461,13 @@ in
           ["["] = { "Jump backward"}, 
         }, { prefix = "["})
 
-      wk.register({
+        wk.register({
+        a = {
+          name = "aerial",
+          a = {"<cmd>AerialToggle<cr>", "Toggle"},
+          ["["] = {"<cmd>AerialPrev<cr>", "Previous"},
+          ["]"] = {"<cmd>AerialNext<cr>", "Next"},
+        },
         f = {
             name = "file",
             f = {"<cmd>Telescope find_files<cr>", "Find file"},
@@ -485,12 +475,26 @@ in
             n = {":! touch ", "New file"},
             d = {":! mkdir ", "New directory"},
           },
+        h = {
+           name = "history",
+           c = {"<cmd>Telescope command_history<cr>", "Command history"},
+           s = {"<cmd>Telescope search_history<cr>", "Search history"},
+         },
         b = {
           name = "buffers",
-          b = { "<cmd>Telescope buffers<cr>", "List buffers"},
+          b = {"<cmd>Telescope buffers<cr>", "List buffers"},
           n = { "<cmd>bn<cr>", "Next buffer" },
           p = { "<cmd>bp<cr>", "Previous buffer" },
         },
+        x = {
+          name = "trouble",
+          x = {"<cmd>TroubleToggle<cr>", "Toggle"},
+          w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace"},
+          d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Document"},
+          q = { "<cmd>TroubleToggle quickfix<cr>", "Quickfix"},
+          l = { "<cmd>TroubleToggle loclist<cr>", "Loclist"},
+        },
+ 
         s = {
           name = "search",
           b = {"<cmd>Telescope current_buffer_fuzzy_find<cr>", "Search in buffer"},
@@ -501,22 +505,34 @@ in
           s = {"<cmd>Telescope treesitter<cr>", "Search symbols"},
           w = {"<cmd>Telescope grep_string<cr>", "Search for word"},
         },
+      }, { prefix = "<leader>" })
+      EOF
 
         l = {
           name = "LSP",
           l = {"<cmd>TroubleToggle<cr>", "Show diagnostics"},
 
+      require("lualine").setup({
+        sections = {
+          lualine_x = { "aerial" },
         },
+      })
 
-        a = {
-          name = "aerial",
-          a = {"<cmd>AerialToggle<cr>", "Toggle aerial"},
-          j = {"<cmd>AerialNext<cr>", "Next"},
-          k = {"<cmd>AerialPrev<cr>", "Previous"},
-        },
-
-      }, { prefix = "<leader>" })
       EOF
+
+
+
+      """"""""""""""""""""""""""""""""""
+      " Trouble
+      """"""""""""""""""""""""""""""""""
+      lua << EOF
+      require('trouble').setup({})
+
+      EOF
+
+
+
+
 
     '';
     packages.myVimPackage = with pkgs.vimPlugins; {
@@ -526,17 +542,13 @@ in
         bufferline-nvim
         cmp-nvim-lsp
         fzf-vim
-        iron-nvim
         lspkind-nvim
         luasnip
         lualine-nvim
         lualine-lsp-progress
-        neoterm
         nvim-cmp
-        nvim-notify
         null-ls-nvim
         nvim-lspconfig
-        sniprun
         nvim-tree-lua
         nvim-treesitter-textobjects
         (nvim-treesitter.withPlugins (
@@ -557,6 +569,7 @@ in
         vim-nix
         vim-rooter
         vim-devicons
+        vim-slime
         which-key-nvim
       ];
       # manually loadable by calling `:packadd $plugin-name`

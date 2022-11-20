@@ -31,6 +31,9 @@ in
        gnome.networkmanager-openvpn
        gnome.networkmanager-openvpn
        gnome.seahorse
+
+       gnomeExtensions.switcher
+       gnomeExtensions.vertical-overview
       
        arc-theme
        arc-icon-theme
@@ -39,6 +42,7 @@ in
        pantheon.elementary-icon-theme
        
        # Deskotp things
+       unstable.alacritty
        dconf
        discord
        firefox
@@ -46,17 +50,19 @@ in
        gparted
        git-filter-repo
        rofi
+       ulauncher
        discord
-       skypeforlinux
+       kitty
        libreoffice
        meld
        pass
        peek
        qtpass
+       skypeforlinux
        transmission-gtk
        veracrypt
        vscode
-       wezterm
+       unstable.wezterm
 
        # Eclipse clipboard only works with thunar
        xfce.thunar

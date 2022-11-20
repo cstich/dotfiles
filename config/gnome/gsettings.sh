@@ -4,26 +4,21 @@ gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled false
 # Have nautilus/file dialogs display folders first
 gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 
-# Material Shell settings
-dconf write /org/gnome/shell/extensions/materialshell/bindings/previous-window "['<Super>h']"
-dconf write /org/gnome/shell/extensions/materialshell/bindings/next-workspace "['<Super>j']"
-dconf write /org/gnome/shell/extensions/materialshell/bindings/previous-workspace "['<Super>k']"
-dconf write /org/gnome/shell/extensions/materialshell/bindings/next-window "['<Super>l']"
-
-dconf write /org/gnome/shell/extensions/materialshell/bindings/move-window-left "['<Super><Shift>h']"
-dconf write /org/gnome/shell/extensions/materialshell/bindings/move-window-bottom "['<Super><Shift>j']"
-dconf write /org/gnome/shell/extensions/materialshell/bindings/move-window-top "['<Super><Shift>k']"
-dconf write /org/gnome/shell/extensions/materialshell/bindings/move-window-right "['<Super><Shift>l']"
-
-dconf write /org/gnome/shell/extensions/materialshell/bindings/resize-window-left "['<Super><Ctrl>h']"
-dconf write /org/gnome/shell/extensions/materialshell/bindings/resize-window-down "['<Super><Ctrl>j']"
-dconf write /org/gnome/shell/extensions/materialshell/bindings/resize-window-up "['<Super><Ctrl>k']"
-dconf write /org/gnome/shell/extensions/materialshell/bindings/resize-window-right "['<Super><Ctrl>l']"
+# PaperWM settings
+dconf write /org/gnome/shell/extensions/paperwm/keybindings/close-window "['<Super>q']"
+dconf write /org/gnome/shell/extensions/paperwm/keybindings/move-left "['<Shift><Super>h', '<Super><Shift>comma', '<Super><Ctrl>Left']"
+dconf write /org/gnome/shell/extensions/paperwm/keybindings/move-right "['<Shift><Super>l', '<Super><Shift>period', '<Super><Ctrl>Right']"
+dconf write /org/gnome/shell/extensions/paperwm/keybindings/switch-down "['<Super>j']"
+dconf write /org/gnome/shell/extensions/paperwm/keybindings/switch-left "['<Super>h']"
+dconf write /org/gnome/shell/extensions/paperwm/keybindings/switch-next "['<Super>period']"
+dconf write /org/gnome/shell/extensions/paperwm/keybindings/switch-previous "['<Super>comma']"
+dconf write /org/gnome/shell/extensions/paperwm/keybindings/switch-right "['<Super>l']"
+dconf write /org/gnome/shell/extensions/paperwm/keybindings/switch-up "['<Super>k']"
 
 gsettings set org.gnome.desktop.wm.keybindings minimize "[]"
 
 gsettings set org.gnome.shell.keybindings switch-to-application-1 "[]"
-gsettings set org.gnome.shell.keybindings switch-to-application-2 "[]"
+settings set org.gnome.shell.keybindings switch-to-application-2 "[]"
 gsettings set org.gnome.shell.keybindings switch-to-application-3 "[]"
 gsettings set org.gnome.shell.keybindings switch-to-application-4 "[]"
 gsettings set org.gnome.shell.keybindings switch-to-application-5 "[]"
@@ -47,11 +42,6 @@ gsettings set org.gnome.shell.keybindings toggle-overview "['<Super>s']"
 gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "['<Shift><Super>q']"
 
 gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
-
-# Custom keybind 0
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding "<Super>d"
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command "rofi -show combi -theme Arc"
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "rofi"
 
 dconf write /org/gnome/shell/extensions/paperwm/use-default-background true
 dconf write /org/gnome/mutter/dynamic-workspaces false
