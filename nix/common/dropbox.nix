@@ -2,7 +2,7 @@
 
 {
   environment.systemPackages = with pkgs; [
-     dropbox-cli
+    maestral
   ];
 
   networking.firewall = {
@@ -11,14 +11,10 @@
   };
 
   systemd.user.services.dropbox = {
-    description = "Dropbox";
+    description = "Dropbox Maestral";
     wantedBy = [ "graphical-session.target" ];
-    environment = {
-      QT_PLUGIN_PATH = "/run/current-system/sw/" + pkgs.qt5.qtbase.qtPluginPrefix;
-      QML2_IMPORT_PATH = "/run/current-system/sw/" + pkgs.qt5.qtbase.qtQmlPrefix;
-      };
     serviceConfig = {
-      ExecStart = "${pkgs.dropbox.out}/bin/dropbox";
+      ExecStart = "${pkgs.maestral.out}/bin/maestral start";
       ExecReload = "${pkgs.coreutils.out}/bin/kill -HUP $MAINPID";
       KillMode = "control-group"; # upstream recommends process
       Restart = "on-failure";

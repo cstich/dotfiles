@@ -101,6 +101,7 @@ in
     hardware.pulseaudio.enable = true;
 
     # Steam is a funny program to install
+    # TODO This currently fails; open issue
     # programs.steam.enable = true; 
 
     # Allow flatpaks
