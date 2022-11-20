@@ -6,12 +6,6 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 # Make sure the path to the history file exists
 mkdir -p ~/.symlinks/zsh_history/
 
-# Install wezterm config file
-tempfile=$(mktemp)
-curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo
-tic -x -o ~/.terminfo $tempfile
-rm $tempfile
-
 ln -sf $SCRIPTPATH/nix/nixpkgs ~/.config/
 ln -sf $SCRIPTPATH/config/zsh/zshrc ~/.zshrc
 ln -sf $SCRIPTPATH/config/tmux/tmux.conf ~/.tmux.conf
