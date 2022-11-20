@@ -10,9 +10,8 @@ ln -sf $SCRIPTPATH/nix/nixpkgs ~/.config/
 ln -sf $SCRIPTPATH/config/zsh/zshrc ~/.zshrc
 ln -sf $SCRIPTPATH/config/tmux/tmux.conf ~/.tmux.conf
 ln -sf $SCRIPTPATH/config/nvim ~/.config/
-ln -sf $SCRIPTPATH/config/alacritty ~/.config/
+ln -sf $SCRIPTPATH/config/kitty ~/.config/
 ln -sf $SCRIPTPATH/direnvrc ~/.direnvrc
-ln -sf $SCRIPTPATH/config/wezterm/wezterm.lua ~/.wezterm.lua
 ln -sf /home/$USER/Secrets/secrets.nix $SCRIPTPATH/nix/common/secrets.nix
 
 # TODO Think about how to deal with the hostname

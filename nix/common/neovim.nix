@@ -127,13 +127,10 @@ in
       syntax enable
       
       " Set colorscheme 
+      let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+      let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
       set termguicolors     " enable true colors support
       colorscheme onehalflight
-      
-      " Airline settings
-      " let g:airline_theme='onehalflight'
-      " let g:airline_powerline_fonts = 1
-      " let g:airline#extensions#tabline#enabled = 1
       
       " Use Unix as the standard file type
       set fileformat=unix
@@ -402,11 +399,10 @@ in
           },
 
           sections = {
-            lualine_c = {
-              'lsp_progress'
-            }
+            lualine_c = { "lsp_progress" },
+            lualine_x = { "aerial" },
           }
-        }
+      }
       EOF
 
       """"""""""""""""""""""""""""""""""
@@ -416,7 +412,7 @@ in
       lua require('bufferline').setup{}
 
       """"""""""""""""""""""""""""""""""
-      " lualine
+      " which-key
       """"""""""""""""""""""""""""""""""
       lua << EOF
       require("which-key").setup {
@@ -486,6 +482,12 @@ in
           n = { "<cmd>bn<cr>", "Next buffer" },
           p = { "<cmd>bp<cr>", "Previous buffer" },
         },
+
+        l = {
+          name = "LSP",
+          l = {"<cmd>TroubleToggle<cr>", "Show diagnostics"},
+        },
+
         x = {
           name = "trouble",
           x = {"<cmd>TroubleToggle<cr>", "Toggle"},
@@ -508,20 +510,6 @@ in
       }, { prefix = "<leader>" })
       EOF
 
-        l = {
-          name = "LSP",
-          l = {"<cmd>TroubleToggle<cr>", "Show diagnostics"},
-
-      require("lualine").setup({
-        sections = {
-          lualine_x = { "aerial" },
-        },
-      })
-
-      EOF
-
-
-
       """"""""""""""""""""""""""""""""""
       " Trouble
       """"""""""""""""""""""""""""""""""
@@ -529,10 +517,6 @@ in
       require('trouble').setup({})
 
       EOF
-
-
-
-
 
     '';
     packages.myVimPackage = with pkgs.vimPlugins; {

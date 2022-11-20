@@ -1,5 +1,5 @@
 function powerline_precmd() {
-    PS1="$(powerline-go -error $? -shell zsh -theme solarized-dark16)"
+    eval "$(powerline-go -error $? -shell zsh -eval -modules 'vi-mode,nix-shell,venv,user,host,ssh,cwd,perms,exit,root' -modules-right 'git,hg,jobs,vgo' -git-mode simple -theme solarized-dark16)"
 }
 
 function install_powerline_precmd() {
@@ -100,3 +100,33 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+
+# vim mode config add cursor change
+# ---------------
+# https://github.com/justjanne/powerline-go/issues/169
+
+# Remove mode switching delay.
+KEYTIMEOUT=5
+
+# Change cursor shape for different vi modes.
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] ||
+     [[ $1 = 'block' ]]; then
+    echo -ne '\e[1 q'
+
+  elif [[ ${KEYMAP} == main ]] ||
+       [[ ${KEYMAP} == viins ]] ||
+       [[ ${KEYMAP} = '' ]] ||
+       [[ $1 = 'beam' ]]; then
+    echo -ne '\e[5 q'
+  fi
+}
+zle -N zle-keymap-select
+
+# Use beam shape cursor on startup.
+echo -ne '\e[5 q'
+
+# Use beam shape cursor for each new prompt.
+preexec() {
+   echo -ne '\e[5 q'
+}
