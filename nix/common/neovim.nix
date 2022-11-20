@@ -161,6 +161,15 @@ in
       nnoremap <F4> <cmd>Telescope live_grep<cr>
       lua require('telescope').setup{defaults = {file_ignore_patterns = {"target/", ".*parquet.*", ".git/"}}}
 
+
+      """"""""""""""""""""""""""""""""""
+      " aerial
+      """"""""""""""""""""""""""""""""""
+      lua <<EOF
+        require("aerial").setup({})
+        require('telescope').load_extension('aerial')
+      EOF
+
       """"""""""""""""""""""""""""""""""
       " nvim-lspconfig 
       """"""""""""""""""""""""""""""""""
@@ -211,9 +220,6 @@ in
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
         
-        local lspconfig = require('lspconfig')
-        local luasnip = require('luasnip')
-
         -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
         local servers = { 'pyright', 'rust_analyzer' }
         for _, lsp in ipairs(servers) do
@@ -226,7 +232,7 @@ in
       EOF
 
       """"""""""""""""""""""""""""""""""
-      " nvim-cmp & nvim-lspconfig
+      " completion TODO
       """"""""""""""""""""""""""""""""""
       lua <<EOF
         
@@ -486,6 +492,7 @@ in
         l = {
           name = "LSP",
           l = {"<cmd>TroubleToggle<cr>", "Show diagnostics"},
+          d = {"<cmd>Telescope aerial<cr>", "Show document symbols"},
         },
 
         x = {
