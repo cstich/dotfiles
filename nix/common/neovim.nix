@@ -35,6 +35,8 @@ in
 
     # Python language server
     nodePackages.pyright
+
+    xclip
     ];
 
   programs.neovim = {
@@ -55,6 +57,9 @@ in
       nnoremap <c-k> <c-w>k
       nnoremap <c-h> <c-w>h
       nnoremap <c-l> <c-w>l
+
+      " Use system clipboard
+      set clipboard=unnamedplus
 
       " Use <leader>l to toggle display of whitespace
       nmap <leader>l :set list!<CR>
@@ -210,7 +215,7 @@ in
 
           -- TODO Update to newer API once NixOS ships neovim 0.8
           -- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Avoiding-LSP-formatting-conflicts
-          if client.name == "rust_analyzer" then                                                                                                   
+          if client.name == "rust_analyzer" then
             client.server_capabilities.document_formatting = false -- 0.7 and earlier
             -- client.server_capabilities.documentFormattingProvider = false -- 0.8 and later
           end
@@ -241,9 +246,11 @@ in
         local sources = {
           null_ls.builtins.diagnostics.pylint,
           null_ls.builtins.formatting.isort,
-          null_ls.builtins.formatting.yapf.with {
-            args = {"--style='{based_on_style: google, column_limit: 120}'"}  
-          },
+          -- null_ls.builtins.formatting.yapf,
+          null_ls.builtins.formatting.yapf.with ({
+            args = {"--style",
+                    "{based_on_style: google, column_limit: 120}"}  
+          }),
         }
 
         -- Make sure only null-ls is used for formatting
@@ -259,24 +266,26 @@ in
         
         -- Format on save
         local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-        null_ls.setup({
-          sources = sources,
-          on_attach = function(client, bufnr)
-            if client.supports_method("textDocument/formatting") then
-                vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-                vim.api.nvim_create_autocmd("BufWritePre", {
-                    group = augroup,
-                    buffer = bufnr,
-                    callback = function()
-                        -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-                        vim.lsp.buf.formatting_sync()
-                    end,
-                })
-            end
-          end,
+        require("null-ls").setup({
+            sources = sources,
+            -- you can reuse a shared lspconfig on_attach callback here
+            on_attach = function(client, bufnr)
+                if client.supports_method("textDocument/formatting") then
+                    vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+                    vim.api.nvim_create_autocmd("BufWritePre", {
+                        group = augroup,
+                        buffer = bufnr,
+                        callback = function()
+                            -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+                            vim.lsp.buf.formatting_sync()
+                        end,
+                    })
+                end
+            end,
         })
+
       
-        -- TODO Re-work the snippet part   
+        -- TODO Re-work the snippet part of the completion setup
         local luasnip = require('luasnip')
         local cmp = require('cmp')
         local lspkind = require('lspkind')
@@ -328,6 +337,8 @@ in
           sources = {
             { name = 'nvim_lsp' },
             { name = 'luasnip' },
+            { name = 'buffer' },
+            {name = 'path'},
           }
         }
 
