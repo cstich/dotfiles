@@ -68,5 +68,5 @@ in
   # Somehow logrotate fails
   services.logrotate.checkConfig = false;
 
-  nix.autoOptimiseStore = true; 
+  nix.settings.auto-optimise-store = true; 
 }

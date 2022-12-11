@@ -165,10 +165,10 @@ in
   services.printing.drivers = [pkgs.brlaser pkgs.brgenml1lpr pkgs.brgenml1cupswrapper ];
 
   # Allow parallel builds
-  nix.maxJobs = 4;
-  nix.buildCores = 40;
+  nix.settings.max-jobs = 4;
+  nix.settings.cores = 30;
 
-  nix.useSandbox = true;
+  nix.settings.sandbox = true;
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
