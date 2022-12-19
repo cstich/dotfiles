@@ -151,16 +151,8 @@
    systemd.services.test_systemd_timers = {
       serviceConfig.Type = "oneshot";
       script = ''
-        echo "Will start backblaze backup now."
-
-        # Create the lock file
-        lockfile -r0 otter-backup.lock && {
-        # The actual backup part
+        echo "Starting backblaze backup."
         ${pkgs.rclone}/bin/rclone sync -v /mnt/backup encrypted_b2:/backup/ 
-        }
-        # Release the lock file manually
-        rm -f otter-backup.lock
-
         echo "Finished backblaze backup."
       '';
     };
