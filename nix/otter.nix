@@ -148,5 +148,22 @@
     ];
   };
 
+
+   systemd.services.test_systemd_timers = {
+      serviceConfig.Type = "oneshot";
+      script = ''
+        echo "Will start backblaze backup now."
+        ${pkgs.bash}/bin/bash /home/christoph/Projects/dotfiles/bin/rclone-cron.sh >> /tmp/cron.log 2>&1"
+        echo "Finished backblaze backup."
+      '';
+    };
+
+    systemd.timers.test_systemd_timers = {
+      wantedBy = [ "timers.target" ];
+      partOf = [ "test_systemd_timers.service" ];
+      timerConfig.OnCalendar = [ "*-*-* *:00:00" ];
+    };
+
+
   system.stateVersion = "20.09"; # Can be left at first installed version
 }
