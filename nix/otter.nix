@@ -148,12 +148,19 @@
     ];
   };
 
-
    systemd.services.test_systemd_timers = {
       serviceConfig.Type = "oneshot";
       script = ''
         echo "Will start backblaze backup now."
-        ${pkgs.bash}/bin/bash /home/christoph/Projects/dotfiles/bin/rclone-cron.sh >> /tmp/cron.log 2>&1"
+
+        # Create the lock file
+        lockfile -r0 otter-backup.lock && {
+        # The actual backup part
+        ${pkgs.rclone}/bin/rclone sync -v /mnt/backup encrypted_b2:/backup/ 
+        }
+        # Release the lock file manually
+        rm -f otter-backup.lock
+
         echo "Finished backblaze backup."
       '';
     };
@@ -163,7 +170,6 @@
       partOf = [ "test_systemd_timers.service" ];
       timerConfig.OnCalendar = [ "*-*-* *:00:00" ];
     };
-
 
   system.stateVersion = "20.09"; # Can be left at first installed version
 }
