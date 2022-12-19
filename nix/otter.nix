@@ -141,26 +141,19 @@
     startAt = "daily";
   };
 
-  services.cron = {
-    enable = true;
-    systemCronJobs = [
-       "0 4 * * *  root . /etc/profile; bash /home/christoph/Projects/dotfiles/bin/rclone-cron.sh >> /tmp/cron.log 2>&1"
-    ];
-  };
-
-   systemd.services.test_systemd_timers = {
+   systemd.services.backblaze-backup = {
       serviceConfig.Type = "oneshot";
       script = ''
         echo "Starting backblaze backup."
-        ${pkgs.rclone}/bin/rclone sync -v /mnt/backup encrypted_b2:/backup/ 
+        ${pkgs.rclone}/bin/rclone sync --config "/home/christoph/Secrets/rclone.conf" -v /mnt/backup encrypted_b2:/backup/
         echo "Finished backblaze backup."
       '';
     };
 
-    systemd.timers.test_systemd_timers = {
+    systemd.timers.backblaze-backup = {
       wantedBy = [ "timers.target" ];
-      partOf = [ "test_systemd_timers.service" ];
-      timerConfig.OnCalendar = [ "*-*-* *:00:00" ];
+      partOf = [ "backblaze-backup.service" ];
+      timerConfig.OnCalendar = [ "*-*-* 4:00:00"];
     };
 
   system.stateVersion = "20.09"; # Can be left at first installed version
