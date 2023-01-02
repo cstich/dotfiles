@@ -35,6 +35,9 @@ in
 
     # Python language server
     nodePackages.pyright
+
+    # Eclipse language server
+    jdt-language-server
     ];
 
   programs.neovim = {
@@ -221,19 +224,47 @@ in
         capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
         
         -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-        local servers = { 'pyright', 'rust_analyzer' }
+        local servers = { 'pyright', 'rust_analyzer', }
         for _, lsp in ipairs(servers) do
           lspconfig[lsp].setup {
             -- use the on_attach function defined above
             on_attach = on_attach, 
             capabilities = capabilities,
           }
-        end
+          end
+
+
+
+          -- If you started neovim within `~/dev/xy/project-1` this would resolve to `project-1`
+          local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
+          local workspace_dir = '/home/christoph/.local/share/jdtls-workspaces/' .. project_name
+
+          require'lspconfig'.jdtls.setup{
+            cmd = {'${pkgs.jdt-language-server}/bin/jdt-language-server',
+            '-data', workspace_dir,
+            '-configuration', '/home/christoph/.cache/jdtls/config',},
+            on_attach = on_attach,
+            capabilities = capabilities,
+          }
+ 
+
+      EOF
+
+
+      lua <<EOF
+      -- local config = {
+      --   cmd = {'${pkgs.jdt-language-server}/bin/jdt-language-server',
+      --          '-data', workspace_dir},
+      --   root_dir = vim.fs.dirname(vim.fs.find({'.gradlew', '.git', 'mvnw'}, { upward = true })[1]),
+      -- }
+      -- require('jdtls').start_or_attach(config)
+
       EOF
 
       """"""""""""""""""""""""""""""""""
       " completion TODO
       """"""""""""""""""""""""""""""""""
+      set completeopt=menu,menuone,noselect
       lua <<EOF
         
         -- TODO Refactor null-ls part
@@ -328,6 +359,7 @@ in
           sources = {
             { name = 'nvim_lsp' },
             { name = 'luasnip' },
+            { name = 'buffer' },
           }
         }
 
@@ -538,6 +570,7 @@ in
         lualine-nvim
         lualine-lsp-progress
         nvim-cmp
+        nvim-jdtls
         null-ls-nvim
         nvim-lspconfig
         nvim-tree-lua
