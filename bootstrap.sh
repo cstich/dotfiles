@@ -14,6 +14,10 @@ ln -sf $SCRIPTPATH/config/kitty ~/.config/
 ln -sf $SCRIPTPATH/direnvrc ~/.direnvrc
 ln -sf /home/$USER/Secrets/secrets.nix $SCRIPTPATH/nix/common/secrets.nix
 
+# Setup the rclone.conf for otter
+mkdir -p ~/.config/rclone/
+ln -sf /home/$USER/Secrets/rclone.conf ~/.config/rclone/rclone.conf
+
 # TODO Think about how to deal with the hostname
 sudo ln -sf $SCRIPTPATH/nix/$HOSTNAME.nix /etc/nixos/configuration.nix
 
@@ -26,8 +30,8 @@ fi
 
 # This is the tmp dir for vim
 mkdir -p ~/.tmp
-nvim -c "PlugInstall" -c "q" -c "q"
-nvim -c "PlugUpdate" -c "q" -c "q"
+# nvim -c "PlugInstall" -c "q" -c "q"
+# nvim -c "PlugUpdate" -c "q" -c "q"
 
 # Source nix-direnv hook
 source ~/.direnvrc

@@ -36,7 +36,8 @@ in
     # Python language server
     nodePackages.pyright
 
-    xclip
+    # Eclipse language server
+    jdt-language-server
     ];
 
   programs.neovim = {
@@ -215,7 +216,7 @@ in
 
           -- TODO Update to newer API once NixOS ships neovim 0.8
           -- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Avoiding-LSP-formatting-conflicts
-          if client.name == "rust_analyzer" then
+          if client.name == "rust_analyzer" then                                                                                                   
             client.server_capabilities.document_formatting = false -- 0.7 and earlier
             -- client.server_capabilities.documentFormattingProvider = false -- 0.8 and later
           end
@@ -226,14 +227,41 @@ in
         capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
         
         -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-        local servers = { 'pyright', 'rust_analyzer' }
+        local servers = { 'pyright', 'rust_analyzer', }
         for _, lsp in ipairs(servers) do
           lspconfig[lsp].setup {
             -- use the on_attach function defined above
             on_attach = on_attach, 
             capabilities = capabilities,
           }
-        end
+          end
+
+
+
+          -- If you started neovim within `~/dev/xy/project-1` this would resolve to `project-1`
+          local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
+          local workspace_dir = '/home/christoph/.local/share/jdtls-workspaces/' .. project_name
+
+          require'lspconfig'.jdtls.setup{
+            cmd = {'${pkgs.jdt-language-server}/bin/jdt-language-server',
+            '-data', workspace_dir,
+            '-configuration', '/home/christoph/.cache/jdtls/config',},
+            on_attach = on_attach,
+            capabilities = capabilities,
+          }
+ 
+
+      EOF
+
+
+      lua <<EOF
+      -- local config = {
+      --   cmd = {'${pkgs.jdt-language-server}/bin/jdt-language-server',
+      --          '-data', workspace_dir},
+      --   root_dir = vim.fs.dirname(vim.fs.find({'.gradlew', '.git', 'mvnw'}, { upward = true })[1]),
+      -- }
+      -- require('jdtls').start_or_attach(config)
+
       EOF
 
       """"""""""""""""""""""""""""""""""
@@ -283,7 +311,6 @@ in
                 end
             end,
         })
-
       
         -- TODO Re-work the snippet part of the completion setup
         local luasnip = require('luasnip')
@@ -549,6 +576,7 @@ in
         lualine-nvim
         lualine-lsp-progress
         nvim-cmp
+        nvim-jdtls
         null-ls-nvim
         nvim-lspconfig
         nvim-tree-lua
