@@ -85,22 +85,6 @@ bindkey "^[c" fzf-cd-widget
 # Autocompletion 
 autoload -U compinit && compinit
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/christoph/.conda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/christoph/.conda/etc/profile.d/conda.sh" ]; then
-        . "/home/christoph/.conda/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/christoph/.conda/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-
 # vim mode config add cursor change
 # ---------------
 # https://github.com/justjanne/powerline-go/issues/169
@@ -130,3 +114,17 @@ echo -ne '\e[5 q'
 preexec() {
    echo -ne '\e[5 q'
 }
+
+
+# Autocomplete
+#
+# initialize autocompletion
+autoload -U compinit
+compinit
+
+# autocompletion using arrow keys (based on history)
+bindkey '\e[A' history-search-backward
+bindkey '\e[B' history-search-forward
+
+# Never beep
+setopt NO_BEEP
