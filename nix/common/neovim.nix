@@ -11,6 +11,8 @@ let
     isort
     pylint
     yapf
+
+
   ]; 
 in 
 
@@ -20,7 +22,8 @@ in
     fzf
     yarn
     ctags
-
+  
+    # Rust nvim client
     neovide
 
     # Telescope
@@ -38,6 +41,7 @@ in
 
     # Eclipse language server
     jdt-language-server
+
     ];
 
   programs.neovim = {
@@ -160,11 +164,14 @@ in
       let g:rooter_patterns = ['.git', 'Cargo.toml' ]
 
       """"""""""""""""""""""""""""""""""
+      " vimspector
+      """"""""""""""""""""""""""""""""""
+      let g:vimspector_enable_mappings = 'HUMAN'
+
+      """"""""""""""""""""""""""""""""""
       " Telescope plugin 
       """"""""""""""""""""""""""""""""""
       " Find files using Telescope command-line sugar.
-      nnoremap <F3> <cmd>Telescope buffers<cr>
-      nnoremap <F4> <cmd>Telescope live_grep<cr>
       lua require('telescope').setup{defaults = {file_ignore_patterns = {"target/", ".*parquet.*", ".git/"}}}
 
 
@@ -236,11 +243,19 @@ in
           }
           end
 
-
-
           -- If you started neovim within `~/dev/xy/project-1` this would resolve to `project-1`
           local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
           local workspace_dir = '/home/christoph/.local/share/jdtls-workspaces/' .. project_name
+          -- nvim-jdtls and nvim-cmp for whatever reason don't like each other
+          -- local config = {
+          --   cmd = {'${pkgs.jdt-language-server}/bin/jdt-language-server',
+          --          '-data', workspace_dir,
+          --          '-configuration', '/home/christoph/.cache/jdtls/config',},
+          --   root_dir = vim.fs.dirname(vim.fs.find({'.gradlew', '.git', 'mvnw'}, { upward = true })[1]),
+          --   on_attach = on_attach,
+          --   capabilities = capabilities,
+          -- }
+          -- require('jdtls').start_or_attach(config)
 
           require'lspconfig'.jdtls.setup{
             cmd = {'${pkgs.jdt-language-server}/bin/jdt-language-server',
@@ -249,19 +264,6 @@ in
             on_attach = on_attach,
             capabilities = capabilities,
           }
- 
-
-      EOF
-
-
-      lua <<EOF
-      -- local config = {
-      --   cmd = {'${pkgs.jdt-language-server}/bin/jdt-language-server',
-      --          '-data', workspace_dir},
-      --   root_dir = vim.fs.dirname(vim.fs.find({'.gradlew', '.git', 'mvnw'}, { upward = true })[1]),
-      -- }
-      -- require('jdtls').start_or_attach(config)
-
       EOF
 
       """"""""""""""""""""""""""""""""""
@@ -365,7 +367,7 @@ in
             { name = 'nvim_lsp' },
             { name = 'luasnip' },
             { name = 'buffer' },
-            {name = 'path'},
+            { name = 'path' },
           }
         }
 
@@ -600,6 +602,7 @@ in
         vim-rooter
         vim-devicons
         vim-slime
+        vimspector
         which-key-nvim
       ];
       # manually loadable by calling `:packadd $plugin-name`

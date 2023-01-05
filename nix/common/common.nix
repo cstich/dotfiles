@@ -31,6 +31,7 @@ in
       tmux
       wget
       which
+      zellij
       zip
     ];
 

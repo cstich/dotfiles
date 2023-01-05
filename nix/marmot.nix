@@ -19,6 +19,7 @@ in
       # Custom modules
       ./common/common.nix
       ./common/neovim.nix
+      ./common/helix.nix
       # ./common/dropbox.nix
       ./common/zsh.nix
       ./common/fonts.nix

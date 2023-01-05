@@ -1,0 +1,11 @@
+theme = "onelight"
+
+[editor]
+line-number = "relative"
+gutters = ["line-numbers", "diagnostics"]
+
+[editor.lsp]
+display-messages = true
+
+[editor.cursor-shape]
+insert = "bar"
