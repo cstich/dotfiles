@@ -1,5 +1,5 @@
 # Use this shell script to set all the options for dconf
-gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled false
+gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled true
 
 # Have nautilus/file dialogs display folders first
 gsettings set org.gtk.Settings.FileChooser sort-directories-first true
