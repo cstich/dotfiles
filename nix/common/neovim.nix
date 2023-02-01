@@ -11,8 +11,6 @@ let
     isort
     pylint
     yapf
-
-
   ]; 
 in 
 
@@ -42,6 +40,9 @@ in
     # Eclipse language server
     jdt-language-server
 
+    # Dependency for copying to the system clipboard
+    xclip
+
     ];
 
   programs.neovim = {
@@ -64,7 +65,7 @@ in
       nnoremap <c-l> <c-w>l
 
       " Use system clipboard
-      set clipboard=unnamedplus
+      set clipboard+=unnamedplus
 
       " Use <leader>l to toggle display of whitespace
       nmap <leader>l :set list!<CR>
