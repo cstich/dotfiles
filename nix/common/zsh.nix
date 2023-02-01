@@ -7,7 +7,10 @@
     ohMyZsh.enable = true;
     ohMyZsh.plugins= ["git" "pass" "ssh-agent"];
     syntaxHighlighting.enable = true;
+    enableBashCompletion = true;
   };
+
+  programs.bash.enableCompletion = true;
 
   environment.systemPackages = [
     pkgs.powerline-go

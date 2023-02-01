@@ -4,6 +4,7 @@ language-server = { command = "jdt-language-server", args = ["-data", "/home/chr
 
 [[language]]
 name = "python"
+indent = { tab-width = 4, unit = " " }
 roots = ["pyproject.toml", "setup.py", ".git"]
 language-server = { command = "pylsp", args = [] }
 formatter = { command = "yapf", args = [ "-q"] }

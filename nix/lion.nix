@@ -27,6 +27,15 @@ in
   
   nixpkgs.config.allowUnfree = true;
   virtualisation.virtualbox.guest.enable = true;
+  virtualisation.docker.enable = true;
+
+  networking = {
+    hostName = hostname; # Define your hostname.
+    # Create a self-resolving hostname entry in /etc/hosts
+    extraHosts = "127.0.1.1 marmot";
+    # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+    networkmanager.enable = true;
+  };
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -44,12 +53,12 @@ in
   ];
 
   # Enable CUPS to print documents.
-  # services.printing.enable = true;
+  services.printing.enable = true;
 
   users.users.christoph = {
     isNormalUser = true;
   home = "/home/christoph";
-    extraGroups = [ "audio" "networkManager" "wheel" "scanner" "lp" "vboxsf" ]; 
+    extraGroups = [ "audio" "docker" "networkManager" "wheel" "scanner" "lp" "vboxsf" ]; 
     shell = pkgs.zsh;
   };
 

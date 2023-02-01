@@ -7,18 +7,13 @@ let
 
   unstable = import <nixos-unstable> {};
   myPythonPackages = pythonPackages: with pythonPackages; [
-    cookiecutter
-    flake8
-    isort
-    pylint
-    yapf
-
-    python-lsp-server
-  ] ++ python-lsp-server.all ; 
+  ];
 in 
 
 {
   environment.systemPackages = with pkgs; [
+    unstable.helix
+  
     (python3.withPackages myPythonPackages)
     fzf
     yarn
@@ -39,5 +34,6 @@ in
 
     # Eclipse language server
     jdt-language-server
+
   ];
 }

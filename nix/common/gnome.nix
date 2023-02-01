@@ -53,8 +53,10 @@ in
        ulauncher
        discord
        kitty
+       lapce
        libreoffice
        meld
+       unstable.onedrive
        pass
        peek
        qtpass
