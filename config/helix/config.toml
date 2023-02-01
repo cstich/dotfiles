@@ -1,8 +1,16 @@
-theme = "onelight"
+theme = "my-onelight"
 
 [editor]
 line-number = "relative"
-gutters = ["line-numbers", "diagnostics"]
+completion-trigger-len = 1
+gutters = ["diagnostics", "line-numbers", "spacer", "diff"]
+idle-timeout = 0
+bufferline = "always"
+color-modes = true
+
+[editor.indent-guides]
+render = true
+character = "⋮"
 
 [editor.lsp]
 display-messages = true
