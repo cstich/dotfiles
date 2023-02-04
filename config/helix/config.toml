@@ -10,10 +10,24 @@ color-modes = true
 
 [editor.indent-guides]
 render = true
-character = "⋮"
+character = "¦"
 
 [editor.lsp]
 display-messages = true
 
 [editor.cursor-shape]
 insert = "bar"
+
+[editor.statusline]
+left = ["mode", "spinner", "file-name", "file-type"]
+right = ["diagnostics", "selections", "position", "position-percentage", "file-encoding"]
+mode.normal = "NORMAL"
+mode.insert = "INSERT"
+mode.select = "SELECT"
+
+[keys.normal]
+tab = "indent"
+S-tab = "unindent"
+
+[keys.normal.space]
+z = ":quit"

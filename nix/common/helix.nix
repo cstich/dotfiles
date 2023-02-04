@@ -35,5 +35,8 @@ in
     # Eclipse language server
     jdt-language-server
 
+    # System clipboard
+    xclip
+
   ];
 }

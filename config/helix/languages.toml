@@ -9,6 +9,7 @@ roots = ["pyproject.toml", "setup.py", ".git"]
 language-server = { command = "pylsp", args = [] }
 formatter = { command = "yapf", args = [ "-q"] }
 auto-format = true
+rulers = [120]
 
 [language.config.pylsp.plugins]
 pyflakes = { enabled = false }
