@@ -62,8 +62,9 @@ in
        qtpass
        skypeforlinux
        transmission-gtk
+       virtualbox
        veracrypt
-       vscode
+       vscode-fhs
        unstable.wezterm
 
        # Eclipse clipboard only works with thunar
@@ -110,7 +111,7 @@ in
 
     # Steam is a funny program to install
     # TODO This currently fails; open issue
-    # programs.steam.enable = true; 
+    programs.steam.enable = true; 
 
     # Allow flatpaks
     services.flatpak.enable = true;

@@ -1,6 +1,7 @@
 [[language]]
 name = "java"
 language-server = { command = "jdt-language-server", args = ["-data", "/home/christoph/.cache/jdtls/workspaces", "-configuration", "/home/christoph/.cache/jdtls/config"] }
+# language-server = { command = "java-language-server" }
 
 [[language]]
 name = "python"
