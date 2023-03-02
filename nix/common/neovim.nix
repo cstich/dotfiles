@@ -11,8 +11,6 @@ let
     isort
     pylint
     yapf
-
-
   ]; 
 in 
 
@@ -40,7 +38,7 @@ in
     nodePackages.pyright
 
     # Eclipse language server
-    jdt-language-server
+    jdt-language-server 
 
     # Dependency for copying to the system clipboard
     xclip
@@ -71,9 +69,6 @@ in
 
       " Use <leader>l to toggle display of whitespace
       nmap <leader>l :set list!<CR>
-
-      noremap <F5> :ALEGoToDefinition<CR>
-      noremap <F6> :Autoformat<CR>
 
       "Always show current position
       set ruler
@@ -601,6 +596,8 @@ in
         telescope-nvim
         telescope-project-nvim
         trouble-nvim
+        vim-gitgutter
+        vim-multiple-cursors
         vim-nix
         vim-rooter
         vim-devicons
