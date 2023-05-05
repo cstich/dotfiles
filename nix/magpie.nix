@@ -13,7 +13,7 @@
       ./common/neovim.nix
       ./common/fonts.nix
       ./common/gnome.nix
-      ./common/zsh.nix
+      ./common/shell.nix
     ];
   
   # Allow unfree packages
@@ -143,7 +143,6 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.christoph = {
     isNormalUser = true;
-    shell = pkgs.zsh;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keyFiles = [ "/home/christoph/Secrets/authorized_keys" ];
   };

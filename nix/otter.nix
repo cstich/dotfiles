@@ -10,7 +10,7 @@
       /etc/nixos/hardware-configuration.nix
       # <nixpkgs/nixos/modules/profiles/hardened.nix>
       ./common/common.nix
-      ./common/zsh.nix
+      ./common/shell.nix
       ./common/fonts.nix
       ./common/syncthing.nix
       # ./wifi-ap.nix
@@ -56,14 +56,12 @@
   users.users.christoph = {
     isNormalUser = true;
     extraGroups = [ "wheel" "backupadmins" ]; # Enable ‘sudo’ for the user.
-    shell = pkgs.zsh;
     openssh.authorizedKeys.keyFiles = [ "/home/christoph/Secrets/authorized_keys" ];
   };
 
   users.users.backupuser= {
     isNormalUser = true;
     extraGroups = [ "wheel" "backupadmins"];
-    shell = pkgs.zsh;
   };
 
   users.users.lenka = {
