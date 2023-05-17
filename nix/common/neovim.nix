@@ -6,6 +6,16 @@ let
   # sudo nix-channel --update nixos-unstable
   unstable = import <nixos-unstable> {};
   myPythonPackages = pythonPackages: with pythonPackages; [
+
+    # magma-nvim
+    pynvim
+    jupyter-client
+    pillow
+    cairosvg
+    # pnglatex: not yet packaged
+    plotly
+    # kaleido: not yet packaged
+
     cookiecutter
     flake8
     isort
@@ -53,6 +63,27 @@ in
 
   configure = {
     customRC = ''
+      
+      """""""""""""""""""""""""""""""""""""""
+      " Plugins packer.nvim
+      """""""""""""""""""""""""""""""""""""""
+      use { 'dccsillag/magma-nvim', run = ':UpdateRemotePlugins' }
+
+
+      """""""""""""""""""""""""""""""""""""""
+      " Magma settins TODO move to other keybinding section
+      """""""""""""""""""""""""""""""""""""""
+      nnoremap <silent><expr> <LocalLeader>r  :MagmaEvaluateOperator<CR>
+      nnoremap <silent>       <LocalLeader>rr :MagmaEvaluateLine<CR>
+      xnoremap <silent>       <LocalLeader>r  :<C-u>MagmaEvaluateVisual<CR>
+      nnoremap <silent>       <LocalLeader>rc :MagmaReevaluateCell<CR>
+      nnoremap <silent>       <LocalLeader>rd :MagmaDelete<CR>
+      nnoremap <silent>       <LocalLeader>ro :MagmaShowOutput<CR>
+
+      let g:magma_automatically_open_output = v:false
+      let g:magma_image_provider = "kitty"
+
+     
       """""""""""""""""""""""""""""""""""""""
       " General settings
       """""""""""""""""""""""""""""""""""""""
@@ -602,6 +633,7 @@ in
         vim-rooter
         vim-devicons
         vim-slime
+        packer-nvim 
         vimspector
         which-key-nvim
       ];
