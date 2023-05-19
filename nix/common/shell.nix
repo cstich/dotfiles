@@ -10,7 +10,6 @@
     pkgs.fzf
     pkgs.grc
     pkgs.fishPlugins.fzf-fish
-    pkgs.fishPlugins.grc
     pkgs.powerline-go
   ];
 

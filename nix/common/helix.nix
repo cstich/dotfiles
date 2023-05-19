@@ -24,7 +24,7 @@ in
     ripgrep
 
     # Tree sitter depenencies
-    clang
+    gcc
     tree-sitter
     git
     curl
@@ -37,6 +37,5 @@ in
 
     # System clipboard
     xclip
-
   ];
 }
