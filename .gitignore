@@ -1,1 +1,2 @@
 nix/common/secrets.nix
+config/nvim/plugin/

@@ -8,6 +8,7 @@ mkdir -p ~/.symlinks/zsh_history/
 
 ln -sf $SCRIPTPATH/nix/nixpkgs ~/.config/
 ln -sf $SCRIPTPATH/config/zsh/zshrc ~/.zshrc
+ln -sf $SCRIPTPATH/config/fish ~/.config/
 ln -sf $SCRIPTPATH/config/tmux/tmux.conf ~/.tmux.conf
 ln -sf $SCRIPTPATH/config/helix ~/.config/
 ln -sf $SCRIPTPATH/config/nvim ~/.config/

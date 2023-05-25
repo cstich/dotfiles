@@ -17,7 +17,7 @@ in
       ./common/fonts.nix
       ./common/gnome.nix
       ./common/syncthing.nix
-      ./common/zsh.nix
+      ./common/shell.nix
       <nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
     ];
 
@@ -72,7 +72,6 @@ in
     isNormalUser = true;
     home = "/home/christoph";
     extraGroups = [ "audio" "networkManager" "wheel" "scanner" "lp"]; 
-    shell = pkgs.zsh;
   };
 
   system.stateVersion = "20.09"; # Do not change 

@@ -17,7 +17,7 @@ in
       ./common/helix.nix
       ./common/fonts.nix
       ./common/gnome.nix
-      ./common/zsh.nix
+      ./common/shell.nix
     ];
 
   # Bootloader
@@ -59,7 +59,8 @@ in
     isNormalUser = true;
   home = "/home/christoph";
     extraGroups = [ "audio" "docker" "networkManager" "wheel" "scanner" "lp" "vboxsf" ]; 
-    shell = pkgs.zsh;
+    subUidRanges = [{ startUid = 100000; count = 65536; }]; # for podman
+    subGidRanges = [{ startGid = 100000; count = 65536; }]; # for podman
   };
 
   system.stateVersion = "22.05"; # Do not change 

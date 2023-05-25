@@ -21,7 +21,7 @@ in
       ./common/neovim.nix
       ./common/helix.nix
       # ./common/dropbox.nix
-      ./common/zsh.nix
+      ./common/shell.nix
       ./common/fonts.nix
       ./common/gnome.nix
       ./common/syncthing.nix
@@ -149,7 +149,6 @@ in
      description = "Christoph Stich";
      extraGroups = ["audio" "wheel" "networkManager" "scanner" "lp"];
      uid = 1000;
-     shell = pkgs.zsh;
      openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys" ];
   }; 
 
