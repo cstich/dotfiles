@@ -30,7 +30,7 @@ in
     "net.ipv6.conf.${wifi}.forwarding" = true;
    };
 
-  networking.nameservers = ["10.77.0.1" "10.77.1.1" "127.0.0.1" "8.8.8.8" ]; # The first two are the PilsenFree DNS
+  networking.nameservers = ["8.8.4.4" "127.0.0.1" "8.8.8.8" ]; # The first two are the PilsenFree DNS
   networking.domain = "lan";
   networking.hostName = "fox"; # Define your hostname.
 
@@ -72,7 +72,7 @@ in
   # You can set static IP addresses based on either host namaes or
   # mac addresses here
   services.dnsmasq = {
-    servers = ["8.8.8.8" "8.8.8.4" "10.77.0.1" "10.77.1.1"];
+    servers = ["8.8.8.8" "8.8.8.4"];
     enable = true;
     extraConfig = ''
       domain-needed
