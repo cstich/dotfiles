@@ -65,7 +65,9 @@ in
        virtualbox
        veracrypt
        vscode-fhs
+       vlc
        unstable.wezterm
+       unstable.displaycal
 
        # Eclipse clipboard only works with thunar
        xfce.thunar

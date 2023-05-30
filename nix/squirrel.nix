@@ -24,6 +24,12 @@ in
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+
+  # Setup keyfile
+  boot.initrd.secrets = {
+    "/crypto_keyfile.bin" = null;
+  };
 
   # Brother scanner support
   hardware.sane = {
@@ -31,48 +37,47 @@ in
     brscan4.enable = true;
   };
 
-  boot.initrd.luks.reusePassphrases = true;
-  boot.initrd.luks.devices = {
-    luksroot = {
-      device = "/dev/disk/by-uuid/a499cdc8-79a3-46b6-80b7-fdaef2c8d7d7";
-      preLVM = true;
-      allowDiscards = true;
-    };
-    crypt-data = {
-      device = "/dev/disk/by-uuid/d654f007-3385-4a2e-927f-60b88c892bcb";
-      preLVM = true;
-      allowDiscards = true;
-    };
-  };
-
   nixpkgs.config.allowUnfree = true;
 
   networking ={
     useDHCP = false;
-    interfaces.enp0s25.useDHCP = true;
-    interfaces.wlp3s0.useDHCP = true;
+    interfaces.enp0s31f6.useDHCP = true;
+    interfaces.wlp0s20f3.useDHCP = true;
     hostName = hostname; 
     extraHosts = "127.0.1.1 squirrel";
     networkmanager.enable = true; 
   };
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = "en_GB.UTF-8";
+
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "en_GB.UTF-8";
+    LC_IDENTIFICATION = "en_GB.UTF-8";
+    LC_MEASUREMENT = "en_GB.UTF-8";
+    LC_MONETARY = "en_GB.UTF-8";
+    LC_NAME = "en_GB.UTF-8";
+    LC_NUMERIC = "en_GB.UTF-8";
+    LC_PAPER = "en_GB.UTF-8";
+    LC_TELEPHONE = "en_GB.UTF-8";
+    LC_TIME = "en_GB.UTF-8";
+  };
+
 
   # My  gnome3 config
   myGnome3.gdm.enable = true;
 
-  # Configure keymap in X11
-  services.xserver.layout = "us";
-
   # Enable CUPS to print documents.
-  # services.printing.enable = true;
+  services.printing.enable = true;
 
   users.users.christoph = {
     isNormalUser = true;
     home = "/home/christoph";
-    extraGroups = [ "audio" "networkManager" "wheel" "scanner" "lp"]; 
+    extraGroups = [ "audio" "colord" "networkManager" "wheel" "scanner" "lp"]; 
     shell = pkgs.zsh;
+    packages = with pkgs; [
+
+    ];
   };
 
   system.stateVersion = "20.09"; # Do not change 
