@@ -1,5 +1,3 @@
-
-
 lua << EOF
 
     local ensure_packer = function()
@@ -40,7 +38,7 @@ lua << EOF
         use {'CodeGradox/onehalf-lush'}
         -- use {'nvim-tree/nvim-web-devicons'}
         use {'kyazdani42/nvim-web-devicons'}
-        use {'nvim-telescope/telescope.nvim'}
+        use {'nvim-telescope/telescope.nvim', commit = 'c1a2af0af69e80e14e6b226d3957a064cd080805'}
         use {'nvim-telescope/telescope-project.nvim'}
         use {'folke/trouble.nvim'}
         use {'airblade/vim-gitgutter'}
@@ -258,7 +256,7 @@ lua << EOF
 
   -- Add additional capabilities supported by nvim-cmp
   local capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+  capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
   
   -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
   local servers = { 'pyright', 'rust_analyzer', }
