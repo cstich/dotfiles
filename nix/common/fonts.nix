@@ -30,7 +30,7 @@ in
       useEmbeddedBitmaps = true;
       defaultFonts.serif = [ "Source Serif Pro" ];
       defaultFonts.sansSerif = [ "Fira Sans" ];
-      defaultFonts.monospace = [ "JetBrainsMonoNL Nerd Font Mono" ];
+      defaultFonts.monospace = [ "FiraCode Nerd Font Mono" ];
     };
   };
 }
