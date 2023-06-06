@@ -30,7 +30,6 @@ in
   # TODO Factor out marmot specific settings
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
   boot.loader.grub.useOSProber = true;
 
   # boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_10.override {
@@ -132,8 +131,8 @@ in
   # Enable the OpenSSH daemon.
   services.openssh = {
       enable = true;
-      permitRootLogin = "no";
-      passwordAuthentication = false;
+      settings.PermitRootLogin = "no";
+      settings.PasswordAuthentication = false;
   };
 
   services.sshguard = {
