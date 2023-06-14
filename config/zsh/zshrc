@@ -76,10 +76,12 @@ key=(
 [[ -n "${key[Down]}"      ]] && bindkey "${key[Down]}" down-line-or-beginning-search
 [[ -n "${key[PageUp]}"    ]] && bindkey "${key[PageUp]}" beginning-of-buffer-or-history
 [[ -n "${key[PageDown]}"  ]] && bindkey "${key[PageDown]}" end-of-buffer-or-history
-[[ -n "${key[Home]}"      ]] && bindkey -M vicmd "${key[Home]}" beginning-of-line
-[[ -n "${key[End]}"       ]] && bindkey -M vicmd "${key[End]}" end-of-line
-# bindkey -M vicmd "k" up-line-or-beginning-search
-# bindkey -M vicmd "j" down-line-or-beginning-search
+# [[ -n "${key[Home]}"      ]] && bindkey -M vicmd "${key[Home]}" beginning-of-line
+# [[ -n "${key[End]}"       ]] && bindkey -M vicmd "${key[End]}" end-of-line
+
+# Home and End are funny with ZSH in Tmux
+bindkey "^[OF" end-of-line
+bindkey "^[OH" beginning-of-line
 
 # Because we are using the VIM key bindings the fzf plugin bindings get overwritten
 bindkey "^I" fzf-completion

@@ -32,8 +32,8 @@ in
        gnome.networkmanager-openvpn
        gnome.seahorse
 
-       gnomeExtensions.switcher
-       gnomeExtensions.vertical-overview
+       gnomeExtensions.vertical-workspaces
+       gnomeExtensions.paperwm
       
        arc-theme
        arc-icon-theme

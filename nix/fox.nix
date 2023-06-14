@@ -13,7 +13,7 @@ in
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
       # <nixpkgs/nixos/modules/profiles/hardened.nix>
-      ./common/zsh.nix
+      ./common/shell.nix
       ./common/common.nix
     ];
 
@@ -30,7 +30,7 @@ in
     "net.ipv6.conf.${wifi}.forwarding" = true;
    };
 
-  networking.nameservers = ["10.77.0.1" "10.77.1.1" "127.0.0.1" "8.8.8.8" ]; # The first two are the PilsenFree DNS
+  networking.nameservers = ["8.8.4.4" "127.0.0.1" "8.8.8.8" ]; # The first two are the PilsenFree DNS
   networking.domain = "lan";
   networking.hostName = "fox"; # Define your hostname.
 
@@ -72,7 +72,7 @@ in
   # You can set static IP addresses based on either host namaes or
   # mac addresses here
   services.dnsmasq = {
-    servers = ["8.8.8.8" "8.8.8.4" "10.77.0.1" "10.77.1.1"];
+    servers = ["8.8.8.8" "8.8.8.4"];
     enable = true;
     extraConfig = ''
       domain-needed
@@ -114,7 +114,6 @@ in
   users.users.christoph = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    shell = pkgs.zsh;
     openssh.authorizedKeys.keyFiles = [ "/home/christoph/Secrets/authorized_keys" ];
   };
 
@@ -126,8 +125,8 @@ in
 
   services.openssh = {
     enable = true;
-    passwordAuthentication = false;
-    permitRootLogin = "no";
+    settings.PasswordAuthentication = false;
+    settings.PermitRootLogin = "no";
     ports = [ 8822 ];
   };
 

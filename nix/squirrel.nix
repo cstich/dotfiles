@@ -17,7 +17,7 @@ in
       ./common/fonts.nix
       ./common/gnome.nix
       ./common/syncthing.nix
-      ./common/zsh.nix
+      ./common/shell.nix
       <nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
     ];
 
@@ -66,6 +66,7 @@ in
 
   # My  gnome3 config
   myGnome3.gdm.enable = true;
+
 
   # Enable CUPS to print documents.
   services.printing.enable = true;

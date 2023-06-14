@@ -1,9 +1,12 @@
 {pkgs, ...}:
 
-# Setup font rendering
+let
+    unstable = import <nixos-unstable> {};
+in
 {
   fonts = {
     enableDefaultFonts = true;
+    fontDir.enable = true;
     fonts = with pkgs; [
       xorg.fontbh100dpi
       xorg.fontmiscmisc
@@ -16,7 +19,7 @@
       overpass
       siji 
       fira
-      (nerdfonts.override { fonts = [ "FiraCode" ]; })
+      (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
       source-code-pro
       source-sans-pro
       source-serif-pro
@@ -27,7 +30,7 @@
       useEmbeddedBitmaps = true;
       defaultFonts.serif = [ "Source Serif Pro" ];
       defaultFonts.sansSerif = [ "Fira Sans" ];
-      defaultFonts.monospace = [ "FuraCode Nerd Font Mono" ];
+      defaultFonts.monospace = [ "FiraCode Nerd Font Mono" ];
     };
   };
 }
