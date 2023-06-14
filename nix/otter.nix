@@ -19,7 +19,6 @@
   # Use the GRUB 2 boot loader.
   boot.loader.grub.copyKernels = true;
   boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
   boot.loader.grub.device = "/dev/disk/by-id/ata-ST500LM021-1KJ152_W6248MN7";
   boot.zfs.requestEncryptionCredentials = true;
   boot.supportedFilesystems = [ "zfs" ]; 
@@ -91,8 +90,8 @@
 
   services.openssh = {
     enable = true;
-    passwordAuthentication = false;
-    permitRootLogin = "no";
+    settings.passwordAuthentication = false;
+    settings.permitRootLogin = "no";
     extraConfig = "# AuthenticationMethods publickey keyboard-interactive:pam";
   }; 
 
