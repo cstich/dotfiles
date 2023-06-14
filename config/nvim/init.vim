@@ -248,10 +248,10 @@ lua << EOF
 
     -- TODO Update to newer API once NixOS ships neovim 0.8
     -- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Avoiding-LSP-formatting-conflicts
-    if client.name == "rust_analyzer" then                                                                                                   
-      client.server_capabilities.document_formatting = false -- 0.7 and earlier
-      -- client.server_capabilities.documentFormattingProvider = false -- 0.8 and later
-    end
+    -- if client.name == "rust_analyzer" then                                                                                                   
+    --   client.server_capabilities.document_formatting = false -- 0.7 and earlier
+    --   -- client.server_capabilities.documentFormattingProvider = false -- 0.8 and later
+    -- end
   end
 
   -- Add additional capabilities supported by nvim-cmp
@@ -267,6 +267,8 @@ lua << EOF
       capabilities = capabilities,
     }
     end
+
+    require'lspconfig'.rust_analyzer.setup{}
 
     -- If you started neovim within `~/dev/xy/project-1` this would resolve to `project-1`
     local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')

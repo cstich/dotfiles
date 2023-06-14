@@ -34,6 +34,7 @@ in
 
        gnomeExtensions.vertical-workspaces
        gnomeExtensions.paperwm
+       gnomeExtensions.window-is-ready-remover
       
        arc-theme
        arc-icon-theme
@@ -42,16 +43,15 @@ in
        pantheon.elementary-icon-theme
        
        # Deskotp things
-       unstable.alacritty
+       alacritty
        dconf
        discord
        firefox
        google-chrome
        gparted
        git-filter-repo
-       rofi
-       ulauncher
        discord
+       kupfer
        kitty
        lapce
        libreoffice
