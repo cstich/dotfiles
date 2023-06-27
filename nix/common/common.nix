@@ -13,6 +13,7 @@ in
       bottom
       curl
       exa
+      fd
       fzf
       git
       gptfdisk
@@ -26,7 +27,6 @@ in
       p7zip
       procmail
       sshfs
-      silver-searcher
       tmux
       wget
       which

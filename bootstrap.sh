@@ -8,12 +8,17 @@ mkdir -p ~/.symlinks/zsh_history/
 
 ln -sf $SCRIPTPATH/nix/nixpkgs ~/.config/
 ln -sf $SCRIPTPATH/config/zsh/zshrc ~/.zshrc
+ln -sf $SCRIPTPATH/config/fish ~/.config/
 ln -sf $SCRIPTPATH/config/tmux/tmux.conf ~/.tmux.conf
 ln -sf $SCRIPTPATH/config/helix ~/.config/
 ln -sf $SCRIPTPATH/config/nvim ~/.config/
 ln -sf $SCRIPTPATH/config/kitty ~/.config/
 ln -sf $SCRIPTPATH/direnvrc ~/.direnvrc
 ln -sf /home/$USER/Secrets/secrets.nix $SCRIPTPATH/nix/common/secrets.nix
+
+# Import the key for pass
+gpg --import .symlinks/secretes/pass.asc
+pass init C09DE06BAC95A4D9
 
 # Setup the rclone.conf for otter
 mkdir -p ~/.config/rclone/

@@ -10,7 +10,7 @@
       /etc/nixos/hardware-configuration.nix
       # <nixpkgs/nixos/modules/profiles/hardened.nix>
       ./common/common.nix
-      ./common/zsh.nix
+      ./common/shell.nix
       ./common/fonts.nix
       ./common/syncthing.nix
       # ./wifi-ap.nix
@@ -19,7 +19,6 @@
   # Use the GRUB 2 boot loader.
   boot.loader.grub.copyKernels = true;
   boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
   boot.loader.grub.device = "/dev/disk/by-id/ata-ST500LM021-1KJ152_W6248MN7";
   boot.zfs.requestEncryptionCredentials = true;
   boot.supportedFilesystems = [ "zfs" ]; 
@@ -56,14 +55,12 @@
   users.users.christoph = {
     isNormalUser = true;
     extraGroups = [ "wheel" "backupadmins" ]; # Enable ‘sudo’ for the user.
-    shell = pkgs.zsh;
     openssh.authorizedKeys.keyFiles = [ "/home/christoph/Secrets/authorized_keys" ];
   };
 
   users.users.backupuser= {
     isNormalUser = true;
     extraGroups = [ "wheel" "backupadmins"];
-    shell = pkgs.zsh;
   };
 
   users.users.lenka = {
@@ -93,8 +90,8 @@
 
   services.openssh = {
     enable = true;
-    passwordAuthentication = false;
-    permitRootLogin = "no";
+    settings.passwordAuthentication = false;
+    settings.permitRootLogin = "no";
     extraConfig = "# AuthenticationMethods publickey keyboard-interactive:pam";
   }; 
 

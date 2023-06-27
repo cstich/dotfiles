@@ -13,7 +13,7 @@ in
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
       # <nixpkgs/nixos/modules/profiles/hardened.nix>
-      ./common/zsh.nix
+      ./common/shell.nix
       ./common/common.nix
     ];
 
@@ -114,7 +114,6 @@ in
   users.users.christoph = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    shell = pkgs.zsh;
     openssh.authorizedKeys.keyFiles = [ "/home/christoph/Secrets/authorized_keys" ];
   };
 
@@ -126,8 +125,8 @@ in
 
   services.openssh = {
     enable = true;
-    passwordAuthentication = false;
-    permitRootLogin = "no";
+    settings.PasswordAuthentication = false;
+    settings.PermitRootLogin = "no";
     ports = [ 8822 ];
   };
 

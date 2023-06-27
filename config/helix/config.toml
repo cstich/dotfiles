@@ -2,9 +2,9 @@ theme = "my-onelight"
 
 [editor]
 line-number = "relative"
-completion-trigger-len = 1
+completion-trigger-len = 2
 gutters = ["diagnostics", "line-numbers", "spacer", "diff"]
-idle-timeout = 0
+idle-timeout = 100
 bufferline = "always"
 color-modes = true
 

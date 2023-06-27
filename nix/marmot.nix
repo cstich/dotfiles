@@ -21,7 +21,7 @@ in
       ./common/neovim.nix
       ./common/helix.nix
       # ./common/dropbox.nix
-      ./common/zsh.nix
+      ./common/shell.nix
       ./common/fonts.nix
       ./common/gnome.nix
       ./common/syncthing.nix
@@ -30,7 +30,6 @@ in
   # TODO Factor out marmot specific settings
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
   boot.loader.grub.useOSProber = true;
 
   # boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_10.override {
@@ -132,8 +131,8 @@ in
   # Enable the OpenSSH daemon.
   services.openssh = {
       enable = true;
-      permitRootLogin = "no";
-      passwordAuthentication = false;
+      settings.PermitRootLogin = "no";
+      settings.PasswordAuthentication = false;
   };
 
   services.sshguard = {
@@ -149,7 +148,6 @@ in
      description = "Christoph Stich";
      extraGroups = ["audio" "wheel" "networkManager" "scanner" "lp"];
      uid = 1000;
-     shell = pkgs.zsh;
      openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys" ];
   }; 
 

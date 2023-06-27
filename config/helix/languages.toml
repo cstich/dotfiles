@@ -17,5 +17,5 @@ pyflakes = { enabled = false }
 pylint = { enabled = true, args = ["--rcfile=~/.pylintrc"] }
 autopep8 = { enabled = false }
 pycodestyle = { enabled = false }
-yapf = { enabled = false }
+yapf = { enabled = true }
 mypy = { enabled = true, live_mode = false, dmypy = true, strict = false} 
