@@ -23,6 +23,7 @@ let
     isort
     pylint
     yapf
+    ruff-lsp
   ]; 
   neovim-python = pkgs.python3.withPackages neovim-python-packages;
 

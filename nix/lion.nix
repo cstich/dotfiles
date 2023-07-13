@@ -24,15 +24,16 @@ in
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   
   nixpkgs.config.allowUnfree = true;
-  virtualisation.virtualbox.guest.enable = true;
+  # virtualisation.virtualbox.guest.enable = false;
   virtualisation.docker.enable = true;
 
   networking = {
     hostName = hostname; # Define your hostname.
     # Create a self-resolving hostname entry in /etc/hosts
-    extraHosts = "127.0.1.1 marmot";
+    extraHosts = "127.0.0.1 lion";
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
     networkmanager.enable = true;
   };
@@ -41,9 +42,9 @@ in
   i18n.defaultLocale = "en_US.UTF-8";
 
   # My gnome3 config
-  myGnome3.gdm.enable = false;
-  myGnome3.lightdm.enable = true;
-  myGnome3.wayland.enable = false;
+  myGnome3.gdm.enable = true;
+  myGnome3.lightdm.enable = false;
+  myGnome3.wayland.enable = true;
 
   # Configure keymap in X11
   services.xserver.layout = "us";
