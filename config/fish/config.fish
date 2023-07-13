@@ -22,12 +22,12 @@ alias ls="exa --icons"
 alias ll="exa -la --icons"
 
 # Aliases for all tools to use ssh-ident
-alias ssh="ssh-ident"
-
-function git
-    set -x GIT_SSH "ssh-ident"
-    command git $argv
-end
+# alias ssh="ssh-ident"
+# 
+# function git
+#     set -x GIT_SSH "ssh-ident"
+#     command git $argv
+# end
 
 # Setup direnv (should be last)
 direnv hook fish | source

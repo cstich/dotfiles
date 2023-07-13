@@ -115,6 +115,8 @@ in
     # TODO This currently fails; open issue
     programs.steam.enable = true; 
 
+    programs.ssh.askPassword = "";
+
     # Allow flatpaks
     services.flatpak.enable = true;
 
