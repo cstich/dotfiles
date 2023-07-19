@@ -246,6 +246,9 @@ lua << EOF
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
     vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
 
+    if client.name == "rust_lsp" then
+        client.server_capabilities.hoverProvider = false
+    end
     -- TODO Update to newer API once NixOS ships neovim 0.8
     -- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Avoiding-LSP-formatting-conflicts
     -- if client.name == "rust_analyzer" then                                                                                                   
@@ -259,7 +262,7 @@ lua << EOF
   capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
   
   -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-  local servers = { 'pyright', 'rust_analyzer', }
+  local servers = { 'pyright', 'rust_analyzer', 'ruff_lsp' }
   for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup {
       -- use the on_attach function defined above
@@ -297,11 +300,11 @@ EOF
 " completion TODO
 """"""""""""""""""""""""""""""""""
 lua <<EOF
-  
+
   -- TODO Refactor null-ls part
   local null_ls = require("null-ls")
   local sources = {
-    null_ls.builtins.diagnostics.pylint,
+    -- null_ls.builtins.diagnostics.pylint,
     null_ls.builtins.formatting.isort,
     -- null_ls.builtins.formatting.yapf,
     null_ls.builtins.formatting.yapf.with ({
