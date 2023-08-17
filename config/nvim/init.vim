@@ -410,7 +410,7 @@ EOF
 lua <<EOF
 require 'nvim-treesitter.install'.compilers = { 'gcc' } -- force treesitter to use gcc instead of clang
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {'bash', 'lua', 'python', 'java', 'nix', 'fish', 'toml', 'rust'},
+  ensure_installed = {'bash', 'hcl', 'json', 'lua', 'python', 'java', 'nix', 'fish', 'terraform', 'toml', 'rust'},
   sync_install = false,
   ignore_install = { "" },
   highlight = {
