@@ -30,7 +30,7 @@ in
     "net.ipv6.conf.${wifi}.forwarding" = true;
    };
 
-  networking.nameservers = ["8.8.4.4" "127.0.0.1" "8.8.8.8" ]; # The first two are the PilsenFree DNS
+  networking.nameservers = ["8.8.4.4" "127.0.0.1" "8.8.8.8" ]; 
   networking.domain = "lan";
   networking.hostName = "fox"; # Define your hostname.
 
