@@ -304,7 +304,6 @@ lua <<EOF
   -- TODO Refactor null-ls part
   local null_ls = require("null-ls")
   local sources = {
-    -- null_ls.builtins.diagnostics.pylint,
     null_ls.builtins.formatting.isort,
     -- null_ls.builtins.formatting.yapf,
     null_ls.builtins.formatting.yapf.with ({

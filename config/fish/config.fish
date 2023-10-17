@@ -29,5 +29,12 @@ alias ll="exa -la --icons"
 #     command git $argv
 # end
 
+begin
+    # Pyenv hook
+    pyenv init - | source
+end
+
 # Setup direnv (should be last)
 direnv hook fish | source
+
+
