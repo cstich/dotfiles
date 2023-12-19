@@ -84,12 +84,6 @@ in
      };
   };
 
-  # Brother scanner
-  hardware.sane = {
-    enable = true;
-    brscan4.enable = true;
-  };
-
   hardware.enableAllFirmware = true;
   hardware.bluetooth.enable = true;
   hardware.opengl.driSupport32Bit = true;

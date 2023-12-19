@@ -5,9 +5,9 @@ let
 in
 {
   fonts = {
-    enableDefaultFonts = true;
+    enableDefaultPackages = true;
     fontDir.enable = true;
-    fonts = with pkgs; [
+    packages = with pkgs; [
       xorg.fontbh100dpi
       xorg.fontmiscmisc
       xorg.fontcursormisc
