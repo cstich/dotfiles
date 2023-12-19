@@ -76,11 +76,11 @@ in
     server = ["8.8.8.8" "8.8.8.4"];
     domain-needed = true;
     bogus-priv = true;
-    listen-address = ["::1", "127.0.0.1", "${ipEth}"];
+    listen-address = ["::1,127.0.0.1,${ipEth}"];
     interface = "${intEth}";
     bind-interfaces = true;
-    dhcp-range= ["192.168.1.10", "192.168.1.254"];
-    dhcp-host= ["${secrets.macAddressOtter}", "192.168.1.240"];
+    dhcp-range= ["192.168.1.10,192.168.1.254,24h"];
+    dhcp-host= ["${secrets.macAddressOtter},192.168.1.240"];
     local = "/lan/";
     domain = "lan";
     expand-hosts = true;
