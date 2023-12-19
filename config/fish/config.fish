@@ -29,8 +29,7 @@ alias ll="exa -la --icons"
 #     command git $argv
 # end
 
-begin
-    # Pyenv hook
+if type -q pyenv   
     pyenv init - | source
 end
 
