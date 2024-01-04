@@ -31,8 +31,6 @@ function fish_right_prompt
   set_color normal
 end
 
-
-
 # Emulates vim's cursor shape behavior
 # Set the normal and visual mode cursors to a block
 set fish_cursor_default block
@@ -43,7 +41,6 @@ set fish_cursor_replace_one underscore
 
 # Only run this in interactive shells
 if status is-interactive
-
   # I'm trying to grow a neckbeard
   # fish_vi_key_bindings
   # Set the cursor shapes for the different vi modes.
@@ -74,13 +71,12 @@ set -g fish_greeting
 #     command git $argv
 # end
 
-
-# Setup direnv (should be last)
-direnv hook fish | source
-
 # pyenv init
 if command -v pyenv 1>/dev/null 2>&1
   set -Ux PYENV_ROOT $HOME/.pyenv
   set -U fish_user_paths $PYENV_ROOT/bin $fish_user_paths
   pyenv init - | source
 end
+
+# Setup direnv (should be last)
+direnv hook fish | source
