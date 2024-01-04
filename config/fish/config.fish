@@ -9,6 +9,30 @@ set VIRTUAL_ENV_DISABLE_PROMPT 1
 function fish_mode_prompt
 end
 
+# Instead render the mode prompt on the right
+function fish_right_prompt
+  switch $fish_bind_mode
+    case default
+      set_color --bold blue
+      echo 'NORMAL '
+    case insert
+      set_color --bold green
+      echo 'INSERT '
+    case replace_one
+      set_color --bold red
+      echo 'REPLACE '
+    case visual
+      set_color --bold brmagenta
+      echo 'VISUAL '
+    case '*'
+      set_color --bold orange
+      echo '? '
+  end
+  set_color normal
+end
+
+
+
 # Emulates vim's cursor shape behavior
 # Set the normal and visual mode cursors to a block
 set fish_cursor_default block
@@ -17,9 +41,30 @@ set fish_cursor_insert line
 # Set the replace mode cursor to an underscore
 set fish_cursor_replace_one underscore
 
+# Only run this in interactive shells
+if status is-interactive
+
+  # I'm trying to grow a neckbeard
+  # fish_vi_key_bindings
+  # Set the cursor shapes for the different vi modes.
+  set fish_cursor_default     block      blink
+  set fish_cursor_insert      line       blink
+  set fish_cursor_replace_one underscore blink
+  set fish_cursor_visual      block
+
+  function fish_user_key_bindings
+    # Execute this once per mode that emacs bindings should be used in
+    fish_default_key_bindings -M insert
+    fish_vi_key_bindings --no-erase insert
+  end
+end
+
 # Define replace ls with exa
 alias ls="exa --icons"
 alias ll="exa -la --icons"
+
+# Turn off the greeting
+set -g fish_greeting
 
 # Aliases for all tools to use ssh-ident
 # alias ssh="ssh-ident"
@@ -29,12 +74,13 @@ alias ll="exa -la --icons"
 #     command git $argv
 # end
 
-begin
-    # Pyenv hook
-    pyenv init - | source
-end
 
 # Setup direnv (should be last)
 direnv hook fish | source
 
-
+# pyenv init
+if command -v pyenv 1>/dev/null 2>&1
+  set -Ux PYENV_ROOT $HOME/.pyenv
+  set -U fish_user_paths $PYENV_ROOT/bin $fish_user_paths
+  pyenv init - | source
+end
