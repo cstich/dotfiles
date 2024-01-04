@@ -8,6 +8,12 @@ idle-timeout = 100
 bufferline = "always"
 color-modes = true
 
+[editor.soft-wrap]
+enable = true
+
+[editor.whitespace]
+render = "all"
+
 [editor.indent-guides]
 render = true
 character = "¦"
@@ -24,6 +30,12 @@ right = ["diagnostics", "selections", "position", "position-percentage", "file-e
 mode.normal = "NORMAL"
 mode.insert = "INSERT"
 mode.select = "SELECT"
+
+[keys.normal.'\']
+# https://github.com/helix-editor/helix/issues/2806#issuecomment-1551801413
+space = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{right-of}' \; send-keys -t '{right-of}' Enter''']
+'\' = [''':sh tmux send-keys Q/# Space %% Enter O# Escape Escape Nvg.a BSpace BSpace Escape Escape \\ Space uuQ''']
+# the above is the quivalent of putting, in .tmux.conf: send-keys Q/#\s%%\rO#\e\eNvg.a\b\b\e\e\\\suuQ
 
 [keys.normal]
 tab = "indent"

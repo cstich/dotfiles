@@ -1,21 +1,41 @@
 [[language]]
-name = "java"
-language-server = { command = "jdt-language-server", args = ["-data", "/home/christoph/.cache/jdtls/workspaces", "-configuration", "/home/christoph/.cache/jdtls/config"] }
-# language-server = { command = "java-language-server" }
-
-[[language]]
 name = "python"
-indent = { tab-width = 4, unit = " " }
+indent = { tab-width = 4, unit = "    " }
+injection-regex = "python"
+file-types = ["py","pyi","py3","pyw",".pythonstartup",".pythonrc"]
+shebangs = ["python"]
 roots = ["pyproject.toml", "setup.py", ".git"]
-language-server = { command = "pylsp", args = [] }
-formatter = { command = "yapf", args = [ "-q"] }
+comment-token = "#"
+language-servers = [
+  {name = "pyright",  except-features = [ "completion" ] },
+  {name = "ruff"}, 
+  {name = "pylsp",  only-features = [ "completion" ] },
+]
 auto-format = true
-rulers = [120]
 
-[language.config.pylsp.plugins]
-pyflakes = { enabled = false }
-pylint = { enabled = true, args = ["--rcfile=~/.pylintrc"] }
-autopep8 = { enabled = false }
-pycodestyle = { enabled = false }
-yapf = { enabled = true }
-mypy = { enabled = true, live_mode = false, dmypy = true, strict = false} 
+[language-server.pyright]
+command = "pyright-langserver"
+args = ["--stdio"]
+
+[language-server.pyright.config]
+reportMissingTypeStubs = false
+
+[language-server.pyright.config.python.analysis]
+typeCheckingMode = "basic"
+autoImportCompletions = true
+
+[language-server.ruff]
+command = "ruff-lsp"
+
+[language-server.ruff.config]
+settings = {run = "onSave", args = []}
+
+[language-server.pylsp]
+command = "pylsp"
+
+[language-server.pylsp.config.pylsp.plugins]
+pylint = {enabled = true}
+
+[language.formatter]
+command = "ruff format"
+args = ["--line-length", "120", "--quiet", "-"]
