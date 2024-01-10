@@ -7,11 +7,15 @@ shebangs = ["python"]
 roots = ["pyproject.toml", "setup.py", ".git"]
 comment-token = "#"
 language-servers = [
-  {name = "pyright",  except-features = [ "completion" ] },
-  {name = "ruff"}, 
-  {name = "pylsp",  only-features = [ "completion" ] },
+  {name = "pyright",  except-features = [ "completion", "format" ] },
+  {name = "ruff", except-features = [ "format" ]}, 
+  {name = "pylsp",  only-features = [ "completion" ], except-features = [ "format" ] },
 ]
 auto-format = true
+
+[language.formatter]
+command = "ruff format"
+args = []
 
 [language-server.pyright]
 command = "pyright-langserver"
@@ -36,6 +40,4 @@ command = "pylsp"
 [language-server.pylsp.config.pylsp.plugins]
 pylint = {enabled = true}
 
-[language.formatter]
-command = "ruff format"
-args = ["--line-length", "120", "--quiet", "-"]
+
