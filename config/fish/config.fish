@@ -1,6 +1,23 @@
 function fish_prompt
-    eval powerline-go -modules 'nix-shell,venv,host,cwd,ssh,perms,root,git,exit'  -error $status -jobs (count (jobs -p)) -cwd-mode semi-fancy -cwd-mode semi-fancy -hostname-only-if-ssh -newline
+  eval powerline-go -modules 'nix-shell,venv,host,cwd,ssh,perms,root,git,exit'  -error $status -jobs (count (jobs -p)) -cwd-mode semi-fancy -cwd-mode semi-fancy -hostname-only-if-ssh -newline
 end
+
+# Add a few custom fzf functions
+function fuzzy_view_file
+  set out (fd . | rg -v .venv | fzf)
+  if [ -n "$out" ]
+    $EDITOR $out
+  end
+end
+
+# Overwrite default fzf key bindings for fish because we are using fzf.fish
+bind --mode default \cr '_fzf_search_history'
+bind --mode insert \cr '_fzf_search_history'
+bind --mode visual \cr '_fzf_search_history'
+
+bind --mode default \ct '_fzf_search_directory'
+bind --mode insert \ct '_fzf_search_directory'
+bind --mode visual \ct '_fzf_search_directory'
 
 # Disable venv prompt because powerline-go has some issues with it
 set VIRTUAL_ENV_DISABLE_PROMPT 1
@@ -57,6 +74,7 @@ if status is-interactive
 end
 
 # Define replace ls with exa
+# TODO Update this to eza
 alias ls="exa --icons"
 alias ll="exa -la --icons"
 
