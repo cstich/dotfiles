@@ -20,7 +20,7 @@ in
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   # Enable package forwarding.
     boot.kernel.sysctl = {
@@ -71,27 +71,22 @@ in
   # Setup dnsmasq as a DHCP server
   # You can set static IP addresses based on either host namaes or
   # mac addresses here
-  services.dnsmasq = {
-    servers = ["8.8.8.8" "8.8.8.4"];
-    enable = true;
-    extraConfig = ''
-      domain-needed
-      bogus-priv
-      listen-address=::1, 127.0.0.1, ${ipEth}
-
-      interface=${intEth}
-      bind-interfaces
-      dhcp-range=192.168.1.10,192.168.1.254,24h
-      dhcp-host=${secrets.macAddressOtter},192.168.1.240
-
-      local=/lan/
-      domain=lan
-      expand-hosts
-
-      cache-size=1000
-      no-negcache
-    '';
-  };
+  services.dnsmasq.enable = true;
+  services.dnsmasq.settings = {
+    server = ["8.8.8.8" "8.8.8.4"];
+    domain-needed = true;
+    bogus-priv = true;
+    listen-address = ["::1,127.0.0.1,${ipEth}"];
+    interface = "${intEth}";
+    bind-interfaces = true;
+    dhcp-range= ["192.168.1.10,192.168.1.254,24h"];
+    dhcp-host= ["${secrets.macAddressOtter},192.168.1.240"];
+    local = "/lan/";
+    domain = "lan";
+    expand-hosts = true;
+    cache-size = "1000";
+    no-negcache = true;
+};
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
