@@ -1,0 +1,18 @@
+{
+  "color_scheme": "light",
+  "syntax_theme": "native",
+  "notebook": {
+    "expand": false,
+    "always_show_tab_bar": true,
+    "show_cell_borders": false,
+    "color_scheme": "light",
+    "syntax_theme": "solarized-light"
+  },
+  "console": {
+    "color_scheme": "light",
+    "syntax_theme": "solarized-light"
+  },
+  "preview": {
+    "show_cell_borders": true
+  }
+}

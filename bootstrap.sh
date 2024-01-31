@@ -10,6 +10,7 @@ ln -sf $SCRIPTPATH/config/tmux/tmux.conf ~/.tmux.conf
 ln -sf $SCRIPTPATH/config/helix ~/.config/
 ln -sf $SCRIPTPATH/config/nvim ~/.config/
 ln -sf $SCRIPTPATH/config/kitty ~/.config/
+ln -sf $SCRIPTPATH/config/euporie ~/.config/
 ln -sf $SCRIPTPATH/direnvrc ~/.direnvrc
 ln -sf /home/$USER/Secrets/secrets.nix $SCRIPTPATH/nix/common/secrets.nix
 
