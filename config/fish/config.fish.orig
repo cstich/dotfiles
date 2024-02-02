@@ -75,8 +75,8 @@ end
 
 # Define replace ls with exa
 # TODO Update this to eza
-alias ls="eza --icons"
-alias ll="eza -la --icons"
+alias ls="exa --icons"
+alias ll="exa -la --icons"
 
 # Turn off the greeting
 set -g fish_greeting
@@ -89,12 +89,17 @@ set -g fish_greeting
 #     command git $argv
 # end
 
-# pyenv init TODO This is broken
-# if command -v pyenv 1>/dev/null 2>&1
-  # set -Ux PYENV_ROOT $HOME/.pyenv
-  # set -U fish_user_paths $PYENV_ROOT/bin $fish_user_paths
-  # pyenv init - | source
-# end
-# 
+<<<<<<< HEAD
+# pyenv init
+if command -v pyenv 1>/dev/null 2>&1
+  set -Ux PYENV_ROOT $HOME/.pyenv
+  set -U fish_user_paths $PYENV_ROOT/bin $fish_user_paths
+  pyenv init - | source
+=======
+if type -q pyenv   
+    pyenv init - | source
+>>>>>>> origin/master
+end
+
 # Setup direnv (should be last)
 direnv hook fish | source
