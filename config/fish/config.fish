@@ -1,5 +1,5 @@
 function fish_prompt
-  eval powerline-go -modules 'nix-shell,venv,host,cwd,ssh,perms,root,git,exit'  -error $status -jobs (count (jobs -p)) -cwd-mode semi-fancy -cwd-mode semi-fancy -hostname-only-if-ssh -newline
+  eval powerline-go -modules 'nix-shell,venv,host,cwd,ssh,perms,root,git,exit'  -error $status -jobs (count (jobs -p)) -cwd-mode semi-fancy -cwd-mode semi-fancy -newline
 end
 
 # Add a few custom fzf functions
@@ -92,9 +92,24 @@ set -g fish_greeting
 # pyenv init TODO This is broken
 # if command -v pyenv 1>/dev/null 2>&1
   # set -Ux PYENV_ROOT $HOME/.pyenv
-  # set -U fish_user_paths $PYENV_ROOT/bin $fish_user_paths
+  # fish_add_path $PYENV_ROOT/bin
   # pyenv init - | source
 # end
-# 
+
 # Setup direnv (should be last)
-direnv hook fish | source
+# Only if it exists
+if command -v direnv 1>/dev/null 2>&1
+  direnv hook fish | source
+end
+
+# Set TERM to xterm-kitty if kitty exists, then we are probably using kitty...
+if command -v kitty 1>/dev/null 2>&1
+  set TERM xterm-kitty
+end
+
+# Init zoxide if it exists
+if command -v zoxide 1>/dev/null 2>&1
+  zoxide init fish | source
+  alias cd=z
+  alias cdi=zi
+end
