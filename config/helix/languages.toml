@@ -8,14 +8,10 @@ roots = ["pyproject.toml", "setup.py", ".git"]
 comment-token = "#"
 language-servers = [
   {name = "pyright",  except-features = [ "completion", "format" ] },
-  {name = "ruff", except-features = [ "format" ]}, 
-  {name = "pylsp",  only-features = [ "completion" ], except-features = [ "format" ] },
+  {name = "ruff", except-features = [  ]}, 
+  {name = "pylsp",  only-features = [ "completion" ], except-features = [ "diagnostics", "format" ] },
 ]
 auto-format = true
-
-[language.formatter]
-command = "ruff format"
-args = []
 
 [language-server.pyright]
 command = "pyright-langserver"
