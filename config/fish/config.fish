@@ -110,6 +110,6 @@ end
 # Init zoxide if it exists
 if command -v zoxide 1>/dev/null 2>&1
   zoxide init fish | source
-  alias cd=z
+  alias cd=zi
   alias cdi=zi
 end
