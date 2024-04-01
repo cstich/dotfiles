@@ -8,10 +8,21 @@ roots = ["pyproject.toml", "setup.py", ".git"]
 comment-token = "#"
 language-servers = [
   {name = "pyright",  except-features = [ "completion", "format" ] },
-  {name = "ruff", except-features = [  ]}, 
+  {name = "ruff", except-features = [ "format" ]}, 
   {name = "pylsp",  only-features = [ "completion" ], except-features = [ "diagnostics", "format" ] },
+  {name = "typos",  only-features = [ ], except-features = [ ] },
 ]
 auto-format = true
+# Enable formatting as well as import sorting; commands are chained with the linux pipe ("|") 
+# https://github.com/helix-editor/helix/discussions/5637
+formatter = { command = "sh", args = ["-c", "ruff check - --select I --fix | ruff format -"]}
+
+[[language]]
+name = "markdown"
+file-types = ["md", "qmd"]
+language-servers = [
+  {name = "typos",  only-features = [ ], except-features = [ ] },
+]
 
 [language-server.pyright]
 command = "pyright-langserver"
@@ -33,7 +44,5 @@ settings = {run = "onSave", args = []}
 [language-server.pylsp]
 command = "pylsp"
 
-[language-server.pylsp.config.pylsp.plugins]
-pylint = {enabled = true}
-
-
+[language-server.typos]
+command = "typos-lsp"

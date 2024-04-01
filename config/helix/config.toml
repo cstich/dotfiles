@@ -2,7 +2,7 @@ theme = "my-onelight"
 
 [editor]
 line-number = "relative"
-completion-trigger-len = 2
+completion-trigger-len = 1
 gutters = ["diagnostics", "line-numbers", "spacer", "diff"]
 idle-timeout = 100
 bufferline = "always"
