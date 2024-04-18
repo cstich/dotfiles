@@ -17,8 +17,10 @@ ln -sf $SCRIPTPATH/direnvrc ~/.direnvrc
 ln -sf /home/$USER/Secrets/secrets.nix $SCRIPTPATH/nix/common/secrets.nix
 
 # Import the key for pass
-gpg --import .symlinks/secretes/pass.asc
+gpg --import .symlinks/secrets/pass.asc
 pass init C09DE06BAC95A4D9
+# Remove any GPG config that sits in the home directory
+rm ~/.gnupg/gpg-agent.conf
 
 # Setup the rclone.conf for otter
 mkdir -p ~/.config/rclone/
