@@ -23,7 +23,6 @@ in
     pkgs.grc
     pkgs.fishPlugins.fzf-fish
     pkgs.powerline-go
-    ssh-ident
   ];
 
   environment.shells = with pkgs; [ fish ];

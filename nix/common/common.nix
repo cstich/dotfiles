@@ -23,8 +23,8 @@ in
       neofetch
       nix-index
       nmap
-      patchelf
       p7zip
+      patchelf
       procmail
       sshfs
       tmux
@@ -33,11 +33,11 @@ in
       zellij
       zip
     ];
-
+  
+  programs.ssh.startAgent = false;
   programs.gnupg.agent = {
     enable = true;
-    pinentryFlavor = "gtk2";
-    enableSSHSupport = true;
+    pinentryFlavor = "gnome3";
   };
 
   # Add the minimal required C library for most binaries
