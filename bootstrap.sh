@@ -6,6 +6,7 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 
 ln -sf $SCRIPTPATH/nix/nixpkgs ~/.config/
 ln -sf $SCRIPTPATH/config/zsh/zshrc ~/.zshrc
+rm ~/.config/fish -rf
 ln -sf $SCRIPTPATH/config/fish ~/.config/
 ln -sf $SCRIPTPATH/config/tmux/tmux.conf ~/.tmux.conf
 ln -sf $SCRIPTPATH/config/helix ~/.config/
