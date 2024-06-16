@@ -16,7 +16,7 @@ ln -sf $SCRIPTPATH/direnvrc ~/.direnvrc
 ln -sf /home/$USER/Secrets/secrets.nix $SCRIPTPATH/nix/common/secrets.nix
 
 # Import the key for pass
-if ! command -v pass &> /dev/null
+if command -v pass &> /dev/null
 then
     gpg --import .symlinks/secrets/pass.asc
     pass init C09DE06BAC95A4D9
@@ -25,7 +25,7 @@ then
 fi
 
 # Setup the rclone.conf for otter
-if ! command -v rclone &> /dev/null
+if command -v rclone &> /dev/null
 then
     mkdir -p ~/.config/rclone/
     ln -sf /home/$USER/Secrets/rclone.conf ~/.config/rclone/rclone.conf
