@@ -18,6 +18,7 @@ in
       git
       gptfdisk
       htop
+      kitty
       lshw
       lynis
       neofetch

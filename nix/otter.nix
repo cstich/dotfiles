@@ -13,7 +13,6 @@
       ./common/shell.nix
       ./common/fonts.nix
       ./common/syncthing.nix
-      # ./wifi-ap.nix
     ];
 
   boot.loader.systemd-boot.enable = true;
