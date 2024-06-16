@@ -16,19 +16,8 @@
       # ./wifi-ap.nix
     ];
 
-  # Use the GRUB 2 boot loader.
-  boot.loader.grub.copyKernels = true;
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/disk/by-id/ata-ST500LM021-1KJ152_W6248MN7";
-  boot.zfs.requestEncryptionCredentials = true;
-  boot.supportedFilesystems = [ "zfs" ]; 
-
-  # Use 
-  # sudo zpool create -o ashift=12 -o altroot="/mnt" -O mountpoint=none -O encryption=aes-256-gcm -O keyformat=passphrase -O keylocation=prompt zbackup mirror /dev/disk/by-id/ata-TOSHIBA_HDWA120_Y61R1PXAS /dev/disk/by-id/ata-TOSHIBA_HDWA120_Y61R1RRAS -f
-  # sudo zfs create -o mountpoint=legacy -o com.sun:auto-snapshot=true zbackup/backup
-  # sudo mount -t zfs zbackup/backup /mnt/backup
-  # Don't forget to ensure /mnt/backup exists
-  # to create the zfs encrypted mirrored pool 
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "otter"; # Define your hostname.
   networking.hostId = "9e0f15c5"; # We use head -c 8 /etc/machine-id to get a unique id for each machine for zfs
@@ -47,6 +36,61 @@
     frequent = 8;
     monthly = 3;
   };
+  
+  
+  # Set your time zone.
+  time.timeZone = "Europe/London";
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_GB.UTF-8";
+
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "en_GB.UTF-8";
+    LC_IDENTIFICATION = "en_GB.UTF-8";
+    LC_MEASUREMENT = "en_GB.UTF-8";
+    LC_MONETARY = "en_GB.UTF-8";
+    LC_NAME = "en_GB.UTF-8";
+    LC_NUMERIC = "en_GB.UTF-8";
+    LC_PAPER = "en_GB.UTF-8";
+    LC_TELEPHONE = "en_GB.UTF-8";
+    LC_TIME = "en_GB.UTF-8";
+  };
+
+  # Enable the X11 windowing system.
+  services.xserver.enable = true;
+
+  # Enable the GNOME Desktop Environment.
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+
+  # Configure keymap in X11
+  services.xserver = {
+    layout = "us";
+    xkbVariant = "";
+  };
+
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+
+  # Enable sound with pipewire.
+  sound.enable = true;
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
+  };
+
+  # Enable touchpad support (enabled default in most desktopManager).
+  # services.xserver.libinput.enable = true;
 
   # Create a new group for the backup folder
   users.groups.backupadmins= {};
@@ -61,13 +105,6 @@
   users.users.backupuser= {
     isNormalUser = true;
     extraGroups = [ "wheel" "backupadmins"];
-  };
-
-  users.users.lenka = {
-    isNormalUser = true;
-    extraGroups = [];
-    shell = pkgs.bash;
-    openssh.authorizedKeys.keyFiles = [ "/home/lenka/.ssh/id_rsa.pub"];
   };
 
   services.sshguard = {
@@ -90,44 +127,12 @@
 
   services.openssh = {
     enable = true;
-    settings.passwordAuthentication = false;
-    settings.permitRootLogin = "no";
+    settings.PasswordAuthentication = false;
+    settings.PermitRootLogin = "no";
     extraConfig = "# AuthenticationMethods publickey keyboard-interactive:pam";
   }; 
 
-   # To connect to this at boot use 'ssh -i ~/Secrets/ssh_otter_boot_host_ed25519_key root@192.168.1.240 -p 2222'
-   boot = {
-    # Make sure you have added the kernel module for your network driver to `boot.initrd.availableKernelModules`; use 'lshw -C network' to find out which driver is needed for the ethernet interface at boot
-    initrd.availableKernelModules = [ "r8169" ];
-    initrd.network = {
-      # This will use udhcp to get an ip address.
-      # so your initrd can load it!
-      # Static ip addresses might be configured using the ip argument in kernel command line:
-      # https://www.kernel.org/doc/Documentation/filesystems/nfs/nfsroot.txt
-      enable = true;
-      ssh = {
-         enable = true;
-         # To prevent ssh from freaking out because a different host key is used,
-         # a different port for dropbear is useful (assuming the same host has also a normal sshd running)
-         port = 2222; 
-     # Use 'ssh-keygen -t ed25519 -N "" -f /etc/secrets/initrd/ssh_host_ed25519_key' to generate the host keys
-     # Unless your bootloader supports initrd secrets, these keys are stored insecurely in the global Nix store. Do NOT use your regular SSH host private keys for this purpose or you'll expose them to regular users!
-     # Additionally, even if your initrd supports secrets, if you're using initrd SSH to unlock an encrypted disk then using your regular host keys exposes the private keys on your unencrypted boot partition.
-         hostKeys = [ "/etc/ssh/initrd/ssh_host_ed25519_key" ];
-         # public ssh key used for login
-     
-         authorizedKeys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHgvhQ+m97RK8X2Q308mQsu9yl+w9Bcg3mSzVpALlu4C root@otter"];
-      };
-      # this will automatically load the zfs password prompt on login
-      # and kill the other prompt so boot can continue
-      postCommands = ''
-        zpool import zbackup
-        echo "zfs load-key -a; killall zfs" >> /root/.profile
-      '';
-    };
-  };
-
-  services.borgbackup.jobs.home-otter = {
+ services.borgbackup.jobs.home-otter = {
     paths = ["/home/christoph/archive" "/home/christoph/.symlinks"];
     repo = "/mnt/backup/christoph/";
     encryption = {
