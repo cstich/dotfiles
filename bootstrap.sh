@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Get the directory of the script
 # https://stackoverflow.com/questions/242538/unix-shell-script-find-out-which-directory-the-script-file-resides
 SCRIPT=$(readlink -f "$0")
@@ -15,14 +16,20 @@ ln -sf $SCRIPTPATH/direnvrc ~/.direnvrc
 ln -sf /home/$USER/Secrets/secrets.nix $SCRIPTPATH/nix/common/secrets.nix
 
 # Import the key for pass
-gpg --import .symlinks/secrets/pass.asc
-pass init C09DE06BAC95A4D9
-# Remove any GPG config that sits in the home directory
-rm ~/.gnupg/gpg-agent.conf
+if ! command -v pass &> /dev/null
+then
+    gpg --import .symlinks/secrets/pass.asc
+    pass init C09DE06BAC95A4D9
+    # Remove any GPG config that sits in the home directory
+    rm ~/.gnupg/gpg-agent.conf
+fi
 
 # Setup the rclone.conf for otter
-mkdir -p ~/.config/rclone/
-ln -sf /home/$USER/Secrets/rclone.conf ~/.config/rclone/rclone.conf
+if ! command -v rclone &> /dev/null
+then
+    mkdir -p ~/.config/rclone/
+    ln -sf /home/$USER/Secrets/rclone.conf ~/.config/rclone/rclone.conf
+fi
 
 # TODO Think about how to deal with the hostname
 sudo ln -sf $SCRIPTPATH/nix/$HOSTNAME.nix /etc/nixos/configuration.nix
