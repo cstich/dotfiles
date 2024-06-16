@@ -19,6 +19,13 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "zfs" ]; 
 
+  # zfs encrypted raid
+  # sudo zpool create -o ashift=12 -o altroot="/mnt" -O mountpoint=none -O encryption=aes-256-gcm -O keyformat=passphrase -O keylocation=prompt zbackup mirror /dev/disk/by-id/ata-TOSHIBA_HDWA120_Y61R1PXAS /dev/disk/by-id/ata-TOSHIBA_HDWA120_Y61R1RRAS -f
+  # sudo zfs create -o mountpoint=legacy -o com.sun:auto-snapshot=true zbackup/backup
+  # sudo mount -t zfs zbackup/backup /mnt/backup
+  # Don't forget to ensure /mnt/backup exists
+  # to create the zfs encrypted mirrored pool 
+
   networking.hostName = "otter"; # Define your hostname.
   networking.hostId = "9e0f15c5"; # We use head -c 8 /etc/machine-id to get a unique id for each machine for zfs
 
