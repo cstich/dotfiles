@@ -18,7 +18,7 @@ in
       git
       gptfdisk
       htop
-      kitty
+      kitty # So that xterm-kitty exists on the system
       lshw
       lynis
       neofetch
