@@ -25,7 +25,7 @@ in
        # Gnome things
        gnome.gnome-tweaks
        gnome.dconf-editor
-       gnome.gedit
+       gedit
        gnome.gnome-session
        gnome.gnome-terminal
        gnome.networkmanager-openvpn
@@ -88,13 +88,14 @@ in
        remmina
       ];
       
+    # Enable touchpad support.
+    services.libinput.enable = true;
+
     # Enable the X11 windowing system.
     services.xserver = {
       enable = true;
-      layout = "us";
+      xkb.layout = "us";
       # xkbOptions = "eurosign:e";
-      # Enable touchpad support.
-      libinput.enable = true;
 
       desktopManager = {
         gnome.enable = true;

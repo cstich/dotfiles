@@ -38,7 +38,6 @@ in
   programs.ssh.startAgent = false;
   programs.gnupg.agent = {
     enable = true;
-    pinentryFlavor = "gnome3";
   };
 
   # Add the minimal required C library for most binaries
