@@ -39,8 +39,7 @@ in
 
   nixpkgs.config.allowUnfree = true;
 
-  hardware.pulseaudio.package = unstable.pulseaudioFull;
-
+  sound.enable = true;
   networking ={
     useDHCP = false;
     interfaces.enp0s31f6.useDHCP = true;

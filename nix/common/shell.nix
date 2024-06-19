@@ -14,5 +14,7 @@
     pkgs.zoxide
   ];
 
+  programs.fish.interactiveShellInit = builtins.readFile "/home/christoph/dotfiles/config/fish/config.fish";
+
   environment.shells = with pkgs; [ fish ];
 }
