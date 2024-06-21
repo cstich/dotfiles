@@ -10,7 +10,8 @@
   },
   "console": {
     "color_scheme": "light",
-    "syntax_theme": "solarized-light"
+    "syntax_theme": "solarized-light",
+    "edit_mode": "vi"
   },
   "preview": {
     "show_cell_borders": true
