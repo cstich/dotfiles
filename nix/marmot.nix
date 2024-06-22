@@ -62,6 +62,9 @@ in
   #   });
   # };
 
+  # Different driver for wacom tablet
+  hardware.opentabletdriver.enable = true;
+
   # Virtualization settings
   boot.kernelModules = [ "kvm-amd" "kvm-intel"];
   virtualisation.libvirtd.enable = true;
@@ -108,7 +111,13 @@ in
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   nixpkgs.config.allowUnfree = true;
+  # myGnome3.gdm.enable = true;
+
+  # My gnome3 config
   myGnome3.gdm.enable = true;
+  myGnome3.lightdm.enable = false;
+  myGnome3.wayland.enable = true;
+
  
   environment.systemPackages = let 
     unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
@@ -149,7 +158,8 @@ in
   users.extraGroups.vboxusers.members = [ "christoph" ];
  
   # Add nvidia drivers for Marmot
-  services.xserver.videoDrivers = [ "nvidia" ];
+  # services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = [ "nouveau" ];
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
