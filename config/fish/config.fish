@@ -74,27 +74,13 @@ if status is-interactive
 end
 
 # Define replace ls with exa
-# TODO Update this to eza
-alias ls="eza --icons"
-alias ll="eza -la --icons"
+if command -v eza 1>/dev/null 2>&1
+    alias ls="eza --icons"
+    alias ll="eza -la --icons"
+end
 
 # Turn off the greeting
 set -g fish_greeting
-
-# Aliases for all tools to use ssh-ident
-# alias ssh="ssh-ident"
-# 
-# function git
-#     set -x GIT_SSH "ssh-ident"
-#     command git $argv
-# end
-
-# pyenv init TODO This is broken
-# if command -v pyenv 1>/dev/null 2>&1
-# set -Ux PYENV_ROOT $HOME/.pyenv
-# fish_add_path $PYENV_ROOT/bin
-# pyenv init - | source
-# end
 
 # Set TERM to xterm-kitty if kitty exists, then we are probably using kitty...
 if command -v kitty 1>/dev/null 2>&1
