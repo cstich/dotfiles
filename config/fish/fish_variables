@@ -1,7 +1,7 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR --export MARONNE:840203120
-SETUVAR --export PYENV_ROOT:/home/christoph/\x2epyenv
+SETUVAR --export PYENV_ROOT:/home/christoph\x2estich/\x2epyenv
 SETUVAR --export SHELL:/usr/bin/bash
 SETUVAR --export UID:840203120
 SETUVAR __fish_initialized:3400

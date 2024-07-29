@@ -48,6 +48,14 @@ function fish_right_prompt
     set_color normal
 end
 
+# Go to git root
+function gcd
+    set -lx TOPLEVEL (git rev-parse --show-toplevel)
+    if test $status -eq 0
+        cd $TOPLEVEL
+    end
+end
+
 # Emulates vim's cursor shape behavior
 # Set the normal and visual mode cursors to a block
 set fish_cursor_default block
