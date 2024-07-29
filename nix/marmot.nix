@@ -154,8 +154,13 @@ in
      openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys" ];
   }; 
 
+  # Virtualbox
   virtualisation.virtualbox.host.enable = false;
   users.extraGroups.vboxusers.members = [ "christoph" ];
+
+  # Docker
+  virtualisation.docker.enable = true;
+  users.extraGroups.docker.members = [ "christoph" ];
  
   # Add nvidia drivers for Marmot
   # services.xserver.videoDrivers = [ "nvidia" ];

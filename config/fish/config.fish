@@ -94,6 +94,12 @@ if command -v zoxide 1>/dev/null 2>&1
     alias cdi=zi
 end
 
+
+# Init kubetcl alias if it exists
+if command -v kubectl 1>/dev/null 2>&1
+    alias k=kubectl
+end
+
 # Setup direnv (should be last)
 # Only if it exists
 if command -v direnv 1>/dev/null 2>&1
