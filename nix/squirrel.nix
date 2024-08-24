@@ -67,6 +67,7 @@ in
 
   # My  gnome3 config
   myGnome3.gdm.enable = true;
+  myGnome3.wayland.enable = true;
 
 
   # Enable CUPS to print documents.
