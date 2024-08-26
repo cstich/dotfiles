@@ -17,6 +17,7 @@ in
       fzf
       git
       gptfdisk
+      unstable.helix
       htop
       kitty # So that xterm-kitty exists on the system
       lshw
