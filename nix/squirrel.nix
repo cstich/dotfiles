@@ -6,6 +6,7 @@
 
 let 
   hostname = "squirrel";
+  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 in
 
 {
@@ -18,7 +19,6 @@ in
       ./common/gnome.nix
       ./common/syncthing.nix
       ./common/shell.nix
-      <nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -39,6 +39,7 @@ in
 
   nixpkgs.config.allowUnfree = true;
 
+  sound.enable = true;
   networking ={
     useDHCP = false;
     interfaces.enp0s31f6.useDHCP = true;
@@ -66,6 +67,7 @@ in
 
   # My  gnome3 config
   myGnome3.gdm.enable = true;
+  myGnome3.wayland.enable = true;
 
 
   # Enable CUPS to print documents.
@@ -74,8 +76,8 @@ in
   users.users.christoph = {
     isNormalUser = true;
     home = "/home/christoph";
-    extraGroups = [ "audio" "colord" "networkManager" "wheel" "scanner" "lp"]; 
-    shell = pkgs.zsh;
+    extraGroups = [ "netdev" "audio" "colord" "networkManager" "wheel" "scanner" "lp"]; 
+    shell = pkgs.fish;
     packages = with pkgs; [
 
     ];
