@@ -12,6 +12,7 @@ in
       bat
       bottom
       curl
+      devenv
       eza
       fd
       fzf
@@ -69,4 +70,10 @@ in
   services.logrotate.checkConfig = false;
 
   nix.settings.auto-optimise-store = true; 
+
+  # Enable nix flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # In order to use cachix
+  nix.settings.trusted-users = [ "root" "christoph" ];
 }

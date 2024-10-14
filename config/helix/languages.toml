@@ -21,8 +21,28 @@ formatter = { command = "sh", args = ["-c", "ruff check - --select I --fix | ruf
 name = "markdown"
 file-types = ["md", "qmd"]
 language-servers = [
+  {name = "yaml-language-server",  only-features = [ ], except-features = [ ] },
+]
+
+[[language]]
+name = "yaml"
+file-types = ["yaml", "yml", "yaml.tpl"]
+language-servers = [
   {name = "typos",  only-features = [ ], except-features = [ ] },
 ]
+
+[language-server.yaml-language-server]
+command = "yaml-language-server"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "yaml"] }
+
+[language-server.yaml-language-server.config.yaml]
+format = { enable = true }
+validation = true
+
+[language-server.yaml-language-server.config.yaml.schemas]
+"https://json.schemastore.org/github-workflow.json" = ".github/workflows/*.{yml,yaml}"
+"https://raw.githubusercontent.com/ansible-community/schemas/main/f/ansible-tasks.json" = "roles/{tasks,handlers}/*.{yml,yaml}"
 
 [language-server.pyright]
 command = "pyright-langserver"
