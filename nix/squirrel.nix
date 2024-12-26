@@ -83,5 +83,7 @@ in
     ];
   };
 
+  nix.settings.trusted-users = [ "root" "christoph" ];
+
   system.stateVersion = "20.09"; # Do not change 
 } 
