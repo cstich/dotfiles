@@ -7,15 +7,15 @@ shebangs = ["python"]
 roots = ["pyproject.toml", "setup.py", ".git"]
 comment-token = "#"
 language-servers = [
-  {name = "pyright",  except-features = [ "completion", "format" ] },
-  {name = "ruff", except-features = [ "format" ]}, 
-  {name = "pylsp",  only-features = [ "completion" ], except-features = [ "diagnostics", "format" ] },
+  {name = "pyright",  except-features = [ "format" ] },
+  {name = "ruff", except-features = [ ]}, 
+  {name = "pylsp",  only-features = [ ], except-features = [ "completion", "diagnostics", "format" ] },
   {name = "typos",  only-features = [ ], except-features = [ ] },
 ]
 auto-format = true
 # Enable formatting as well as import sorting; commands are chained with the linux pipe ("|") 
 # https://github.com/helix-editor/helix/discussions/5637
-formatter = { command = "sh", args = ["-c", "ruff check - --select I --fix | ruff format -"]}
+# formatter = { command = "sh", args = ["-c", "ruff check - --select I --fix | ruff format -"]}
 
 [[language]]
 name = "markdown"
@@ -56,10 +56,14 @@ typeCheckingMode = "basic"
 autoImportCompletions = true
 
 [language-server.ruff]
-command = "ruff-lsp"
+command = "ruff"
+args = ["server", "--verbose"]
 
-[language-server.ruff.config]
-settings = {run = "onSave", args = []}
+[language-server.ruff.config.settings]
+configurationPreference = "filesystemFirst"
+
+[language-server.ruff.config.lint]
+select = ["ALL"]
 
 [language-server.pylsp]
 command = "pylsp"

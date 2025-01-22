@@ -1,5 +1,10 @@
 function fish_prompt
-    eval powerline-go -modules 'nix-shell,venv,host,cwd,ssh,perms,root,git,exit' -error $status -jobs (count (jobs -p)) -cwd-mode semi-fancy -cwd-mode semi-fancy -newline
+    # Test if we are inside a docker container and display the container id on the prompt
+    if string length --quiet $CONTAINER_ID
+        eval powerline-go -modules 'shell-var,nix-shell,venv,host,cwd,ssh,perms,root,git,exit' -error $status -jobs (count (jobs -p)) -cwd-mode semi-fancy -cwd-mode semi-fancy -newline -hostname-only-if-ssh -shell-var CONTAINER_ID -venv-name-size-limit 12
+    else
+        eval powerline-go -modules 'nix-shell,venv,host,cwd,ssh,perms,root,git,exit' -error $status -jobs (count (jobs -p)) -cwd-mode semi-fancy -cwd-mode semi-fancy -newline -hostname-only-if-ssh -venv-name-size-limit 12
+    end
 end
 
 # Add a few custom fzf functions

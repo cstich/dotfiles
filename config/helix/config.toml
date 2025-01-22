@@ -38,8 +38,11 @@ space = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{right-of}' \; 
 # the above is the quivalent of putting, in .tmux.conf: send-keys Q/#\s%%\rO#\e\eNvg.a\b\b\e\e\\\suuQ
 
 [keys.normal]
-tab = "indent"
-S-tab = "unindent"
+C-i = "jump_forward"
+C-o = "jump_backward"
+# TODO This interferres with `jump_forward` for some stupid reason
+# tab = "indent"
+# S-tab = "unindent"
 
 [keys.normal.space]
 z = ":quit"
