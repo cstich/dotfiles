@@ -27,7 +27,7 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   
   # My  gnome3 config
-  myGnome3.lightdm.enable = true;
+  myGnome.lightdm.enable = true;
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config

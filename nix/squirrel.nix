@@ -60,9 +60,9 @@ in
   };
 
 
-  # My  gnome3 config
-  myGnome3.gdm.enable = true;
-  myGnome3.wayland.enable = true;
+  # My gnome3 config
+  myGnome.gdm.enable = true;
+  myGnome.wayland.enable = true;
 
 
   # Enable CUPS to print documents.

@@ -2,7 +2,7 @@
 
 let
   unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-  cfg = config.myGnome3;
+  cfg = config.myGnome;
 in
 
 {
@@ -11,7 +11,7 @@ in
   ];
 
   options = {
-    myGnome3 = {
+    myGnome = {
       lightdm.enable = lib.mkEnableOption "lightdm";
       gdm.enable = lib.mkEnableOption "gdm";
       wayland.enable = lib.mkEnableOption "wayland";
@@ -23,14 +23,13 @@ in
     environment.systemPackages = with pkgs; [
 
        # Gnome things
-       gnome.gnome-tweaks
-       gnome.dconf-editor
+       gnome-tweaks
+       dconf-editor
        gedit
-       gnome.gnome-session
-       gnome.gnome-terminal
-       gnome.networkmanager-openvpn
-       gnome.networkmanager-openvpn
-       gnome.seahorse
+       gnome-session
+       gnome-terminal
+       networkmanager-openvpn
+       seahorse
 
        gnomeExtensions.vertical-workspaces
        gnomeExtensions.paperwm
@@ -61,7 +60,7 @@ in
        peek
        qtpass
        skypeforlinux
-       transmission-gtk
+       transmission_4-gtk
        virtualbox
        veracrypt
        vscode-fhs
@@ -132,7 +131,7 @@ in
 
     services.gvfs.enable = true;
     security.pam.services.lightdm.enableGnomeKeyring = true;
-    services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ]; 
+    services.udev.packages = with pkgs; [ gnome-settings-daemon ]; 
     services.gnome = {
       gnome-online-accounts.enable = true;
       gnome-keyring.enable = true;

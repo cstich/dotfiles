@@ -111,12 +111,11 @@ in
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   nixpkgs.config.allowUnfree = true;
-  # myGnome3.gdm.enable = true;
 
   # My gnome3 config
-  myGnome3.gdm.enable = true;
-  myGnome3.lightdm.enable = false;
-  myGnome3.wayland.enable = true;
+  myGnome.gdm.enable = true;
+  myGnome.lightdm.enable = false;
+  myGnome.wayland.enable = true;
 
  
   environment.systemPackages = let 
