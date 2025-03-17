@@ -30,7 +30,7 @@ in
     curl
 
     # Python language server
-    nodePackages.pyright
+    pyright
 
     # Eclipse language server
     jdt-language-server 
