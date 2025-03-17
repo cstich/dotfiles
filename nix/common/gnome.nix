@@ -109,7 +109,6 @@ in
     };
  
     # Enable sound.
-    sound.enable = true;
     hardware.pulseaudio.enable = true;
 
     # Steam is a funny program to install
