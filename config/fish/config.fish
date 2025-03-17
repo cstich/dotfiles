@@ -85,6 +85,7 @@ end
 if command -v eza 1>/dev/null 2>&1
     alias ls="eza --icons"
     alias ll="eza -la --icons"
+    alias k="kubectl"
 end
 
 # Turn off the greeting
@@ -113,3 +114,6 @@ end
 if command -v direnv 1>/dev/null 2>&1
     direnv hook fish | source
 end
+
+# uv
+fish_add_path "/home/christoph/.local/share/../bin"
