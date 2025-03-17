@@ -39,7 +39,6 @@ in
 
   nixpkgs.config.allowUnfree = true;
 
-  sound.enable = true;
   networking ={
     useDHCP = false;
     interfaces.enp0s31f6.useDHCP = true;
