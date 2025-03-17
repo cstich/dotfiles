@@ -82,7 +82,7 @@ in
        # Styling of QT 5 apps
        libsForQt5.qtstyleplugins
        libsForQt5.qtstyleplugin-kvantum 
-       qt5ct
+       libsForQt5.qt5ct
       
        # RDP client
        remmina
@@ -109,7 +109,17 @@ in
     };
  
     # Enable sound.
-    hardware.pulseaudio.enable = true;
+    hardware.pulseaudio.enable = false;
+    # rtkit is optional but recommended
+    security.rtkit.enable = true;
+    services.pipewire = {
+      enable = true; # if not already enabled
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      # If you want to use JACK applications, uncomment this
+      #jack.enable = true;
+    };
 
     # Steam is a funny program to install
     # TODO This currently fails; open issue
