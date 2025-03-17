@@ -3,7 +3,7 @@
 {
   programs.fish.enable = true;
   users.defaultUserShell = pkgs.fish;
-  programs.bash.completion = true;
+  programs.bash.completion.enable = true;
 
   environment.systemPackages = [
     pkgs.direnv
