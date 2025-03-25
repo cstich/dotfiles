@@ -121,4 +121,4 @@ if command -v direnv 1>/dev/null 2>&1
 end
 
 # uv
-fish_add_path "~/.local/bin"
+fish_add_path --path --append "~/.local/bin"
