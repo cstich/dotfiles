@@ -56,7 +56,8 @@ in
        libreoffice
        meld
        unstable.onedrive
-       pass
+       bitwarden-cli
+       bitwarden-desktop
        peek
        qtpass
        skypeforlinux
@@ -85,6 +86,9 @@ in
       
        # RDP client
        remmina
+
+       # containers
+       distrobox
       ];
       
     # Enable touchpad support.
@@ -106,6 +110,10 @@ in
         gdm.wayland = cfg.wayland.enable;
       }; 
     };
+
+    # Docker
+    virtualisation.docker.enable = true;
+    users.extraGroups.docker.members = [ "christoph" ];
  
     # Enable sound.
     hardware.pulseaudio.enable = false;

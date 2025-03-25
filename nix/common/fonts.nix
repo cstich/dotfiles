@@ -19,7 +19,7 @@ in
       overpass
       siji 
       fira
-      (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
+      (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" "Iosevka" "IosevkaTerm"]; })
       source-code-pro
       source-sans-pro
       source-serif-pro
@@ -30,7 +30,7 @@ in
       useEmbeddedBitmaps = true;
       defaultFonts.serif = [ "Source Serif Pro" ];
       defaultFonts.sansSerif = [ "Fira Sans" ];
-      defaultFonts.monospace = [ "FiraCode Nerd Font Mono" ];
+      defaultFonts.monospace = [ "IosevkaTerm Nerd Font Mono" ];
     };
   };
 }
