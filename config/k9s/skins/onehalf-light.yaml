@@ -1,0 +1,113 @@
+# -----------------------------------------------------------------------------
+# One-Half Light Skin
+# -----------------------------------------------------------------------------
+
+# Styles...
+foreground: &foreground "#383a42"
+background: &background "#fafafa"
+black: &black "#383a42"
+blue: &blue "#0184bc"
+green: &green "#50a14f"
+orange: &orange "#ffb86c"
+magenta: &magenta "#a626a4"
+red: &red "#e45649"
+yellow: &yellow "#c18401"
+yellow_bright: &yellow_bright "#e5c07b"
+
+# Skin...
+k9s:
+  body:
+    fgColor: *foreground
+    bgColor: *background
+    logoColor: *green
+  prompt:
+    fgColor: *foreground
+    bgColor: *background
+    suggestColor: *yellow
+  info:
+    fgColor: *foreground
+    sectionColor: *green
+  help:
+    fgColor: *foreground
+    bgColor: *background
+    keyColor: *yellow
+    numKeyColor: *blue
+    sectionColor: *magenta
+  dialog:
+    fgColor: *background
+    bgColor: *background
+    buttonFgColor: *foreground
+    buttonBgColor: *green
+    buttonFocusFgColor: *black
+    buttonFocusBgColor: *blue
+    labelFgColor: *orange
+    fieldFgColor: *blue
+  frame:
+    border:
+      fgColor: *green
+      focusColor: *green
+    menu:
+      fgColor: *foreground
+      keyColor: *yellow
+      numKeyColor: *yellow
+    crumbs:
+      fgColor: *background
+      bgColor: *green
+      activeColor: *yellow
+    status:
+      newColor: *blue
+      modifyColor: *green
+      addColor: *foreground
+      pendingColor: *magenta
+      errorColor: *red
+      highlightColor: *yellow
+      killColor: *magenta
+      completedColor: *foreground
+    title:
+      fgColor: *blue
+      bgColor: *background
+      highlightColor: *magenta
+      counterColor: *foreground
+      filterColor: *blue
+  views:
+    charts:
+      bgColor: *background
+      defaultDialColors:
+        - *green
+        - *red
+      defaultChartColors:
+        - *green
+        - *red
+    table:
+      fgColor: *yellow
+      bgColor: *background
+      cursorFgColor: *background
+      cursorBgColor: *blue
+      markColor: *yellow
+      header:
+        fgColor: *black
+        bgColor: *background
+        sorterColor: *yellow
+    xray:
+      fgColor: *blue
+      bgColor: *background
+      cursorColor: *foreground
+      graphicColor: *yellow
+      showIcons: false
+    yaml:
+      keyColor: *red
+      colonColor: *foreground
+      valueColor: *foreground
+    logs:
+      fgColor: *black
+      bgColor: *background
+      indicator:
+        fgColor: *blue
+        bgColor: *background
+        toggleOnColor: *red
+        toggleOffColor: *foreground
+    help:
+      fgColor: *foreground
+      bgColor: *background
+      indicator:
+        fgColor: *blue
