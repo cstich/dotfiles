@@ -21,7 +21,7 @@ auto-format = true
 name = "markdown"
 file-types = ["md", "qmd"]
 language-servers = [
-  {name = "yaml-language-server",  only-features = [ ], except-features = [ ] },
+  {name = "typos",  only-features = [ ], except-features = [ ] },
 ]
 
 [[language]]
@@ -29,6 +29,7 @@ name = "yaml"
 file-types = ["yaml", "yml", "yaml.tpl"]
 language-servers = [
   {name = "typos",  only-features = [ ], except-features = [ ] },
+  {name = "yaml-language-server",  only-features = [ ], except-features = [ ] },
 ]
 
 [language-server.yaml-language-server]

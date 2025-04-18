@@ -13,6 +13,8 @@ ln -sf $SCRIPTPATH/config/helix ~/.config/
 ln -sf $SCRIPTPATH/config/nvim ~/.config/
 ln -sf $SCRIPTPATH/config/kitty ~/.config/
 ln -sf $SCRIPTPATH/config/euporie ~/.config/
+rm ~/.config/k9s -rf
+ln -sf $SCRIPTPATH/config/k9s ~/.config/
 ln -sf $SCRIPTPATH/direnvrc ~/.direnvrc
 ln -sf /home/$USER/Secrets/secrets.nix $SCRIPTPATH/nix/common/secrets.nix
 
