@@ -24,8 +24,6 @@ function fish_prompt
         -hostname-only-if-ssh \
         -venv-name-size-limit 12 \
         (string match -q "shell-var" $modules; and echo -shell-var CONTAINER_ID)
-
-
 end
 
 # Add a few custom fzf functions
