@@ -14,16 +14,27 @@ function fish_prompt
         set modules shell-var $modules
     end
 
-    # Call powerline-go and insert prompt
-    powerline-go \
-        -modules (string join , $modules) \
-        -error $status \
-        -jobs (count (jobs -p)) \
-        -cwd-mode semi-fancy \
-        -newline \
-        -hostname-only-if-ssh \
-        -venv-name-size-limit 12 \
-        (string match -q "shell-var" $modules; and echo -shell-var CONTAINER_ID)
+    # Use the appropriate prompt depending on whether you are inside Docker or not
+    if contains shell-var $modules
+        powerline-go \
+            -modules (string join , $modules) \
+            -error $status \
+            -jobs (count (jobs -p)) \
+            -cwd-mode semi-fancy \
+            -newline \
+            -hostname-only-if-ssh \
+            -venv-name-size-limit 12 \
+            -shell-var CONTAINER_ID $CONTAINER_ID
+    else
+        powerline-go \
+            -modules (string join , $modules) \
+            -error $status \
+            -jobs (count (jobs -p)) \
+            -cwd-mode semi-fancy \
+            -newline \
+            -hostname-only-if-ssh \
+            -venv-name-size-limit 12
+    end
 end
 
 # Add a few custom fzf functions
