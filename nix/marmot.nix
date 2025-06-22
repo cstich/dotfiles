@@ -89,7 +89,7 @@ in
 
   hardware.enableAllFirmware = true;
   hardware.bluetooth.enable = true;
-  hardware.opengl.driSupport32Bit = true;
+  hardware.graphics.enable32Bit = true;
 
   networking.useDHCP = false;
   networking.interfaces.enp70s0.useDHCP = true;

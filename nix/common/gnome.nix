@@ -60,7 +60,6 @@ in
        bitwarden-desktop
        peek
        qtpass
-       skypeforlinux
        transmission_4-gtk
        virtualbox
        veracrypt

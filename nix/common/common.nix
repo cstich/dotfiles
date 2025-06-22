@@ -43,11 +43,30 @@ in
   };
 
   # Add the minimal required C library for most binaries
-  system.activationScripts.ldso = pkgs.lib.stringAfter [ "usrbinenv" ] ''
-    mkdir -m 0755 -p /lib64
-    ln -sfn ${pkgs.glibc.out}/lib64/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2.tmp
-    mv -f /lib64/ld-linux-x86-64.so.2.tmp /lib64/ld-linux-x86-64.so.2 # atomically replace
-  '';
+  # https://nix.dev/guides/faq#how-to-run-non-nix-executables
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc             # C/C++ standard libraries (libc, libstdc++)
+    zlib                     # compression support
+    bzip2                    # .bz2 support
+    xz                       # .xz and .lzma support
+    libxcrypt                # for crypt() and password functions
+    libuuid                  # UUID handling
+    openssl                  # SSL/TLS (libssl, libcrypto)
+    curl                     # libcurl (for networking)
+    libxml2                  # XML parsing (common dependency)
+    expat                    # another XML parser
+    icu                      # Unicode support
+    gmp                      # arbitrary precision arithmetic
+    libffi                   # Foreign Function Interface (used by Python, etc.)
+    ncurses                  # terminal UI support (used by many CLI tools)
+    readline                 # command-line input editing
+    util-linux               # for libuuid, libmount, etc.
+    libcap                   # for setting capabilities on executables
+    dbus                     # sometimes used even in headless environments
+    systemd                  # for libudev and libsystemd (common deps)
+    gcc-unwrapped            # libgcc_s and related runtime bits
+  ];
 
   # Auto upgrades of packages from time to time
   system.autoUpgrade.enable = true;
@@ -77,4 +96,7 @@ in
 
   # In order to use cachix
   nix.settings.trusted-users = [ "root" "christoph" ];
+
+
+  
 }
