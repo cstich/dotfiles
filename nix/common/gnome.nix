@@ -115,7 +115,7 @@ in
     users.extraGroups.docker.members = [ "christoph" ];
  
     # Enable sound.
-    hardware.pulseaudio.enable = false;
+    services.pulseaudio.enable = false;
     # rtkit is optional but recommended
     security.rtkit.enable = true;
     services.pipewire = {

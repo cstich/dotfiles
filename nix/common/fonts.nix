@@ -19,7 +19,10 @@ in
       overpass
       siji 
       fira
-      (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" "Iosevka" "IosevkaTerm"]; })
+      nerd-fonts.fira-code
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.iosevka
+      nerd-fonts.iosevka-term
       source-code-pro
       source-sans-pro
       source-serif-pro
