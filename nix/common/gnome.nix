@@ -130,8 +130,7 @@ in
     # Steam is a funny program to install
     # TODO This currently fails; open issue
     programs.steam.enable = true; 
-
-    # programs.ssh.askPassword = "";
+    programs.ssh.enableAskPassword = false;
 
     # Allow flatpaks
     services.flatpak.enable = true;
