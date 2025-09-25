@@ -13,14 +13,12 @@ in
     [ 
       <nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
       # Include the results of the hardware scan.
-      # ./hardware-configuration.nix
       /etc/nixos/hardware-configuration.nix
 
       # Custom modules
       ./common/common.nix
       ./common/neovim.nix
       ./common/helix.nix
-      # ./common/dropbox.nix
       ./common/shell.nix
       ./common/fonts.nix
       ./common/gnome.nix
@@ -72,7 +70,7 @@ in
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/disk/by-id/ata-WDC_WDS500G2B0B-00YS70_2021DB462501"; # or "nodev" for efi only
 
-  # Tell initrd to unlock LUKS on /dev/sda2
+  # Tell initrd to unlock LUKS on /dev/sda2 and /dev/nvme0n1
   boot.initrd.luks.reusePassphrases = true;
   boot.initrd.luks.devices = {
     crypted = { 
@@ -85,6 +83,12 @@ in
        preLVM = true;
        allowDiscards = true;
      };
+  };
+
+  # Mount the automatically unlocked drive.
+  fileSystems."/mnt/m2" = {
+    device = "/dev/mapper/m2";
+    fsType = "ext4";
   };
 
   hardware.enableAllFirmware = true;
