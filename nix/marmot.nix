@@ -145,13 +145,18 @@ in
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.christoph = {
-     isNormalUser = true;
-     home = "/home/christoph";
-     description = "Christoph Stich";
-     extraGroups = ["audio" "wheel" "networkManager" "scanner" "lp"];
-     uid = 1000;
-     openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys" ];
+    isNormalUser = true;
+    home = "/home/christoph";
+    description = "Christoph Stich";
+    extraGroups = ["audio" "wheel" "networkManager" "scanner" "lp"];
+    uid = 1000;
+    openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys" ];
   }; 
+
+  # Extra docker settings
+  virtualisation.docker.daemon.settings = {
+    data-root = "/mnt/m2/docker";
+  };
 
   # Virtualbox
   virtualisation.virtualbox.host.enable = false;
