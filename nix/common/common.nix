@@ -4,7 +4,7 @@ let
   # Import unstable channel.
   # sudo nix-channel --add http://nixos.org/channels/nixos-unstable nixos-unstable
   # sudo nix-channel --update nixos-unstable
-  unstable = import <nixos-unstable> {};
+  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 in 
 
 {
@@ -12,7 +12,7 @@ in
       bat
       bottom
       curl
-      devenv
+      unstable.devenv
       eza
       fd
       fzf

@@ -7,7 +7,6 @@
 
   environment.systemPackages = [
     pkgs.direnv
-    pkgs.devenv
     pkgs.fzf
     pkgs.grc
     pkgs.fishPlugins.fzf-fish
