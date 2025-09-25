@@ -143,6 +143,16 @@ in
 
   services.sshguard = {
     enable = true;
+    whitelist = [ "127.0.0.1" "192.168.1.0/24" ];
+  };
+
+   networking.firewall = {
+    enable = true;
+    allowPing = true;
+    extraInputRules = ''
+      ip saddr 192.168.1.0/24 accept
+    '';
+    allowedTCPPorts = [ 22 80 443 ];
   };
 
   # hardware.pulseaudio.extraConfig = "pactl set-card-profile alsa_card.usb-Generic_USB_Audio-00 HiFi";
