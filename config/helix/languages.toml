@@ -25,6 +25,13 @@ language-servers = [
 ]
 
 [[language]]
+name = "hcl"
+file-types = ["tf"]
+language-servers = [
+  {name = "terraform-ls",  only-features = [ ], except-features = [ ] },
+]
+
+[[language]]
 name = "yaml"
 file-types = ["yaml", "yml", "yaml.tpl"]
 language-servers = [
@@ -55,6 +62,10 @@ reportMissingTypeStubs = false
 [language-server.pyright.config.python.analysis]
 typeCheckingMode = "basic"
 autoImportCompletions = true
+
+[language-server.terraform-ls]
+command = "terraform-ls"
+args = ["serve"]
 
 [language-server.ruff]
 command = "ruff"

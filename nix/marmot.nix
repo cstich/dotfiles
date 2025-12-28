@@ -116,12 +116,6 @@ in
   # $ nix-env -qaP | grep wget
   nixpkgs.config.allowUnfree = true;
 
-  # My gnome3 config
-  myGnome.gdm.enable = true;
-  myGnome.lightdm.enable = false;
-  myGnome.wayland.enable = true;
-
- 
   environment.systemPackages = let 
     unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
   in with pkgs; [

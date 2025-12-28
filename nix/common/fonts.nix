@@ -11,7 +11,7 @@ in
       xorg.fontbh100dpi
       xorg.fontmiscmisc
       xorg.fontcursormisc
-      ubuntu_font_family
+      ubuntu-classic
       powerline-fonts
       font-awesome
       corefonts 

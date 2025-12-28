@@ -41,11 +41,6 @@ in
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # My gnome3 config
-  myGnome.gdm.enable = true;
-  myGnome.lightdm.enable = false;
-  myGnome.wayland.enable = true;
-
   # Configure keymap in X11
   services.xserver.layout = "us";
   services.xserver.displayManager.xserverArgs = [
