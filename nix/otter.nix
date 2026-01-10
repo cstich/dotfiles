@@ -18,6 +18,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "zfs" ]; 
+  boot.zfs.requestEncryptionCredentials = true;
 
   # Instructions for a zfs encrypted raid
   # Don't forget to ensure /mnt/backup exists
@@ -28,10 +29,10 @@
   # sudo mount -t zfs zbackup/backup /mnt/backup
 
   # Mount zfs pool
-  fileSystems."/mnt/backup" = {
-    device = "zbackup";
-    fsType = "zfs";
-  };
+  # fileSystems."/mnt/backup" = {
+  #   device = "zbackup";
+  #   fsType = "zfs";
+  # };
   services.zfs.autoScrub.enable = true;
 
   networking.hostName = "otter"; # Define your hostname.
