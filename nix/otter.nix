@@ -10,6 +10,7 @@
       /etc/nixos/hardware-configuration.nix
       # <nixpkgs/nixos/modules/profiles/hardened.nix>
       ./common/common.nix
+      ./common/gnome.nix
       ./common/shell.nix
       ./common/fonts.nix
       ./common/syncthing.nix
@@ -71,12 +72,6 @@
     LC_TIME = "en_GB.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   services.xserver = {
