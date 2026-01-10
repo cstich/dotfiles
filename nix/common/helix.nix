@@ -35,6 +35,9 @@ in
     # Eclipse language server
     jdt-language-server 
 
+    # Terraform language server
+    terraform-ls
+
     # System clipboard
     xclip
   ];

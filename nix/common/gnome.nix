@@ -2,21 +2,12 @@
 
 let
   unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-  cfg = config.myGnome;
 in
 
 {
 
   imports = [
   ];
-
-  options = {
-    myGnome = {
-      lightdm.enable = lib.mkEnableOption "lightdm";
-      gdm.enable = lib.mkEnableOption "gdm";
-      wayland.enable = lib.mkEnableOption "wayland";
-   };
-  };
 
   config = {
  
@@ -93,20 +84,14 @@ in
     # Enable touchpad support.
     services.libinput.enable = true;
 
-    # Enable the X11 windowing system.
-    services.xserver = {
-      enable = true;
-      xkb.layout = "us";
-      # xkbOptions = "eurosign:e";
-
+    # Enable gnome
+    services = {
       desktopManager = {
         gnome.enable = true;
       };
 
       displayManager = {
-        lightdm.enable = cfg.lightdm.enable;
-        gdm.enable = cfg.gdm.enable;
-        gdm.wayland = cfg.wayland.enable;
+        gdm.enable = true;
       }; 
     };
 
@@ -130,8 +115,7 @@ in
     # Steam is a funny program to install
     # TODO This currently fails; open issue
     programs.steam.enable = true; 
-
-    # programs.ssh.askPassword = "";
+    programs.ssh.enableAskPassword = false;
 
     # Allow flatpaks
     services.flatpak.enable = true;

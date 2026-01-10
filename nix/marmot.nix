@@ -13,14 +13,12 @@ in
     [ 
       <nixpkgs/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix>
       # Include the results of the hardware scan.
-      # ./hardware-configuration.nix
       /etc/nixos/hardware-configuration.nix
 
       # Custom modules
       ./common/common.nix
       ./common/neovim.nix
       ./common/helix.nix
-      # ./common/dropbox.nix
       ./common/shell.nix
       ./common/fonts.nix
       ./common/gnome.nix
@@ -72,7 +70,7 @@ in
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/disk/by-id/ata-WDC_WDS500G2B0B-00YS70_2021DB462501"; # or "nodev" for efi only
 
-  # Tell initrd to unlock LUKS on /dev/sda2
+  # Tell initrd to unlock LUKS on /dev/sda2 and /dev/nvme0n1
   boot.initrd.luks.reusePassphrases = true;
   boot.initrd.luks.devices = {
     crypted = { 
@@ -85,6 +83,12 @@ in
        preLVM = true;
        allowDiscards = true;
      };
+  };
+
+  # Mount the automatically unlocked drive.
+  fileSystems."/mnt/m2" = {
+    device = "/dev/mapper/m2";
+    fsType = "ext4";
   };
 
   hardware.enableAllFirmware = true;
@@ -112,12 +116,6 @@ in
   # $ nix-env -qaP | grep wget
   nixpkgs.config.allowUnfree = true;
 
-  # My gnome3 config
-  myGnome.gdm.enable = true;
-  myGnome.lightdm.enable = false;
-  myGnome.wayland.enable = true;
-
- 
   environment.systemPackages = let 
     unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
   in with pkgs; [
@@ -137,29 +135,89 @@ in
       settings.PasswordAuthentication = false;
   };
 
-  services.sshguard = {
-    enable = true;
-  };
+  # services.sshguard = {
+  #   enable = true;
+  #   whitelist = [ "127.0.0.1" "192.168.1.0/24" ];
+  # };
+
+  #  networking.firewall = {
+  #   enable = true;
+  #   allowPing = true;
+  #   extraInputRules = ''
+  #     ip saddr 192.168.1.0/24 accept
+  #   '';
+  #   allowedTCPPorts = [ 22 80 443 ];
+  # };
+  networking.firewall.enable = false;
 
   # hardware.pulseaudio.extraConfig = "pactl set-card-profile alsa_card.usb-Generic_USB_Audio-00 HiFi";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.christoph = {
-     isNormalUser = true;
-     home = "/home/christoph";
-     description = "Christoph Stich";
-     extraGroups = ["audio" "wheel" "networkManager" "scanner" "lp"];
-     uid = 1000;
-     openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys" ];
+    isNormalUser = true;
+    home = "/home/christoph";
+    description = "Christoph Stich";
+    extraGroups = ["audio" "wheel" "networkManager" "scanner" "lp"];
+    uid = 1000;
+    openssh.authorizedKeys.keyFiles = ["/home/christoph/Secrets/authorized_keys" ];
   }; 
+
+  # Extra docker settings
+  virtualisation.docker.daemon.settings = {
+    data-root = "/mnt/m2/docker";
+  };
 
   # Virtualbox
   virtualisation.virtualbox.host.enable = false;
   users.extraGroups.vboxusers.members = [ "christoph" ];
 
   # Add nvidia drivers for Marmot
-  # services.xserver.videoDrivers = [ "nvidia" ];
-  services.xserver.videoDrivers = [ "nouveau" ];
+   
+  # Enable OpenGL
+  hardware.graphics = {
+    enable = true;
+  };
+
+  # Load nvidia driver for Xorg and Wayland
+  services.xserver.videoDrivers = ["nvidia"];
+
+  hardware.nvidia = {
+
+    # Modesetting is required.
+    modesetting.enable = true;
+
+    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+    # Enable this if you have graphical corruption issues or application crashes after waking
+    # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead 
+    # of just the bare essentials.
+    powerManagement.enable = false;
+
+    # Fine-grained power management. Turns off GPU when not in use.
+    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+    powerManagement.finegrained = false;
+
+    # Use the NVidia open source kernel module (not to be confused with the
+    # independent third-party "nouveau" open source driver).
+    # Support is limited to the Turing and later architectures. Full list of 
+    # supported GPUs is at: 
+    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
+    # Only available from driver 515.43.04+
+    open = false;
+
+    # Enable the Nvidia settings menu,
+	# accessible via `nvidia-settings`.
+    nvidiaSettings = true;
+
+    # Optionally, you may need to select the appropriate driver version for your specific GPU.
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
+  # Enable GPU support for Docker
+  hardware.nvidia-container-toolkit.enable = true;
+  # Regular Docker
+  virtualisation.docker.daemon.settings.features.cdi = true;
+  # Rootless
+  virtualisation.docker.rootless.daemon.settings.features.cdi = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
