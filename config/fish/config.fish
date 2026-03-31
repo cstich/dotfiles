@@ -120,8 +120,10 @@ end
 if command -v eza 1>/dev/null 2>&1
     alias ls="eza --icons"
     alias ll="eza -la --icons"
-    alias k="kubectl"
 end
+
+# Common aliases
+alias k="kubectl"
 
 # Turn off the greeting
 set -g fish_greeting
@@ -137,7 +139,6 @@ if command -v zoxide 1>/dev/null 2>&1
     alias cd=z
     alias cdi=zi
 end
-
 
 # Init kubetcl alias if it exists
 if command -v kubectl 1>/dev/null 2>&1

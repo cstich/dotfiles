@@ -1,0 +1,4 @@
+binds {
+    Mod+T hotkey-overlay-title="Open a Terminal" { spawn "kitty-sw"; }
+    Mod+W hotkey-overlay-title=null { close-window; }
+}
