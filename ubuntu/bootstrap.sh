@@ -4,14 +4,8 @@ rm ~/.local/aws-cli -rf
 mkdir ~/.local/bin
 
 sudo apt update
-sudo apt install distrobox powerline-go bat fd-find eza zoxide fish sudo gnome-browser-connector zoxide
+sudo apt install distrobox powerline-go bat fd-find eza zoxide fish sudo gnome-browser-connector zoxide direnv tmux
 snap install --classic helix
-
-
-
-# Install kitty
-curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin \
-    launch=n
 
 # Download the latest version of helix
 #rm helix* -rf
@@ -26,6 +20,7 @@ git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git ~/nerd-fonts
 # Copy the config manually for now
 rm -rf ~/.tmux.conf
 rm -rf ~/.config/helix
+rm -rf ~/.config/foot
 rm -rf ~/.config/kitty
 rm -rf ~/.config/nvim
 rm -rf ~/.config/fish
@@ -37,6 +32,7 @@ ln -sf ~/dotfiles/config/helix ~/.config/
 ln -sf ~/dotfiles/config/niri ~/.config/
 ln -sf ~/dotfiles/config/nvim ~/.config/
 ln -sf ~/dotfiles/config/kitty ~/.config/
+ln -sf ~/dotfiles/config/foot ~/.config/
 ln -sf ~/dotfiles/config/fish ~/.config/
 ln -sf ~/dotfiles/config/direnv/direnvrc ~/.direnvrc
 ln -sf ~/dotfiles/config/bat ~/.config
