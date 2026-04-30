@@ -13,7 +13,7 @@ input {
             // For more information, see xkeyboard-config(7).
 
             // For example:
-            // layout "us,ru"
+            layout "us"
             // options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
 
             // If this section is empty, niri will fetch xkb settings
@@ -353,6 +353,8 @@ window-rule {
     geometry-corner-radius 12
     clip-to-geometry true
 }
+
+
 
 binds {
     // Keys consist of modifiers separated by + signs, followed by an XKB key name

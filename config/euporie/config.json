@@ -9,8 +9,8 @@
     "syntax_theme": "solarized-light"
   },
   "console": {
-    "color_scheme": "light",
-    "syntax_theme": "solarized-light",
+    "color_scheme": "white",
+    "syntax_theme": "paraiso-light",
     "edit_mode": "vi"
   },
   "preview": {

@@ -12,6 +12,7 @@ ln -sf $SCRIPTPATH/config/tmux/tmux.conf ~/.tmux.conf
 ln -sf $SCRIPTPATH/config/helix ~/.config/
 ln -sf $SCRIPTPATH/config/nvim ~/.config/
 ln -sf $SCRIPTPATH/config/kitty ~/.config/
+ln -sf $SCRIPTPATH/config/foot ~/.config/
 rm ~/.config/niri -rf
 ln -sf $SCRIPTPATH/config/niri ~/.config/
 ln -sf $SCRIPTPATH/config/euporie ~/.config/
