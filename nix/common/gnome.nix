@@ -37,6 +37,7 @@ in
        dconf
        discord
        firefox
+       foot
        google-chrome
        gparted
        git-filter-repo
