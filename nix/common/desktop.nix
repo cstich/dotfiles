@@ -13,19 +13,7 @@ in
  
     environment.systemPackages = with pkgs; [
 
-       # Gnome things
-       gnome-tweaks
-       dconf-editor
-       gedit
-       gnome-session
-       gnome-terminal
-       networkmanager-openvpn
-       seahorse
-
-       gnomeExtensions.vertical-workspaces
-       gnomeExtensions.paperwm
-       gnomeExtensions.window-is-ready-remover
-      
+       # Themes
        arc-theme
        arc-icon-theme
        materia-theme
@@ -35,6 +23,7 @@ in
        # Deskotp things
        alacritty
        dconf
+       dconf-editor
        discord
        firefox
        foot
@@ -48,10 +37,9 @@ in
        libreoffice
        meld
        unstable.onedrive
-       bitwarden-cli
-       bitwarden-desktop
        peek
        qtpass
+       seahorse
        transmission_4-gtk
        virtualbox
        veracrypt
@@ -61,7 +49,7 @@ in
        unstable.displaycal
 
        # Eclipse clipboard only works with thunar
-       xfce.thunar
+       thunar
  
        # Sound settings
        pavucontrol 
@@ -85,23 +73,22 @@ in
     # Enable touchpad support.
     services.libinput.enable = true;
 
-    # Enable gnome
-    services = {
-      desktopManager = {
-        gnome.enable = true;
-      };
-
-      displayManager = {
-        gdm.enable = true;
-      }; 
+    # Enable Dank Linux
+    programs.dms-shell = {
+      enable = true;
+      systemd.enable = true;
     };
+    programs.niri.enable = true;
+    services.displayManager.dms-greeter = {
+      enable = true;
+      compositor.name = "niri";
+    };
+
 
     # Docker
     virtualisation.docker.enable = true;
     users.extraGroups.docker.members = [ "christoph" ];
  
-    # Enable sound.
-    services.pulseaudio.enable = false;
     # rtkit is optional but recommended
     security.rtkit.enable = true;
     services.pipewire = {
@@ -120,19 +107,6 @@ in
 
     # Allow flatpaks
     services.flatpak.enable = true;
-
-    services.gvfs.enable = true;
-    security.pam.services.lightdm.enableGnomeKeyring = true;
-    services.udev.packages = with pkgs; [ gnome-settings-daemon ]; 
-    services.gnome = {
-      gnome-online-accounts.enable = true;
-      gnome-keyring.enable = true;
-      core-os-services.enable = true;
-      gnome-settings-daemon.enable = true;
-      sushi.enable = true;
-      # tracker.enable = true;
-      # tracker-miners.enable = true;
-    }; 
 
     services.xserver.wacom.enable = true;
 

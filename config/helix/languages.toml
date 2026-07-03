@@ -39,6 +39,10 @@ language-servers = [
   {name = "yaml-language-server",  only-features = [ ], except-features = [ ] },
 ]
 
+[language-server.helix-assist]
+command = "helix-assist"
+args = ["--handler", "openai", "--num-suggestions", "2"]
+
 [language-server.yaml-language-server]
 command = "yaml-language-server"
 auto-format = true

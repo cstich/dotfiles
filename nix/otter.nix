@@ -10,7 +10,7 @@
       /etc/nixos/hardware-configuration.nix
       # <nixpkgs/nixos/modules/profiles/hardened.nix>
       ./common/common.nix
-      ./common/gnome.nix
+      ./common/desktop.nix
       ./common/shell.nix
       ./common/fonts.nix
       ./common/syncthing.nix

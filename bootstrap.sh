@@ -40,17 +40,5 @@ fi
 # TODO Think about how to deal with the hostname
 sudo ln -sf $SCRIPTPATH/nix/$HOSTNAME.nix /etc/nixos/configuration.nix
 
-# If gnome exists, set the custom settings
-DESKTOP=$(env | grep XDG_CURRENT_DESKTOP | awk -F'=' '{print $2}')
-if [[ $DESKTOP == "GNOME" ]]
-then
-    $SCRIPTPATH/config/gnome/gsettings.sh
-fi
-
-# This is the tmp dir for vim
-mkdir -p ~/.tmp
-# nvim -c "PlugInstall" -c "q" -c "q"
-# nvim -c "PlugUpdate" -c "q" -c "q"
-
 # Source nix-direnv hook
 source ~/.direnvrc

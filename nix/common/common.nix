@@ -23,7 +23,7 @@ in
       kitty # So that xterm-kitty exists on the system
       lshw
       lynis
-      neofetch
+      hyfetch
       nix-index
       nmap
       p7zip

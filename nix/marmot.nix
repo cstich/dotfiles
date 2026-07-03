@@ -17,11 +17,10 @@ in
 
       # Custom modules
       ./common/common.nix
-      ./common/neovim.nix
       ./common/helix.nix
       ./common/shell.nix
       ./common/fonts.nix
-      ./common/gnome.nix
+      ./common/desktop.nix
       ./common/syncthing.nix
     ];
 
@@ -70,17 +69,14 @@ in
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/disk/by-id/ata-WDC_WDS500G2B0B-00YS70_2021DB462501"; # or "nodev" for efi only
 
-  # Tell initrd to unlock LUKS on /dev/sda2 and /dev/nvme0n1
-  boot.initrd.luks.reusePassphrases = true;
+  # Tell initrd to unlock LUKS
   boot.initrd.luks.devices = {
     crypted = { 
        device = "/dev/disk/by-uuid/61bca8b2-fc40-48e1-b73a-c7e604e556be"; 
-       preLVM = true; 
        allowDiscards = true; 
     };
     m2 = {
        device = "/dev/disk/by-uuid/c47b1559-11f9-4713-a02e-77852338ba45";
-       preLVM = true;
        allowDiscards = true;
      };
   };
@@ -93,7 +89,6 @@ in
 
   hardware.enableAllFirmware = true;
   hardware.bluetooth.enable = true;
-  hardware.graphics.enable32Bit = true;
 
   networking.useDHCP = false;
   networking.interfaces.enp70s0.useDHCP = true;
@@ -176,44 +171,51 @@ in
   # Enable OpenGL
   hardware.graphics = {
     enable = true;
+    enable32Bit = true; # Steam/Wine
   };
 
-  # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nouveau" ];
 
-  hardware.nvidia = {
+  #####################################################################
+  # # Load nvidia driver for Xorg and Wayland
+  # services.xserver.videoDrivers = ["nvidia"];
 
-    # Modesetting is required.
-    modesetting.enable = true;
+  # hardware.nvidia = {
 
-    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-    # Enable this if you have graphical corruption issues or application crashes after waking
-    # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead 
-    # of just the bare essentials.
-    powerManagement.enable = true;
+  #   # Modesetting is required.
+  #   modesetting.enable = true;
 
-    # Fine-grained power management. Turns off GPU when not in use.
-    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-    powerManagement.finegrained = false;
+  #   # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+  #   # Enable this if you have graphical corruption issues or application crashes after waking
+  #   # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead 
+  #   # of just the bare essentials.
+  #   powerManagement.enable = true;
 
-    # Use the NVidia open source kernel module (not to be confused with the
-    # independent third-party "nouveau" open source driver).
-    # Support is limited to the Turing and later architectures. Full list of 
-    # supported GPUs is at: 
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
-    # Only available from driver 515.43.04+
-    open = false;
+  #   # Fine-grained power management. Turns off GPU when not in use.
+  #   # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+  #   powerManagement.finegrained = false;
 
-    # Enable the Nvidia settings menu,
-  	# accessible via `nvidia-settings`.
-    nvidiaSettings = true;
+  #   # Use the NVidia open source kernel module (not to be confused with the
+  #   # independent third-party "nouveau" open source driver).
+  #   # Support is limited to the Turing and later architectures. Full list of 
+  #   # supported GPUs is at: 
+  #   # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
+  #   # Only available from driver 515.43.04+
+  #   open = false;
 
-    # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
+  #   # Enable the Nvidia settings menu,
+  # 	# accessible via `nvidia-settings`.
+  #   nvidiaSettings = true;
+
+  #   # Optionally, you may need to select the appropriate driver version for your specific GPU.
+  #   package = config.boot.kernelPackages.nvidiaPackages.stable;
+  # };
 
   # Enable GPU support for Docker
-  hardware.nvidia-container-toolkit.enable = true;
+  # hardware.nvidia-container-toolkit.enable = true;
+  #####################################################################
+
+  
   # Regular Docker
   virtualisation.docker.daemon.settings.features.cdi = true;
   # Rootless

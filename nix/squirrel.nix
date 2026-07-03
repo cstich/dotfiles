@@ -10,9 +10,8 @@ in
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
       ./common/common.nix
-      ./common/neovim.nix
       ./common/fonts.nix
-      ./common/gnome.nix
+      ./common/desktop.nix
       ./common/syncthing.nix
       ./common/shell.nix
     ];
