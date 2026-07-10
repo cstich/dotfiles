@@ -58,6 +58,8 @@ in
     LC_TIME = "en_GB.UTF-8";
   };
 
+  # Enable battery monitor
+  services.upower.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
