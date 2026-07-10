@@ -27,10 +27,11 @@ in
        discord
        firefox
        foot
+       fuzzel
+       jq
        google-chrome
        gparted
        git-filter-repo
-       discord
        kupfer
        kitty
        lapce

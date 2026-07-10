@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+selection=$(
+    niri msg --json windows |
+    jq -r '
+        sort_by(.focus_timestamp.secs, .focus_timestamp.nanos)
+        | reverse[]
+        | "[\(.app_id)] \(.title)\t\(.id)\u0000icon\u001f\(.app_id)"
+    ' |
+    fuzzel --dmenu --prompt="Window: " --with-nth=1 --accept-nth=2
+)
+
+[ -z "$selection" ] && exit 0
+
+niri msg action focus-window --id "$selection"
