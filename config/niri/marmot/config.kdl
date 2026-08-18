@@ -45,16 +45,16 @@ input {
     mouse {
         // off
         natural-scroll
-        // accel-speed 0.2
+        // accel-speed 0.05
         // accel-profile "flat"
         // scroll-method "no-scroll"
     }
 
     trackpoint {
         // off
-        // natural-scroll
-        // accel-speed 0.2
-        // accel-profile "flat"
+        natural-scroll
+        accel-speed 0.0002
+        accel-profile "flat"
         // scroll-method "on-button-down"
         // scroll-button 273
         // scroll-button-lock
@@ -63,7 +63,6 @@ input {
 
     tablet {
         // off
-        map-to-output "Virtual-1"
         // left-handed
         // calibration-matrix 1.0 0.0 0.0 0.0 1.0 0.0
     }
@@ -372,9 +371,10 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+T hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
+    Mod+T hotkey-overlay-title="Open a Terminal: foot" { spawn "foot"; }
     Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+    Mod+Space hotkey-overlay-title="Window Switcher: fuzzel script" { spawn "~/dotfiles/bin/niri-window-switcher"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.

@@ -26,6 +26,7 @@ in
        dconf-editor
        discord
        firefox
+       file-roller
        foot
        fuzzel
        jq
