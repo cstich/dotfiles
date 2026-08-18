@@ -102,7 +102,9 @@ in
     # Eclipse clipboard only works with Thunar
     programs.thunar = {
       enable = true;
-      plugins = [ thunar-archive-plugin thunar-volman ]
+      plugins = [
+        pkgs.thunar-archive-plugin
+        pkgs.thunar-volman ];
     };
     services.gvfs.enable = true; # Mount, trash, and other functionalities
     services.tumbler.enable = true; # Thumbnail support for images
