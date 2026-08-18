@@ -32,26 +32,19 @@ in
        google-chrome
        gparted
        git-filter-repo
-       kupfer
        kitty
-       lapce
        libreoffice
        meld
-       unstable.onedrive
        peek
        qtpass
        seahorse
        transmission_4-gtk
-       virtualbox
        veracrypt
        vscode-fhs
        vlc
        unstable.wezterm
        unstable.displaycal
 
-       # Eclipse clipboard only works with thunar
-       thunar
- 
        # Sound settings
        pavucontrol 
 
@@ -105,6 +98,14 @@ in
     # TODO This currently fails; open issue
     programs.steam.enable = true; 
     programs.ssh.enableAskPassword = false;
+
+    # Eclipse clipboard only works with Thunar
+    programs.thunar = {
+      enable = true;
+      plugins = [ thunar-archive-plugin thunar-volman ]
+    };
+    services.gvfs.enable = true; # Mount, trash, and other functionalities
+    services.tumbler.enable = true; # Thumbnail support for images
 
     # Allow flatpaks
     services.flatpak.enable = true;
