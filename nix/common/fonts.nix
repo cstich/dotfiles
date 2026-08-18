@@ -8,9 +8,9 @@ in
     enableDefaultPackages = true;
     fontDir.enable = true;
     packages = with pkgs; [
-      xorg.fontbh100dpi
-      xorg.fontmiscmisc
-      xorg.fontcursormisc
+      font-bh-100dpi
+      font-misc-misc
+      font-cursor-misc
       ubuntu-classic
       powerline-fonts
       font-awesome
