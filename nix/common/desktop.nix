@@ -30,12 +30,14 @@ in
        foot
        fuzzel
        jq
+       gnome-text-editor
        google-chrome
        gparted
        git-filter-repo
        kitty
        libreoffice
        meld
+       nautilus
        peek
        qtpass
        seahorse
