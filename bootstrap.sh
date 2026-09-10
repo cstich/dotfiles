@@ -5,11 +5,10 @@ SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
 ln -sf $SCRIPTPATH/bin ~/.local/bin
-
-ln -sf $SCRIPTPATH/nix/nixpkgs ~/.config/
 ln -sf $SCRIPTPATH/config/zsh/zshrc ~/.zshrc
 rm ~/.config/fish -rf
 ln -sf $SCRIPTPATH/config/fish ~/.config/
+ln -sf $SCRIPTPATH/config/git/gitconfig ~/.gitconfig
 ln -sf $SCRIPTPATH/config/tmux/tmux.conf ~/.tmux.conf
 ln -sf $SCRIPTPATH/config/helix ~/.config/
 ln -sf $SCRIPTPATH/config/nvim ~/.config/
@@ -22,7 +21,6 @@ ln -sf $SCRIPTPATH/config/euporie ~/.config/
 rm ~/.config/k9s -rf
 ln -sf $SCRIPTPATH/config/k9s ~/.config/
 ln -sf $SCRIPTPATH/direnvrc ~/.direnvrc
-ln -sf /home/$USER/Secrets/secrets.nix $SCRIPTPATH/nix/common/secrets.nix
 
 # Import the key for pass
 if command -v pass &> /dev/null
@@ -40,8 +38,8 @@ then
     ln -sf /home/$USER/Secrets/rclone.conf ~/.config/rclone/rclone.conf
 fi
 
-# TODO Think about how to deal with the hostname
-sudo ln -sf $SCRIPTPATH/nix/$HOSTNAME.nix /etc/nixos/configuration.nix
-
-# Source nix-direnv hook
-source ~/.direnvrc
+if [[ -e /etc/NIXOS ]]; then
+    sudo ln -sf "$SCRIPTPATH/nix/$HOSTNAME.nix" /etc/nixos/configuration.nix
+    ln -sf $SCRIPTPATH/nix/nixpkgs ~/.config/
+    ln -sf /home/$USER/Secrets/secrets.nix $SCRIPTPATH/nix/common/secrets.nix
+fi

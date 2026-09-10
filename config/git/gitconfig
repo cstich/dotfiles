@@ -1,0 +1,17 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Christoph Stich
+	email = c.stich@james-fisher.co.uk
+[mergetool "meld"]
+    cmd = meld "$LOCAL" "$MERGED" "$REMOTE"
+[merge]
+	conflictStyle = diff3
+    default = mergiraf
+[merge "mergiraf"]
+	name = mergiraf
+	driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
