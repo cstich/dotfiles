@@ -7,7 +7,7 @@ shebangs = ["python"]
 roots = ["pyproject.toml", "setup.py", ".git"]
 comment-token = "#"
 language-servers = [
-  {name = "pyright",  except-features = [ "format" ] },
+  {name = "pyrefly",  except-features = [ "format" ] },
   {name = "ruff", except-features = [ ]}, 
   {name = "pylsp",  only-features = [ ], except-features = [ "completion", "diagnostics", "format" ] },
   {name = "typos",  only-features = [ ], except-features = [ ] },
@@ -56,16 +56,9 @@ validation = true
 "https://json.schemastore.org/github-workflow.json" = ".github/workflows/*.{yml,yaml}"
 "https://raw.githubusercontent.com/ansible-community/schemas/main/f/ansible-tasks.json" = "roles/{tasks,handlers}/*.{yml,yaml}"
 
-[language-server.pyright]
-command = "pyright-langserver"
-args = ["--stdio"]
-
-[language-server.pyright.config]
-reportMissingTypeStubs = false
-
-[language-server.pyright.config.python.analysis]
-typeCheckingMode = "basic"
-autoImportCompletions = true
+[language-server.pyrefly]
+command = "pyrefly"
+args = ["lsp"]
 
 [language-server.terraform-ls]
 command = "terraform-ls"
