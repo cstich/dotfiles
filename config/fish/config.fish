@@ -122,6 +122,10 @@ if command -v eza 1>/dev/null 2>&1
     alias ll="eza -la --icons"
 end
 
+set -gx EDITOR helix
+set -gx VISUAL helix
+set -gx SOPS_EDITOR helix
+
 # Common aliases
 alias k="kubectl"
 
