@@ -21,7 +21,7 @@
   boot.supportedFilesystems = [ "zfs" ]; 
   boot.zfs.extraPools = [ "zbackup" ];
   boot.zfs.requestEncryptionCredentials = true;
-  boot.zfs.forceImportRoot = false
+  boot.zfs.forceImportRoot = false;
 
   # Instructions for a zfs encrypted raid
   # Don't forget to ensure /mnt/backup exists
