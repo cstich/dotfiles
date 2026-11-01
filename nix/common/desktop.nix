@@ -13,9 +13,14 @@ in
  
     environment.systemPackages = with pkgs; [
 
+      # Dependencies for Niri/DMS
+      adw-gtk3              
+      glib                  
+
        # Themes
        arc-theme
        arc-icon-theme
+       papirus-icon-theme    
        materia-theme
        lxappearance
        pantheon.elementary-icon-theme
@@ -37,6 +42,7 @@ in
        lapce
        libreoffice
        meld
+       nautilus
        unstable.onedrive
        peek
        qtpass
@@ -45,13 +51,10 @@ in
        virtualbox
        veracrypt
        vscode-fhs
-       vlc
+       unstable.vlc
        unstable.wezterm
        unstable.displaycal
 
-       # Eclipse clipboard only works with thunar
-       thunar
- 
        # Sound settings
        pavucontrol 
 
