@@ -40,7 +40,7 @@ in
     trustedInterfaces = [ intEth ];
     checkReversePath = false; # https://github.com/NixOS/nixpkgs/issues/10101
     allowedTCPPorts = [
-      8822    # ssh
+      # 8822    # ssh
       # 80    # http
       # 443   # https
       # 2222  # git
@@ -124,9 +124,6 @@ in
     settings.PermitRootLogin = "no";
     ports = [ 8822 ];
   };
-
-  # TODO Set google auth up properly
-  # security.pam.services.sudo.googleAuthenticator.enable = true;
 
   services.sshguard = {
     enable = true;

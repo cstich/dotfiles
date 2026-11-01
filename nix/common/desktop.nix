@@ -31,9 +31,11 @@ in
        dconf-editor
        discord
        firefox
+       file-roller
        foot
        fuzzel
        jq
+       gnome-text-editor
        google-chrome
        gparted
        git-filter-repo
@@ -43,7 +45,6 @@ in
        libreoffice
        meld
        nautilus
-       unstable.onedrive
        peek
        qtpass
        seahorse
