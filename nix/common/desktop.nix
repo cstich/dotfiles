@@ -51,7 +51,6 @@ in
        transmission_4-gtk
        virtualbox
        veracrypt
-       vscode-fhs
        unstable.vlc
        unstable.wezterm
        unstable.displaycal
