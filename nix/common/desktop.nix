@@ -30,6 +30,7 @@ in
        dconf
        dconf-editor
        discord
+       unstable.displaycal
        firefox
        file-roller
        foot
@@ -53,7 +54,7 @@ in
        veracrypt
        unstable.vlc
        unstable.wezterm
-       unstable.displaycal
+       wl-clipboard
 
        # Sound settings
        pavucontrol 
