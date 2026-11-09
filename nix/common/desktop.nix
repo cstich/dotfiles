@@ -13,9 +13,14 @@ in
  
     environment.systemPackages = with pkgs; [
 
+      # Dependencies for Niri/DMS
+      adw-gtk3              
+      glib                  
+
        # Themes
        arc-theme
        arc-icon-theme
+       papirus-icon-theme    
        materia-theme
        lxappearance
        pantheon.elementary-icon-theme
@@ -25,6 +30,7 @@ in
        dconf
        dconf-editor
        discord
+       unstable.displaycal
        firefox
        file-roller
        foot
@@ -34,7 +40,9 @@ in
        google-chrome
        gparted
        git-filter-repo
+       kupfer
        kitty
+       lapce
        libreoffice
        meld
        nautilus
@@ -42,11 +50,11 @@ in
        qtpass
        seahorse
        transmission_4-gtk
+       virtualbox
        veracrypt
-       vscode-fhs
-       vlc
+       unstable.vlc
        unstable.wezterm
-       unstable.displaycal
+       wl-clipboard
 
        # Sound settings
        pavucontrol 
@@ -101,16 +109,6 @@ in
     # TODO This currently fails; open issue
     programs.steam.enable = true; 
     programs.ssh.enableAskPassword = false;
-
-    # Eclipse clipboard only works with Thunar
-    programs.thunar = {
-      enable = true;
-      plugins = [
-        pkgs.thunar-archive-plugin
-        pkgs.thunar-volman ];
-    };
-    services.gvfs.enable = true; # Mount, trash, and other functionalities
-    services.tumbler.enable = true; # Thumbnail support for images
 
     # Allow flatpaks
     services.flatpak.enable = true;
