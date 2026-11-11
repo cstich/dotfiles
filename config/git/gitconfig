@@ -17,3 +17,5 @@
 	clean = git-lfs clean -- %f
 [safe]
 	directory = /home/parallels/projects/aws-iam
+[push]
+	autoSetupRemote = true
