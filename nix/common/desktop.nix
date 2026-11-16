@@ -31,6 +31,7 @@ in
        dconf-editor
        discord
        unstable.displaycal
+       evince
        firefox
        file-roller
        foot
