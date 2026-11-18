@@ -116,8 +116,19 @@ if status is-interactive
     end
 end
 
-# Define replace ls with exa
-if command -v eza 1>/dev/null 2>&1
+# Define replace ls with eza
+if command -q eza
+    set -gx EZA_COLORS "or=4;31:mi=4;31"
+
+    # Render underline as red curly underline
+    function eza --wraps=eza
+        if isatty stdout
+            command eza --color=always $argv | string replace -a '[4;31m' '[4:3;58;2;255;0;0;31m'
+        else
+            command eza --color=never $argv
+        end
+    end
+
     alias ls="eza --icons"
     alias ll="eza -la --icons"
 end
