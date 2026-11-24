@@ -7,10 +7,11 @@ shebangs = ["python"]
 roots = ["pyproject.toml", "setup.py", ".git"]
 comment-token = "#"
 language-servers = [
-  {name = "pyrefly",  except-features = [ "format" ] },
+  # {name = "pyrefly", only-features = [ ], except-features = [ "format" ] },
   {name = "ruff", except-features = [ ]}, 
-  {name = "pylsp",  only-features = [ ], except-features = [ "completion", "diagnostics", "format" ] },
   {name = "typos",  only-features = [ ], except-features = [ ] },
+  {name = "zuban",  only-features = [ ], except-features = [ "format" ] },
+  # {name = "ty",  only-features = [ ], except-features = [ "format" ] },
 ]
 auto-format = true
 # Enable formatting as well as import sorting; commands are chained with the linux pipe ("|") 
@@ -74,8 +75,13 @@ configurationPreference = "filesystemFirst"
 [language-server.ruff.config.lint]
 select = ["ALL"]
 
-[language-server.pylsp]
-command = "pylsp"
-
 [language-server.typos]
-command = "typos-lsp"
+command = "typos"
+
+[language-server.ty]
+command = "ty"
+args = ["server"]
+
+[language-server.zuban]
+command = "zuban"
+args = ["server"]
